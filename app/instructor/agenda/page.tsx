@@ -4,18 +4,17 @@ import { useState, useRef, useEffect } from "react";
 import { useApp } from "@/lib/context";
 import { ClassSession } from "@/lib/store";
 
-// Custom slide-to-unlock button component
 function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onUnlock: () => void; text?: string }) {
   const [sliderPos, setSliderPos] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isDraggingRef = useRef(false);
 
   const startDrag = () => {
-    isDraggingRef.current = true;
+    setIsDragging(true);
   };
 
   const moveDrag = (clientX: number) => {
-    if (!isDraggingRef.current || !containerRef.current) return;
+    if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const handleWidth = 48; // Width of the drag handle
     const padding = 8;
@@ -27,8 +26,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
   };
 
   const endDrag = () => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
+    setIsDragging(false);
     if (sliderPos >= 90) {
       setSliderPos(100);
       onUnlock();
@@ -38,6 +36,8 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
   };
 
   useEffect(() => {
+    if (!isDragging) return;
+
     const handleGlobalMouseMove = (e: MouseEvent) => moveDrag(e.clientX);
     const handleGlobalMouseUp = () => endDrag();
     const handleGlobalTouchMove = (e: TouchEvent) => {
@@ -47,7 +47,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
 
     window.addEventListener("mousemove", handleGlobalMouseMove);
     window.addEventListener("mouseup", handleGlobalMouseUp);
-    window.addEventListener("touchmove", handleGlobalTouchMove);
+    window.addEventListener("touchmove", handleGlobalTouchMove, { passive: true });
     window.addEventListener("touchend", handleGlobalTouchEnd);
 
     return () => {
@@ -56,7 +56,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
       window.removeEventListener("touchmove", handleGlobalTouchMove);
       window.removeEventListener("touchend", handleGlobalTouchEnd);
     };
-  }, [sliderPos]);
+  }, [isDragging, sliderPos]);
 
   return (
     <div
@@ -95,6 +95,18 @@ export default function InstructorAgenda() {
   const [selectedDate, setSelectedDate] = useState("2026-06-08");
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
+
+  // Lock body scroll when detail sheet is open on mobile to prevent background scrolling
+  useEffect(() => {
+    if (selectedClassId) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedClassId]);
 
   // Form state for scheduling
   const [selectedStudent, setSelectedStudent] = useState(students[0]?.id || "");
