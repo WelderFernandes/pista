@@ -1,18 +1,20 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Student, ClassSession, Transaction, getStoredData, saveStoredData } from "./store";
+import { Student, ClassSession, Transaction, InstructorSettings, getStoredData, saveStoredData } from "./store";
 
 interface AppContextType {
   students: Student[];
   classes: ClassSession[];
   transactions: Transaction[];
+  settings: InstructorSettings;
   addStudent: (student: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => void;
   addClass: (session: Omit<ClassSession, "id" | "studentPhoto" | "status" | "instructorName">) => void;
   confirmClass: (classId: string) => void;
   cancelClass: (classId: string) => void;
   completeClass: (classId: string) => void;
   startClass: (classId: string) => void;
+  updateSettings: (settings: InstructorSettings) => void;
   payPendingPayment: (studentId: string, amount: number) => void;
 }
 
@@ -23,7 +25,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     students: Student[];
     classes: ClassSession[];
     transactions: Transaction[];
-  }>({ students: [], classes: [], transactions: [] });
+    settings: InstructorSettings;
+  }>({
+    students: [],
+    classes: [],
+    transactions: [],
+    settings: {
+      workDays: [1, 2, 3, 4, 5, 6],
+      workStart: "08:00",
+      workEnd: "18:00",
+      lunchStart: "12:00",
+      lunchEnd: "13:30",
+      extraDays: [],
+    },
+  });
 
   const [initialized, setInitialized] = useState(false);
 
@@ -34,7 +49,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (initialized) {
-      saveStoredData(data.students, data.classes, data.transactions);
+      saveStoredData(data.students, data.classes, data.transactions, data.settings);
     }
   }, [data, initialized]);
 
@@ -141,7 +156,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         }
         return s;
       });
-
       return {
         ...prev,
         students: updatedStudents,
@@ -150,18 +164,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const updateSettings = (newSettings: InstructorSettings) => {
+    setData((prev) => ({
+      ...prev,
+      settings: newSettings,
+    }));
+  };
+
   return (
     <AppContext.Provider
       value={{
         students: data.students,
         classes: data.classes,
         transactions: data.transactions,
+        settings: data.settings,
         addStudent,
         addClass,
         confirmClass,
         cancelClass,
         completeClass,
         startClass,
+        updateSettings,
         payPendingPayment,
       }}
     >

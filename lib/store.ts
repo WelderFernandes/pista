@@ -2,6 +2,15 @@
 
 import { useState, useEffect } from "react";
 
+export interface InstructorSettings {
+  workDays: number[];
+  workStart: string;
+  workEnd: string;
+  lunchStart: string;
+  lunchEnd: string;
+  extraDays: { date: string; start: string; end: string }[];
+}
+
 export interface Student {
   id: string;
   name: string;
@@ -154,29 +163,49 @@ const INITIAL_TRANSACTIONS: Transaction[] = [
   }
 ];
 
+const DEFAULT_SETTINGS: InstructorSettings = {
+  workDays: [1, 2, 3, 4, 5, 6], // Seg a Sáb
+  workStart: "08:00",
+  workEnd: "18:00",
+  lunchStart: "12:00",
+  lunchEnd: "13:30",
+  extraDays: []
+};
+
 export function getStoredData() {
   if (typeof window === "undefined") {
     return {
       students: INITIAL_STUDENTS,
       classes: INITIAL_CLASSES,
-      transactions: INITIAL_TRANSACTIONS
+      transactions: INITIAL_TRANSACTIONS,
+      settings: DEFAULT_SETTINGS
     };
   }
 
   const students = localStorage.getItem("vc_students");
   const classes = localStorage.getItem("vc_classes");
   const transactions = localStorage.getItem("vc_transactions");
+  const settings = localStorage.getItem("vc_settings");
 
   return {
     students: students ? JSON.parse(students) : INITIAL_STUDENTS,
     classes: classes ? JSON.parse(classes) : INITIAL_CLASSES,
-    transactions: transactions ? JSON.parse(transactions) : INITIAL_TRANSACTIONS
+    transactions: transactions ? JSON.parse(transactions) : INITIAL_TRANSACTIONS,
+    settings: settings ? JSON.parse(settings) : DEFAULT_SETTINGS
   };
 }
 
-export function saveStoredData(students: Student[], classes: ClassSession[], transactions: Transaction[]) {
+export function saveStoredData(
+  students: Student[],
+  classes: ClassSession[],
+  transactions: Transaction[],
+  settings?: InstructorSettings
+) {
   if (typeof window === "undefined") return;
   localStorage.setItem("vc_students", JSON.stringify(students));
   localStorage.setItem("vc_classes", JSON.stringify(classes));
   localStorage.setItem("vc_transactions", JSON.stringify(transactions));
+  if (settings) {
+    localStorage.setItem("vc_settings", JSON.stringify(settings));
+  }
 }
