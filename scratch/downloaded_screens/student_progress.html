@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>O Volante Certo - Progresso</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Lexend -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from Style Guidance -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "secondary": "#4c5d8b",
+                "secondary-fixed": "#dae2ff",
+                "primary-container": "#376ee6",
+                "on-error-container": "#93000a",
+                "on-primary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#311300",
+                "surface-variant": "#e1e2ec",
+                "surface-tint": "#1256ce",
+                "on-surface-variant": "#434654",
+                "on-secondary-fixed": "#031944",
+                "on-tertiary": "#ffffff",
+                "surface-container-highest": "#e1e2ec",
+                "surface-container-lowest": "#ffffff",
+                "secondary-container": "#b7c8fd",
+                "surface-container-high": "#e7e7f2",
+                "primary": "#0b53cb",
+                "tertiary-fixed-dim": "#ffb688",
+                "tertiary-container": "#b95a00",
+                "primary-fixed": "#dae2ff",
+                "on-secondary-container": "#425381",
+                "error-container": "#ffdad6",
+                "on-secondary-fixed-variant": "#344572",
+                "inverse-surface": "#2e3038",
+                "tertiary": "#934600",
+                "surface-container-low": "#f2f3fd",
+                "inverse-on-surface": "#eff0fa",
+                "tertiary-fixed": "#ffdbc7",
+                "on-primary-fixed": "#001848",
+                "secondary-fixed-dim": "#b4c5fa",
+                "on-primary-container": "#fefcff",
+                "on-surface": "#191b23",
+                "outline": "#737685",
+                "outline-variant": "#c3c6d6",
+                "surface-dim": "#d8d9e4",
+                "on-primary-fixed-variant": "#0040a2",
+                "inverse-primary": "#b2c5ff",
+                "on-tertiary-container": "#fffbff",
+                "surface": "#faf9ff",
+                "primary-fixed-dim": "#b2c5ff",
+                "on-secondary": "#ffffff",
+                "on-background": "#191b23",
+                "background": "#faf9ff",
+                "on-tertiary-fixed-variant": "#733600",
+                "surface-bright": "#faf9ff",
+                "surface-container": "#ecedf8",
+                "on-error": "#ffffff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "sm": "12px",
+                "margin-desktop": "32px",
+                "lg": "40px",
+                "md": "24px",
+                "xs": "4px",
+                "margin-mobile": "16px",
+                "base": "8px"
+        },
+        "fontFamily": {
+                "hero-title-mobile": [
+                        "Lexend"
+                ],
+                "hero-title": [
+                        "Lexend"
+                ],
+                "body-md": [
+                        "Lexend"
+                ],
+                "label-sm": [
+                        "Lexend"
+                ],
+                "body-lg": [
+                        "Lexend"
+                ],
+                "headline-md": [
+                        "Lexend"
+                ]
+        },
+        "fontSize": {
+                "hero-title-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "1.1",
+                                "fontWeight": "600"
+                        }
+                ],
+                "hero-title": [
+                        "32px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "15px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "13px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.01em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "17px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        /* Base styles to ensure proper font rendering */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Hide scrollbar for cleaner look in some areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface flex items-center justify-between px-margin-mobile h-16 border-none">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant bg-surface-container flex-shrink-0">
+<img alt="Student Profile Photo" class="w-full h-full object-cover" data-alt="A professional, well-lit headshot of a young adult looking forward with a subtle smile. The lighting is soft and natural, matching a clean, light-mode interface aesthetic. The background is a neutral, slightly warm grey, allowing the subject's face to be the clear focal point without harsh shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdsmxDZ6Fj7dM9VBIefa-i6LCHhs3OTkagYF9lKH6z5q_ueFvPlAIevXtqCkFCUNc_qMgN5wLdi3btP_vWnobcNvpbZEC7uJjGN40b7TtwwLpNAzksnk5-KE9CuZk5gb23mM3XxzuHFG8L_M-wV4E5yYNgWZUIYr9ObR6xSCrfg2tYjX6tUtBGlsGc1_XWtJTBFx-zf_JlRTbEN-UnnAbE-UaacSz_3RUw1gd_bTgjMI2h6e-a72L7OUzYR9EHwfFAME6YN3R5W7Y"/>
+</div>
+<h1 class="font-hero-title-mobile text-hero-title-mobile text-primary tracking-tight">O Volante Certo</h1>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 text-primary flex-shrink-0">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 px-margin-mobile pt-4 pb-32 md:px-margin-desktop md:max-w-4xl mx-auto w-full flex flex-col gap-md">
+<!-- Header / Goal Section -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Visão Geral</h2>
+<!-- Exam Ready Badge (Prominent) -->
+<div class="bg-tertiary-container rounded-xl p-4 flex items-center gap-4 shadow-sm">
+<div class="w-12 h-12 rounded-full bg-on-tertiary-container/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-tertiary-container/80 uppercase tracking-widest">Status Atual</p>
+<p class="font-body-lg text-body-lg text-on-tertiary-container font-semibold mt-1">Pronto para o Exame</p>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Stats -->
+<section class="grid grid-cols-2 gap-sm">
+<!-- Practical -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col gap-2 border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-primary">directions_car</span>
+<span class="font-hero-title-mobile text-hero-title-mobile text-primary">15</span>
+</div>
+<div class="mt-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Aulas Práticas</p>
+<div class="w-full bg-surface-variant h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full w-[75%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Theoretical -->
+<div class="bg-surface-container-low rounded-xl p-4 flex flex-col gap-2 border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-secondary">menu_book</span>
+<span class="font-hero-title-mobile text-hero-title-mobile text-secondary">45</span>
+</div>
+<div class="mt-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Horas Teóricas</p>
+<div class="w-full bg-surface-variant h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary h-full w-[100%] rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Lesson Log (Timeline) -->
+<section class="mt-4 flex flex-col gap-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight mb-2">Histórico de Aulas</h2>
+<div class="flex flex-col gap-4 relative">
+<!-- Decorative Timeline Line -->
+<div class="absolute left-6 top-4 bottom-4 w-[2px] bg-surface-variant -z-10 rounded-full"></div>
+<!-- Item 1: Completed -->
+<div class="flex gap-4 group">
+<div class="w-12 h-12 rounded-full bg-surface border-4 border-surface flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-4 flex-1 shadow-sm transition-transform group-active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium">Baliza e Controle</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">12 Out, 14:00 • Prática</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-1 rounded-md">Concluída</span>
+</div>
+<div class="mt-3 bg-surface rounded-lg p-3 border border-outline-variant/10">
+<p class="font-body-md text-body-md text-on-surface-variant italic">
+                                "Excelente controle de embreagem hoje. A baliza de 3 pontos está perfeita. Continue praticando a observação nos espelhos antes de sair."
+                            </p>
+<p class="font-label-sm text-label-sm text-primary mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">person</span> Instrutor Carlos
+                            </p>
+</div>
+</div>
+</div>
+<!-- Item 2: Canceled -->
+<div class="flex gap-4 group">
+<div class="w-12 h-12 rounded-full bg-surface border-4 border-surface flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">cancel</span>
+</div>
+<div class="bg-error-container/20 border border-error/20 rounded-xl p-4 flex-1 shadow-sm transition-transform group-active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium opacity-70">Circulação Urbana</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">10 Out, 09:00 • Prática</p>
+</div>
+<span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-1 rounded-md">Cancelada</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 text-sm">
+                            Cancelada pelo aluno (Aviso prévio respeitado).
+                        </p>
+</div>
+</div>
+<!-- Item 3: Completed -->
+<div class="flex gap-4 group">
+<div class="w-12 h-12 rounded-full bg-surface border-4 border-surface flex items-center justify-center flex-shrink-0 z-10 shadow-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/20 rounded-xl p-4 flex-1 shadow-sm transition-transform group-active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium">Legislação e Vias</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">08 Out, 18:00 • Teórica</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-1 rounded-md">Concluída</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-surface-container rounded-t-xl shadow-sm border-none">
+<!-- Início -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant tap-highlight-transparent hover:opacity-80 transition-opacity w-16" href="#">
+<span class="material-symbols-outlined">home_app_logo</span>
+<span class="font-label-sm text-label-sm mt-1">Início</span>
+</a>
+<!-- Agenda -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant tap-highlight-transparent hover:opacity-80 transition-opacity w-16" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-sm text-label-sm mt-1">Agenda</span>
+</a>
+<!-- Progresso (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 tap-highlight-transparent hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-sm text-label-sm mt-1">Progresso</span>
+</a>
+<!-- Perfil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant tap-highlight-transparent hover:opacity-80 transition-opacity w-16" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">Perfil</span>
+</a>
+</nav>
+<script>
+        // Simple script to handle tap highlights for mobile feel if needed, though Tailwind classes handle most states.
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('touchstart', function() {}, {passive: true});
+        });
+    </script>
+</body></html>

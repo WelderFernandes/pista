@@ -1,0 +1,187 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+export default function InstructorLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  const navItems = [
+    {
+      label: "Dashboard",
+      href: "/instructor",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
+        </svg>
+      ),
+      activeIcon: (
+        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M5 3a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2H5zM15 3a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2h-4zM5 13a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2H5zM15 13a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2h-4z" />
+        </svg>
+      )
+    },
+    {
+      label: "Agenda",
+      href: "/instructor/agenda",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
+        </svg>
+      ),
+      activeIcon: (
+        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v13a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H8V3a1 1 0 00-1-1zM4 8h16v11H4V8zm2 2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1v-2z" />
+        </svg>
+      )
+    },
+    {
+      label: "Alunos",
+      href: "/instructor/students",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      ),
+      activeIcon: (
+        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      )
+    },
+    {
+      label: "Financeiro",
+      href: "/instructor/finance",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      activeIcon: (
+        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+          <path fillRule="evenodd" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm1-15a1 1 0 10-2 0v1.07A2.993 2.993 0 009 11a1 1 0 102 0h1a1 1 0 100-2h-1a1 1 0 010-2v-.93zm-3 8a1 1 0 100-2H9a1 1 0 100 2h1a1 1 0 010 2v.93a1 1 0 102 0V17a2.993 2.993 0 002-2.93 1 1 0 10-2 0h-1a1 1 0 100 2h1a1 1 0 010 2H11v-.93a1 1 0 01-1-1.07z" clipRule="evenodd" />
+        </svg>
+      )
+    },
+    {
+      label: "Perfil",
+      href: "/instructor/profile",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ),
+      activeIcon: (
+        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+          <path fillRule="evenodd" d="M18 10a6 6 0 11-12 0 6 6 0 0112 0zm-6 8a8 8 0 00-8 8h16a8 8 0 00-8-8z" clipRule="evenodd" />
+        </svg>
+      )
+    }
+  ];
+
+  return (
+    <div className="bg-slate-50 min-h-screen text-slate-900 pb-[80px] md:pb-0 md:pl-[240px] flex flex-col font-sans">
+      {/* Top Selector Bar (Switch Portals) */}
+      <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+          <span className="font-bold uppercase tracking-wider text-[10px] text-slate-300">Modo Instrutor Ativo</span>
+        </div>
+        <Link 
+          href="/" 
+          className="text-orange-400 hover:text-orange-300 transition-colors font-semibold flex items-center gap-1"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+          Trocar Portal
+        </Link>
+      </div>
+
+      {/* Top Nav Header for Desktop & Mobile */}
+      <header className="w-full sticky top-0 z-40 bg-white border-b border-slate-100 flex items-center justify-between px-6 py-4 shadow-sm">
+        <div className="flex items-center gap-3">
+          <img
+            alt="Avatar do Instrutor"
+            className="w-10 h-10 rounded-full object-cover border border-slate-200"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k"
+          />
+          <div>
+            <h1 className="text-base font-bold text-slate-900 leading-tight">Olá, Carlos Eduardo</h1>
+            <p className="text-xs text-orange-600 font-medium">Instrutor Chefe</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-slate-50 relative cursor-pointer text-slate-500 hover:text-orange-600 transition-colors">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-orange-600 rounded-full border border-white" />
+          </button>
+        </div>
+      </header>
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex flex-col w-[240px] bg-slate-900 text-white fixed top-[37px] bottom-0 left-0 border-r border-slate-800 z-30 justify-between">
+        <div className="py-6 flex flex-col gap-2">
+          <div className="px-6 mb-6">
+            <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Navegação</span>
+          </div>
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || (item.href !== "/instructor" && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-6 py-3.5 text-sm font-medium transition-all ${
+                  isActive
+                    ? "bg-orange-600/10 text-orange-500 border-r-4 border-orange-500"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                }`}
+              >
+                {isActive ? item.activeIcon : item.icon}
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+        <div className="p-6 border-t border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center font-bold text-sm">
+              V
+            </div>
+            <div>
+              <p className="text-xs font-bold">Volante Certo</p>
+              <p className="text-[9px] text-slate-400">v2.4.0-premium</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 w-full max-w-4xl mx-auto p-4 md:p-8">
+        {children}
+      </main>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-white border-t border-slate-100 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href || (item.href !== "/instructor" && pathname.startsWith(item.href));
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${
+                isActive ? "text-orange-600 font-bold" : "text-slate-400 font-medium"
+              }`}
+            >
+              <div className="mb-1">{isActive ? item.activeIcon : item.icon}</div>
+              <span className="text-[10px] tracking-tight">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}

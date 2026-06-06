@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Volante Certo - Student Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"primary-fixed": "#dae2ff", "surface-variant": "#e1e2ec", "inverse-primary": "#b2c5ff", "secondary-fixed-dim": "#b4c5fa", "on-secondary-container": "#425380", "on-secondary": "#ffffff", "outline-variant": "#c3c6d6", "on-primary-fixed": "#001848", "on-primary-container": "#fefcff", "text-primary": "#1D1D1F", outline: "#737685", "text-secondary": "#6E6E73", "inverse-on-surface": "#f0f0fa", "on-surface": "#191b23", "on-tertiary-container": "#f3fffd", surface: "#faf8ff", "surface-dim": "#d9d9e4", "tertiary-container": "#00827e", "surface-container-high": "#e7e7f2", "surface-container-highest": "#e1e2ec", "on-secondary-fixed-variant": "#344572", tertiary: "#006764", "surface-container": "#ededf8", "on-primary": "#ffffff", "surface-bright": "#faf8ff", "surface-container-low": "#f3f3fd", "on-tertiary": "#ffffff", "error-container": "#ffdad6", "on-secondary-fixed": "#041944", "secondary-fixed": "#dae2ff", "primary-container": "#376ee5", "on-surface-variant": "#434654", secondary: "#4c5d8b", "on-tertiary-fixed-variant": "#00504d", "on-tertiary-fixed": "#00201f", "surface-container-lowest": "#ffffff", "on-primary-fixed-variant": "#0040a2", "on-background": "#191b23", primary: "#0a54cb", "primary-fixed-dim": "#b2c5ff", "secondary-container": "#b7c8fd", "on-error-container": "#93000a", "tertiary-fixed": "#40fbf3", error: "#ba1a1a", "inverse-surface": "#2e3038", "border-subtle": "#D2D2D7", "on-error": "#ffffff", "canvas-white": "#FFFFFF", "canvas-light": "#F5F5F7", "tertiary-fixed-dim": "#00ddd6", "surface-tint": "#1256ce", background: "#faf8ff"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"margin-desktop": "32px", sm: "12px", xs: "4px", lg: "40px", base: "8px", "margin-mobile": "16px", md: "24px"}, fontFamily: {"headline-md": ["Inter"], "body-lg": ["Inter"], "hero-title": ["Inter"], "body-md": ["Inter"], "hero-title-mobile": ["Inter"], "label-sm": ["Inter"], headline: ["Lexend"], display: ["Lexend"], body: ["Lexend"], label: ["Lexend"]}, fontSize: {"headline-md": ["24px", {lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "600"}], "body-lg": ["17px", {lineHeight: "1.5", fontWeight: "400"}], "hero-title": ["32px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "600"}], "body-md": ["15px", {lineHeight: "1.5", fontWeight: "400"}], "hero-title-mobile": ["28px", {lineHeight: "1.1", fontWeight: "600"}], "label-sm": ["13px", {lineHeight: "1.2", letterSpacing: "0.01em", fontWeight: "500"}]}}}};</script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-canvas-light text-text-primary min-h-screen pb-24 font-body-md text-body-md antialiased">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full z-50">
+<div class="flex items-center gap-3">
+<img alt="Instructor Profile Picture" class="w-8 h-8 rounded-full border border-border-subtle cursor-pointer active:scale-95 transition-transform" data-alt="A professional headshot of a driving instructor, looking friendly and confident. The photo is well-lit with a neutral background, conveying trust and reliability in a professional context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHb7fPngjICJ5VYFp0Jv1BsP7UbwdVLbVr1ZmIhern_vIi11hO3ir9qVzzzEDTKuiJy21Qn3YWQRHhOMs7Bc9dCnkPww5ok1pZgell7bwhxENgDVGJjGgpM0qK_SJrOGQfTwgdPUTRXpzJjY7HOOq49PJCdJ-uzdlHTcpqzQhdQgiFNXbmqOQ80KeKLFFwc9-YZQz-9nYyJJrufxnfotVdNSFU9rHdGU1cHSj2vAiIAr2emSUBNUSQnUVW3gBvegp9QcwSxJBnnUM"/>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Volante Certo</h1>
+</div>
+<button class="text-primary cursor-pointer active:scale-95 transition-transform hover:opacity-80 transition-opacity p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-3xl mx-auto flex flex-col gap-md">
+<!-- Header & Search -->
+<div class="flex flex-col gap-sm">
+<h2 class="font-hero-title-mobile text-hero-title-mobile text-on-surface">Students</h2>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary pointer-events-none" data-icon="search">search</span>
+<input class="w-full bg-canvas-white border border-border-subtle rounded-xl pl-10 pr-4 py-3 text-body-md font-body-md text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-tertiary-container focus:ring-1 focus:ring-tertiary-container transition-all shadow-sm" placeholder="Search students by name..." type="text"/>
+</div>
+</div>
+<!-- Filters (Chips) -->
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-margin-mobile px-margin-mobile md:mx-0 md:px-0">
+<button class="bg-primary text-on-primary font-label-sm text-label-sm px-4 py-1.5 rounded-full whitespace-nowrap active:scale-95 transition-transform shadow-sm">All Students</button>
+<button class="bg-canvas-white border border-border-subtle text-text-primary font-label-sm text-label-sm px-4 py-1.5 rounded-full whitespace-nowrap active:scale-95 transition-transform hover:bg-surface-container-low shadow-sm">Cat. B (Car)</button>
+<button class="bg-canvas-white border border-border-subtle text-text-primary font-label-sm text-label-sm px-4 py-1.5 rounded-full whitespace-nowrap active:scale-95 transition-transform hover:bg-surface-container-low shadow-sm">Cat. A (Motorcycle)</button>
+<button class="bg-canvas-white border border-border-subtle text-text-primary font-label-sm text-label-sm px-4 py-1.5 rounded-full whitespace-nowrap active:scale-95 transition-transform hover:bg-surface-container-low shadow-sm">Completed</button>
+</div>
+<!-- Student List (Bento-style Cards) -->
+<div class="flex flex-col gap-sm">
+<!-- Student Card 1 -->
+<div class="bg-canvas-white rounded-2xl border border-border-subtle p-4 flex flex-col gap-sm shadow-[0_2px_8px_rgba(0,0,0,0.04)] cursor-pointer active:scale-[0.98] transition-transform">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Maria Silva" class="w-12 h-12 rounded-full border border-border-subtle" data-alt="A portrait of a young adult female student with long dark hair, smiling warmly. The photo has a bright, modern light-mode aesthetic, suitable for a professional profile picture in an educational app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp-4rg5h-sdUIEClxj2wPAW2vUUd7BcO1t1JBQOZchWvDnptvcN0tL7jvi3J3IxDw1QYuOxJvNHEjDou-Sadg2XtoVW4lOnOqK5KyYCghxe521TWqQVvb1lEyWmP977IlnWYc4BmGuNmKhFGQEvWqi4myxVonPvg4ImWw3_Rs3icvjKR3vqhGvdcEIxUyS8UN7TTWNmylcF1oYf2hZHMnBOjoiJKqmflo8DKa3QIH5-wbXf-RTu30UDjOyPbIstE-1TPSk1SG8qgk"/>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-text-primary">Maria Silva</h3>
+<p class="font-label-sm text-label-sm text-text-secondary">Cat. B • Next: Tomorrow, 14:00</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-secondary" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex flex-col gap-1.5 mt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-text-secondary">Progress</span>
+<span class="text-primary font-semibold">12/20 Classes</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 60%;"></div>
+</div>
+</div>
+</div>
+<!-- Student Card 2 -->
+<div class="bg-canvas-white rounded-2xl border border-border-subtle p-4 flex flex-col gap-sm shadow-[0_2px_8px_rgba(0,0,0,0.04)] cursor-pointer active:scale-[0.98] transition-transform">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="João Santos" class="w-12 h-12 rounded-full border border-border-subtle" data-alt="A portrait of a young adult male student with short hair, looking focused. The photo has a bright, modern light-mode aesthetic, suitable for a professional profile picture in an educational app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkO8QczCNHWdObPXVpuDywsG0zotM17HauS0I6wjI2RZogXkQLcn9W9fNCpnEBwaQ7q7x_R5y14OBHq1vSc3S1JwGAPo0qCBjMB6ofi-ftBkCvIwe_DyuwSag4dNUGevlXP3c19RjdDkcW6SvznFySqPfI_Bv2lM3MICdXXOEUuxV8wx8BtOucv0GHsLhVzfPl_Db_BEkhq0tMQnQj6qW7g2OYPVmZy2r00vwy6XJXNwnpWe2kFhxMq4k-oTUlzmgRhlscPcO3vbY"/>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-text-primary">João Santos</h3>
+<p class="font-label-sm text-label-sm text-text-secondary">Cat. A • Next: Wed, 09:00</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-secondary" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex flex-col gap-1.5 mt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-text-secondary">Progress</span>
+<span class="text-primary font-semibold">5/15 Classes</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 33%;"></div>
+</div>
+</div>
+</div>
+<!-- Student Card 3 -->
+<div class="bg-canvas-white rounded-2xl border border-border-subtle p-4 flex flex-col gap-sm shadow-[0_2px_8px_rgba(0,0,0,0.04)] cursor-pointer active:scale-[0.98] transition-transform opacity-75">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-body-lg text-body-lg font-bold">AL</div>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-text-primary">Ana Lima</h3>
+<p class="font-label-sm text-label-sm text-text-secondary">Cat. B • Pending Payment</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-secondary" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex flex-col gap-1.5 mt-1">
+<div class="flex justify-between items-center font-label-sm text-label-sm">
+<span class="text-text-secondary">Progress</span>
+<span class="text-text-secondary font-semibold">0/20 Classes</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 0%;"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-24 right-margin-mobile md:right-margin-desktop w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform z-40 hover:opacity-90">
+<span class="material-symbols-outlined text-[28px]" data-icon="add" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="bg-surface shadow-sm border-t border-outline-variant fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 md:hidden">
+<button class="flex flex-col items-center justify-center text-text-secondary active:scale-90 transition-all duration-200 hover:bg-surface-variant/50 px-3 py-1 rounded-xl">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-text-secondary active:scale-90 transition-all duration-200 hover:bg-surface-variant/50 px-3 py-1 rounded-xl">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">Schedule</span>
+</button>
+<!-- Active Tab -->
+<button class="flex flex-col items-center justify-center text-primary bg-primary-fixed/20 rounded-xl px-3 py-1 active:scale-90 transition-all duration-200 hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-sm text-label-sm mt-1 font-semibold">Students</span>
+</button>
+<button class="flex flex-col items-center justify-center text-text-secondary active:scale-90 transition-all duration-200 hover:bg-surface-variant/50 px-3 py-1 rounded-xl">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-sm text-label-sm mt-1">Financial</span>
+</button>
+</nav>
+<script>
+        // Simple search filter script for demonstration
+        const searchInput = document.querySelector('input[type="text"]');
+        const studentCards = document.querySelectorAll('.bg-canvas-white.rounded-2xl');
+
+        if(searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                studentCards.forEach(card => {
+                    const name = card.querySelector('h3').textContent.toLowerCase();
+                    if(name.includes(term)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+    </script>
+</body></html>
