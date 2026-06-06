@@ -26,7 +26,7 @@ export interface ClassSession {
   time: string; // e.g. "14:00"
   duration: string; // e.g. "14:00 - 15:40"
   meetingPoint: string;
-  status: "Confirmada" | "Pendente" | "Cancelada" | "Concluída";
+  status: "Confirmada" | "Pendente" | "Cancelada" | "Concluída" | "Em andamento";
   instructorName: string;
 }
 

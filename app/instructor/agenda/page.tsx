@@ -1,14 +1,102 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useApp } from "@/lib/context";
+import { ClassSession } from "@/lib/store";
+
+// Custom slide-to-unlock button component
+function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onUnlock: () => void; text?: string }) {
+  const [sliderPos, setSliderPos] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+
+  const startDrag = () => {
+    isDraggingRef.current = true;
+  };
+
+  const moveDrag = (clientX: number) => {
+    if (!isDraggingRef.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const handleWidth = 48; // Width of the drag handle
+    const padding = 8;
+    const maxDistance = rect.width - handleWidth - padding;
+    const currentDistance = clientX - rect.left - handleWidth / 2;
+    const rawPos = (currentDistance / maxDistance) * 100;
+    const pos = Math.min(Math.max(0, rawPos), 100);
+    setSliderPos(pos);
+  };
+
+  const endDrag = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    if (sliderPos >= 90) {
+      setSliderPos(100);
+      onUnlock();
+    } else {
+      setSliderPos(0);
+    }
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => moveDrag(e.clientX);
+    const handleGlobalMouseUp = () => endDrag();
+    const handleGlobalTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) moveDrag(e.touches[0].clientX);
+    };
+    const handleGlobalTouchEnd = () => endDrag();
+
+    window.addEventListener("mousemove", handleGlobalMouseMove);
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener("touchmove", handleGlobalTouchMove);
+    window.addEventListener("touchend", handleGlobalTouchEnd);
+
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener("touchmove", handleGlobalTouchMove);
+      window.removeEventListener("touchend", handleGlobalTouchEnd);
+    };
+  }, [sliderPos]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-14 rounded-xl relative flex items-center justify-center select-none overflow-hidden w-full shadow-inner"
+    >
+      {/* Background fill based on drag position */}
+      <div 
+        className="absolute left-1 top-1 bottom-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg transition-all opacity-80"
+        style={{ width: `calc(${sliderPos}% + 44px - (${sliderPos}px * 0.44))` }}
+      />
+
+      <span className="text-xs font-bold text-slate-400 dark:text-slate-500 select-none pointer-events-none z-10 transition-opacity" style={{ opacity: (100 - sliderPos) / 100 }}>
+        {text}
+      </span>
+
+      {/* Draggable Handle */}
+      <div
+        onMouseDown={startDrag}
+        onTouchStart={startDrag}
+        className="absolute top-1 w-12 bottom-1 bg-white rounded-lg flex items-center justify-center shadow-md cursor-grab active:cursor-grabbing z-20"
+        style={{ 
+          left: `calc(${sliderPos}% - ${(sliderPos * 40) / 100}px + 4px)` 
+        }}
+      >
+        <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+        </svg>
+      </div>
+    </div>
+  );
+}
 
 export default function InstructorAgenda() {
-  const { students, classes, addClass, confirmClass, completeClass, cancelClass } = useApp();
+  const { students, classes, addClass, confirmClass, completeClass, cancelClass, startClass } = useApp();
   const [selectedDate, setSelectedDate] = useState("2026-06-08");
   const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
 
-  // Form state
+  // Form state for scheduling
   const [selectedStudent, setSelectedStudent] = useState(students[0]?.id || "");
   const [classType, setClassType] = useState("Aula de Baliza");
   const [classTime, setClassTime] = useState("08:00");
@@ -23,7 +111,6 @@ export default function InstructorAgenda() {
     { day: "Sáb", num: "13", dateStr: "2026-06-13" },
   ];
 
-  // Time slots for high fidelity calendar schedule
   const timeSlots = ["08:00", "09:40", "11:20", "14:00", "15:40", "17:20", "19:00"];
 
   const handleCreateClass = (e: React.FormEvent) => {
@@ -55,8 +142,10 @@ export default function InstructorAgenda() {
     return `${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}`;
   };
 
+  const selectedClass = classes.find((c) => c.id === selectedClassId);
+
   return (
-    <div className="flex flex-col gap-6 animate-fade-in">
+    <div className="flex flex-col gap-6 animate-fade-in relative">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -109,7 +198,6 @@ export default function InstructorAgenda() {
 
         <div className="flex flex-col gap-4">
           {timeSlots.map((slot) => {
-            // Find class at this slot
             const session = classes.find((c) => c.date === selectedDate && c.time === slot);
 
             if (session) {
@@ -129,8 +217,11 @@ export default function InstructorAgenda() {
                     <div className="absolute top-2 -left-1 w-2.5 h-2.5 rounded-full bg-orange-600 border border-white" />
                   </div>
 
-                  {/* Student Class details */}
-                  <div className="flex-1 bg-white p-4 rounded-xl border border-slate-100 hover:border-orange-200 transition-all flex items-center justify-between gap-4 shadow-sm">
+                  {/* Student Class details (Clickable card to open modal) */}
+                  <div 
+                    onClick={() => setSelectedClassId(session.id)}
+                    className="flex-1 bg-white p-4 rounded-xl border border-slate-100 hover:border-orange-200 transition-all flex items-center justify-between gap-4 shadow-sm cursor-pointer hover:bg-slate-50/50"
+                  >
                     <div className="flex items-center gap-3">
                       <img
                         alt={session.studentName}
@@ -138,7 +229,7 @@ export default function InstructorAgenda() {
                         src={session.studentPhoto}
                       />
                       <div>
-                        <h4 className="font-bold text-slate-900 text-sm">{session.studentName}</h4>
+                        <h4 className="font-bold text-slate-900 text-sm group-hover:text-orange-600 transition-colors">{session.studentName}</h4>
                         <p className="text-xs text-slate-400 mt-0.5">{session.type} • {session.meetingPoint}</p>
                       </div>
                     </div>
@@ -148,35 +239,14 @@ export default function InstructorAgenda() {
                         session.status === "Confirmada" ? "bg-orange-50 text-orange-600 border border-orange-100" :
                         session.status === "Concluída" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
                         session.status === "Cancelada" ? "bg-red-50 text-red-700 border border-red-100" :
+                        session.status === "Em andamento" ? "bg-blue-50 text-blue-700 border border-blue-100 animate-pulse" :
                         "bg-yellow-50 text-yellow-700 border border-yellow-100"
                       }`}>
                         {session.status}
                       </span>
-                      
-                      {session.status === "Pendente" && (
-                        <button
-                          onClick={() => confirmClass(session.id)}
-                          className="px-2.5 py-1 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                        >
-                          Confirmar
-                        </button>
-                      )}
-                      {session.status === "Confirmada" && (
-                        <div className="flex gap-1">
-                          <button
-                            onClick={() => completeClass(session.id)}
-                            className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                          >
-                            Concluir
-                          </button>
-                          <button
-                            onClick={() => cancelClass(session.id)}
-                            className="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                          >
-                            Cancelar
-                          </button>
-                        </div>
-                      )}
+                      <svg className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
                     </div>
                   </div>
                 </div>
@@ -280,6 +350,167 @@ export default function InstructorAgenda() {
                 Confirmar Reservar
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Appointment Detail Bottom-Drawer Modal */}
+      {selectedClass && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-end md:items-center justify-center z-50 p-0 md:p-4">
+          <div className="bg-white rounded-t-3xl md:rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in flex flex-col gap-5 max-h-[90vh] md:max-h-none overflow-y-auto">
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedClassId(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 hover:bg-slate-100 rounded-full cursor-pointer"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Title */}
+            <div>
+              <h3 className="text-lg font-bold text-slate-900">Detalhes da Aula</h3>
+              <p className="text-xs text-slate-400 font-semibold mt-0.5">Ficha de acompanhamento operacional</p>
+            </div>
+
+            {/* Student card info */}
+            <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-4 rounded-xl">
+              <img
+                alt={selectedClass.studentName}
+                className="w-14 h-14 rounded-full object-cover border-2 border-orange-500/20"
+                src={selectedClass.studentPhoto}
+              />
+              <div>
+                <h4 className="font-bold text-slate-900 text-sm">{selectedClass.studentName}</h4>
+                <div className="flex items-center gap-1.5 mt-1.5">
+                  <span className="bg-orange-50 border border-orange-100 text-orange-600 text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    Aula 14 de 20
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-bold">Cat. B</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bento Grid Lesson Parameters */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Date & Time */}
+              <div className="col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
+                    <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="text-[9px] text-slate-400 font-bold block uppercase">Data</span>
+                    <span className="text-xs font-bold text-slate-700">
+                      {new Date(selectedClass.date + "T00:00:00").toLocaleDateString("pt-BR", { day: 'numeric', month: 'short' })}
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-[9px] text-slate-400 font-bold block uppercase">Horário</span>
+                  <span className="text-xs font-bold text-slate-700">{selectedClass.duration}</span>
+                </div>
+              </div>
+
+              {/* Class Type */}
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-2">
+                <div className="flex items-center gap-1.5 text-slate-400">
+                  <svg className="w-4 h-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-[9px] font-bold uppercase">Tipo de Aula</span>
+                </div>
+                <p className="text-xs font-bold text-slate-700">{selectedClass.type}</p>
+              </div>
+
+              {/* Meeting Point */}
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-2">
+                <div className="flex items-center gap-1.5 text-slate-400">
+                  <svg className="w-4 h-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  </svg>
+                  <span className="text-[9px] font-bold uppercase">Local</span>
+                </div>
+                <p className="text-xs font-bold text-slate-700 truncate">{selectedClass.meetingPoint}</p>
+              </div>
+            </div>
+
+            {/* Notes Section */}
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <span className="text-[9px] text-slate-400 font-bold block uppercase mb-1.5">Anotações do Instrutor</span>
+              <p className="text-xs text-slate-600 leading-relaxed font-semibold">
+                Focar em controle de embreagem e alinhamento na vaga de baliza.
+              </p>
+            </div>
+
+            {/* Custom slider button to start the class / complete actions */}
+            <div className="mt-2 flex flex-col gap-3">
+              {selectedClass.status === "Pendente" && (
+                <button
+                  onClick={() => {
+                    confirmClass(selectedClass.id);
+                  }}
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3.5 rounded-xl shadow-lg shadow-orange-600/20 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Confirmar Agendamento
+                </button>
+              )}
+
+              {selectedClass.status === "Confirmada" && (
+                <SlideToUnlock 
+                  text="Arraste para Iniciar Aula"
+                  onUnlock={() => {
+                    startClass(selectedClass.id);
+                  }}
+                />
+              )}
+
+              {selectedClass.status === "Em andamento" && (
+                <button
+                  onClick={() => {
+                    completeClass(selectedClass.id);
+                    setSelectedClassId(null);
+                  }}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-3.5 rounded-xl shadow-lg shadow-emerald-600/20 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Concluir Aula Prática
+                </button>
+              )}
+
+              {selectedClass.status === "Concluída" && (
+                <div className="text-center p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl">
+                  <p className="text-xs font-bold text-emerald-800 flex items-center justify-center gap-1">
+                    <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Esta aula foi concluída com sucesso!
+                  </p>
+                </div>
+              )}
+
+              {selectedClass.status !== "Concluída" && selectedClass.status !== "Cancelada" && (
+                <div className="flex gap-2 justify-center mt-2">
+                  <button
+                    onClick={() => {
+                      cancelClass(selectedClass.id);
+                      setSelectedClassId(null);
+                    }}
+                    className="font-bold text-xs text-red-600 hover:text-red-700 py-2 px-4 rounded-xl hover:bg-red-50 transition-all cursor-pointer"
+                  >
+                    Cancelar Aula
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -12,6 +12,7 @@ interface AppContextType {
   confirmClass: (classId: string) => void;
   cancelClass: (classId: string) => void;
   completeClass: (classId: string) => void;
+  startClass: (classId: string) => void;
   payPendingPayment: (studentId: string, amount: number) => void;
 }
 
@@ -75,6 +76,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setData((prev) => ({
       ...prev,
       classes: prev.classes.map((c) => (c.id === classId ? { ...c, status: "Confirmada" as const } : c)),
+    }));
+  };
+
+  const startClass = (classId: string) => {
+    setData((prev) => ({
+      ...prev,
+      classes: prev.classes.map((c) => (c.id === classId ? { ...c, status: "Em andamento" as const } : c)),
     }));
   };
 
@@ -153,6 +161,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         confirmClass,
         cancelClass,
         completeClass,
+        startClass,
         payPendingPayment,
       }}
     >
