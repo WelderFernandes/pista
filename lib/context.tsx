@@ -9,7 +9,7 @@ interface AppContextType {
   transactions: Transaction[];
   settings: InstructorSettings;
   addStudent: (student: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => void;
-  addClass: (session: Omit<ClassSession, "id" | "studentPhoto" | "status" | "instructorName">) => void;
+  addClass: (session: Omit<ClassSession, "id" | "status" | "studentPhoto" | "instructorName"> & { studentPhoto?: string; instructorName?: string }) => void;
   confirmClass: (classId: string) => void;
   cancelClass: (classId: string) => void;
   completeClass: (classId: string) => void;
@@ -76,15 +76,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
-  const addClass = (session: Omit<ClassSession, "id" | "studentPhoto" | "status" | "instructorName">) => {
+  const addClass = (session: Omit<ClassSession, "id" | "status" | "studentPhoto" | "instructorName"> & { studentPhoto?: string; instructorName?: string }) => {
     const student = data.students.find((s) => s.id === session.studentId);
     const id = `class-${Date.now()}`;
     const newClass: ClassSession = {
       ...session,
       id,
-      studentPhoto: student?.photoUrl || "",
+      studentPhoto: session.studentPhoto || student?.photoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
       status: "Pendente",
-      instructorName: "Carlos Eduardo",
+      instructorName: session.instructorName || "Carlos Eduardo",
     };
 
     setData((prev) => ({
