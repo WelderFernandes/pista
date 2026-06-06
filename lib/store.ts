@@ -9,6 +9,12 @@ export interface InstructorSettings {
   lunchStart: string;
   lunchEnd: string;
   extraDays: { date: string; start: string; end: string }[];
+  city: string;
+  neighborhoods: string[];
+  meetingPoints: string[];
+  hourlyRate: number;
+  categories: string[];
+  bio?: string;
 }
 
 export interface Student {
@@ -169,7 +175,13 @@ const DEFAULT_SETTINGS: InstructorSettings = {
   workEnd: "18:00",
   lunchStart: "12:00",
   lunchEnd: "13:30",
-  extraDays: []
+  extraDays: [],
+  city: "São Paulo",
+  neighborhoods: ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
+  meetingPoints: ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
+  hourlyRate: 120,
+  categories: ["B"],
+  bio: "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
 };
 
 export function getStoredData() {

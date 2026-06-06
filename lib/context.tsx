@@ -37,6 +37,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       lunchStart: "12:00",
       lunchEnd: "13:30",
       extraDays: [],
+      city: "São Paulo",
+      neighborhoods: ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
+      meetingPoints: ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
+      hourlyRate: 120,
+      categories: ["B"],
+      bio: "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
     },
   });
 

@@ -13,6 +13,13 @@ const WEEKDAYS = [
   { value: 6, label: "Sáb", fullName: "Sábado" },
 ];
 
+const AVAILABLE_CATEGORIES = [
+  { value: "A", label: "A (Moto)" },
+  { value: "B", label: "B (Carro)" },
+  { value: "C", label: "C (Caminhão)" },
+  { value: "D", label: "D (Ônibus)" },
+];
+
 export default function InstructorSettingsPage() {
   const { settings, updateSettings } = useApp();
 
@@ -24,6 +31,20 @@ export default function InstructorSettingsPage() {
   const [lunchEnd, setLunchEnd] = useState<string>(settings?.lunchEnd || "13:30");
   const [extraDays, setExtraDays] = useState<{ date: string; start: string; end: string }[]>(
     settings?.extraDays || []
+  );
+
+  // New discovery & search fields
+  const [city, setCity] = useState<string>(settings?.city || "São Paulo");
+  const [neighborhoodsInput, setNeighborhoodsInput] = useState<string>(
+    settings?.neighborhoods?.join(", ") || "Centro, Pinheiros, Vila Madalena, Jardins"
+  );
+  const [meetingPointsInput, setMeetingPointsInput] = useState<string>(
+    settings?.meetingPoints?.join(", ") || "Centro Comercial, Estação de Metrô Pinheiros, Shopping Boulevard"
+  );
+  const [hourlyRate, setHourlyRate] = useState<number>(settings?.hourlyRate || 120);
+  const [categories, setCategories] = useState<string[]>(settings?.categories || ["B"]);
+  const [bio, setBio] = useState<string>(
+    settings?.bio || "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
   );
 
   // Local state for the "Add Extra Day" form
@@ -40,6 +61,14 @@ export default function InstructorSettingsPage() {
       setWorkDays(workDays.filter((d) => d !== dayValue));
     } else {
       setWorkDays([...workDays, dayValue].sort());
+    }
+  };
+
+  const handleCategoryToggle = (catValue: string) => {
+    if (categories.includes(catValue)) {
+      setCategories(categories.filter((c) => c !== catValue));
+    } else {
+      setCategories([...categories, catValue]);
     }
   };
 
@@ -93,6 +122,25 @@ export default function InstructorSettingsPage() {
       alert("O horário de almoço deve estar contido dentro do período de trabalho.");
       return;
     }
+    if (!city.trim()) {
+      alert("Por favor, informe a cidade de atuação.");
+      return;
+    }
+    if (categories.length === 0) {
+      alert("Selecione ao menos uma categoria habilitada.");
+      return;
+    }
+
+    // Parse comma-separated inputs to clean arrays
+    const parsedNeighborhoods = neighborhoodsInput
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    const parsedMeetingPoints = meetingPointsInput
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
 
     updateSettings({
       workDays,
@@ -101,6 +149,12 @@ export default function InstructorSettingsPage() {
       lunchStart,
       lunchEnd,
       extraDays,
+      city: city.trim(),
+      neighborhoods: parsedNeighborhoods,
+      meetingPoints: parsedMeetingPoints,
+      hourlyRate: Number(hourlyRate),
+      categories,
+      bio: bio.trim(),
     });
 
     triggerToast("Configurações salvas com sucesso!");
@@ -119,8 +173,8 @@ export default function InstructorSettingsPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center border-b border-slate-100 pb-4">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Configurações da Agenda</h2>
-          <p className="text-slate-500 text-sm">Defina seus horários de expediente, pausas de almoço e abra dias extras.</p>
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Configurações do Instrutor</h2>
+          <p className="text-slate-500 text-sm">Defina seus horários de expediente, área de atuação e biografia profissional.</p>
         </div>
         <button
           onClick={handleSaveAll}
@@ -134,9 +188,106 @@ export default function InstructorSettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Work Journey Column (left/middle) */}
+        {/* Left Column (Work time & Location settings) */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           
+          {/* Public Profile Search Settings Card */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              </svg>
+              Área de Atuação & Perfil Público
+            </h3>
+            <p className="text-xs text-slate-400 mb-5">Configure as informações que os alunos usarão para filtrar e encontrar você na busca.</p>
+
+            <div className="flex flex-col gap-4">
+              {/* City and Price */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Cidade</label>
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="Ex: São Paulo"
+                    className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Valor da Hora/Aula (R$)</label>
+                  <input
+                    type="number"
+                    value={hourlyRate}
+                    onChange={(e) => setHourlyRate(Math.max(0, Number(e.target.value)))}
+                    placeholder="Ex: 120"
+                    className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
+                  />
+                </div>
+              </div>
+
+              {/* Served Neighborhoods */}
+              <div>
+                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Bairros de Atuação (separados por vírgula)</label>
+                <input
+                  type="text"
+                  value={neighborhoodsInput}
+                  onChange={(e) => setNeighborhoodsInput(e.target.value)}
+                  placeholder="Ex: Centro, Pinheiros, Vila Madalena"
+                  className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
+                />
+              </div>
+
+              {/* Default Meeting Points */}
+              <div>
+                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Pontos de Encontro Padrão (separados por vírgula)</label>
+                <input
+                  type="text"
+                  value={meetingPointsInput}
+                  onChange={(e) => setMeetingPointsInput(e.target.value)}
+                  placeholder="Ex: Autoescola Centro, Metrô Pinheiros"
+                  className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
+                />
+              </div>
+
+              {/* Categories pills selection */}
+              <div>
+                <label className="text-[10px] text-slate-400 block mb-2 font-semibold uppercase tracking-wider">Categorias de Ensino Habilitadas</label>
+                <div className="flex gap-2">
+                  {AVAILABLE_CATEGORIES.map((cat) => {
+                    const isSelected = categories.includes(cat.value);
+                    return (
+                      <button
+                        key={cat.value}
+                        type="button"
+                        onClick={() => handleCategoryToggle(cat.value)}
+                        className={`px-4 py-2.5 rounded-xl border text-xs font-bold transition-all ${
+                          isSelected
+                            ? "bg-orange-600 border-orange-600 text-white shadow-sm"
+                            : "bg-slate-50 border-slate-150 text-slate-500 hover:bg-slate-100"
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Professional Description */}
+              <div>
+                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Apresentação / Minibiografia</label>
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  rows={3}
+                  placeholder="Fale brevemente sobre sua experiência e metodologia de ensino..."
+                  className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2 text-sm font-medium text-slate-900 focus:outline-none focus:border-orange-500 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Days of Work Card */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
