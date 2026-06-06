@@ -47,7 +47,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-8 w-full">
           {/* Instructor Card */}
           <Link
-            href="/instructor"
+            href="/login?profile=instructor"
             onMouseEnter={() => setHoveredCard("instructor")}
             onMouseLeave={() => setHoveredCard(null)}
             className={`group relative rounded-2xl border p-8 bg-slate-900/40 backdrop-blur-md transition-all duration-300 flex flex-col justify-between h-[280px] overflow-hidden ${
@@ -81,7 +81,7 @@ export default function Home() {
 
           {/* Student Card */}
           <Link
-            href="/student"
+            href="/login?profile=student"
             onMouseEnter={() => setHoveredCard("student")}
             onMouseLeave={() => setHoveredCard(null)}
             className={`group relative rounded-2xl border p-8 bg-slate-900/40 backdrop-blur-md transition-all duration-300 flex flex-col justify-between h-[280px] overflow-hidden ${
