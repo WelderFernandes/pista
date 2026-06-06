@@ -114,14 +114,44 @@ export default function InstructorAgenda() {
   const [classTime, setClassTime] = useState("08:00");
   const [meetingPoint, setMeetingPoint] = useState("Centro");
 
-  const dates = [
-    { day: "Seg", num: "08", dateStr: "2026-06-08" },
-    { day: "Ter", num: "09", dateStr: "2026-06-09" },
-    { day: "Qua", num: "10", dateStr: "2026-06-10" },
-    { day: "Qui", num: "11", dateStr: "2026-06-11" },
-    { day: "Sex", num: "12", dateStr: "2026-06-12" },
-    { day: "Sáb", num: "13", dateStr: "2026-06-13" },
-  ];
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Generate June 2026 dates dynamically
+  const dates = Array.from({ length: 30 }, (_, i) => {
+    const dayNum = String(i + 1).padStart(2, "0");
+    const dateStr = `2026-06-${dayNum}`;
+    const dateObj = new Date(dateStr + "T00:00:00");
+    const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    return {
+      day: daysOfWeek[dateObj.getDay()],
+      num: dayNum,
+      dateStr,
+    };
+  });
+
+  // Auto-scroll selected button to the center of the list
+  useEffect(() => {
+    const activeEl = document.getElementById(`date-btn-${selectedDate}`);
+    if (activeEl && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const leftPos = activeEl.offsetLeft - container.offsetWidth / 2 + activeEl.offsetWidth / 2;
+      container.scrollTo({ left: leftPos, behavior: "smooth" });
+    }
+  }, [selectedDate]);
+
+  const handlePrevDay = () => {
+    const currentIndex = dates.findIndex((d) => d.dateStr === selectedDate);
+    if (currentIndex > 0) {
+      setSelectedDate(dates[currentIndex - 1].dateStr);
+    }
+  };
+
+  const handleNextDay = () => {
+    const currentIndex = dates.findIndex((d) => d.dateStr === selectedDate);
+    if (currentIndex < dates.length - 1) {
+      setSelectedDate(dates[currentIndex + 1].dateStr);
+    }
+  };
 
   const timeSlots = ["08:00", "09:40", "11:20", "14:00", "15:40", "17:20", "19:00"];
 
@@ -179,16 +209,40 @@ export default function InstructorAgenda() {
       <section className="bg-white p-4 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-3">
           <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Junho de 2026</span>
-          <span className="text-xs font-semibold text-orange-600">Semana Atual</span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handlePrevDay}
+              className="p-1 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+              disabled={selectedDate === "2026-06-01"}
+            >
+              <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <span className="text-[10px] font-bold text-orange-600 uppercase tracking-wider">Navegar</span>
+            <button
+              onClick={handleNextDay}
+              className="p-1 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+              disabled={selectedDate === "2026-06-30"}
+            >
+              <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div className="grid grid-cols-6 gap-2">
+        <div 
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto gap-2 pb-2 scrollbar-none snap-x"
+        >
           {dates.map((d) => {
             const isSelected = selectedDate === d.dateStr;
             return (
               <button
                 key={d.dateStr}
+                id={`date-btn-${d.dateStr}`}
                 onClick={() => setSelectedDate(d.dateStr)}
-                className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer ${
+                className={`py-3 px-4 min-w-[62px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer snap-center ${
                   isSelected
                     ? "bg-orange-600 text-white font-bold shadow-lg shadow-orange-600/20"
                     : "bg-slate-50 text-slate-600 hover:bg-slate-100"
