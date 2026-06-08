@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useApp } from "@/lib/context";
+import { Header } from "@/components/header";
 import { 
   MagnifyingGlass, 
   Funnel, 
@@ -295,38 +296,7 @@ export default function InstructorsPage() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
 
       {/* Header */}
-      <header className="w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
-              V
-            </div>
-            <div>
-              <h1 className="font-bold text-lg leading-tight tracking-tight">Volante Certo</h1>
-              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Plataforma de Direção</p>
-            </div>
-          </Link>
-          
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <Link href="/" className="hover:text-white transition-colors">Início</Link>
-            <Link href="/instrutores" className="text-orange-500 hover:text-orange-400 transition-colors flex items-center gap-1.5">
-              <Sparkle className="w-4 h-4 animate-spin-slow" />
-              Instrutores
-            </Link>
-            <Link href="/#como-funciona" className="hover:text-white transition-colors">Como Funciona</Link>
-            <Link href="/#faq" className="hover:text-white transition-colors">Dúvidas</Link>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/login" 
-              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-slate-200"
-            >
-              Área Restrita
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-6 border-b border-slate-900">

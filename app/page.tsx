@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState } from "react";
@@ -7,6 +8,7 @@ import {
   ArrowRight, CalendarCheck,
   ShieldCheck, Clock, Coins, CaretDown
 } from "@phosphor-icons/react";
+import { Header } from "@/components/header";
 
 export default function Home() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
@@ -106,35 +108,7 @@ export default function Home() {
       <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
 
       {/* Header */}
-      <header className="w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20">
-              V
-            </div>
-            <div>
-              <h1 className="font-bold text-lg leading-tight tracking-tight">Volante Certo</h1>
-              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Plataforma de Direção</p>
-            </div>
-          </div>
-          
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <Link href="/" className="text-orange-500 hover:text-orange-400 transition-colors">Início</Link>
-            <Link href="/instrutores" className="hover:text-white transition-colors">Instrutores</Link>
-            <Link href="#como-funciona" className="hover:text-white transition-colors">Como Funciona</Link>
-            <Link href="#faq" className="hover:text-white transition-colors">Dúvidas</Link>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/login" 
-              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all duration-300 text-slate-200 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Área Restrita
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 px-6 flex flex-col items-center text-center z-10">
