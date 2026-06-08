@@ -1,21 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { 
-  Sparkle, 
-  ArrowRight, 
-  CheckCircle, 
-  SteeringWheel, 
-  CalendarCheck, 
-  ShieldCheck, 
-  Users, 
-  Clock, 
-  Question, 
-  Chat,
-  Coins,
-  MapPin,
-  CaretDown
+import {
+  Sparkle,
+  ArrowRight, CalendarCheck,
+  ShieldCheck, Clock, Coins, CaretDown
 } from "@phosphor-icons/react";
 
 export default function Home() {
@@ -119,7 +109,7 @@ export default function Home() {
       <header className="w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20">
               V
             </div>
             <div>
@@ -153,7 +143,7 @@ export default function Home() {
             <Sparkle className="w-4.5 h-4.5" />
             <span>Sua CNH com muito mais tranquilidade</span>
           </span>
-          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-400 animate-fade-in-up">
+          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-linear-to-b from-white via-slate-100 to-slate-400 animate-fade-in-up">
             Aprenda a Dirigir Sem Medo ou Complicação
           </h2>
           <p className="text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed animate-fade-in-up delay-100">
@@ -215,7 +205,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           {/* Arrow connectors for desktop */}
-          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-orange-500/40 to-blue-500/40 z-0" />
+          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-linear-to-r from-orange-500/40 to-blue-500/40 z-0" />
           
           {steps.map((step, idx) => (
             <div 
@@ -348,8 +338,8 @@ export default function Home() {
 
       {/* Final Call to Action */}
       <section className="py-16 px-6 max-w-7xl mx-auto w-full z-10 mb-10">
-        <div className="bg-gradient-to-tr from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
+        <div className="bg-linear-to-tr from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center">
+          <div className="absolute inset-0 bg-linear-to-br from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
           <h3 className="text-3xl md:text-5xl font-black tracking-tight relative z-10 leading-tight">
             Pronto para dar a sua primeira partida?
           </h3>
