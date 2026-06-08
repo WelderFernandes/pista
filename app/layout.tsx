@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 import { AppProvider } from "@/lib/context";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function RootLayout({
   children,
@@ -31,11 +32,14 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable)}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <AppProvider>
-          {children}
-        </AppProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AppProvider>
+            {children}
+          </AppProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

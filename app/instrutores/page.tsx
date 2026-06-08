@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useApp } from "@/lib/context";
-import { Header } from "@/components/header";
 import { 
   MagnifyingGlass, 
   Funnel, 
@@ -11,14 +10,10 @@ import {
   CaretLeft, 
   CaretRight, 
   Star, 
-  Clock, 
   CalendarBlank,
-  User,
-  Phone,
-  Tag,
-  Circle,
   Sparkle
 } from "@phosphor-icons/react";
+import { Header } from "@/components/header";
 
 interface Instructor {
   id: string;
@@ -290,30 +285,30 @@ export default function InstructorsPage() {
   }, [selectedDate, selectedInstructor]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white flex flex-col justify-between relative overflow-x-hidden font-sans transition-colors duration-300">
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-[-20%] left-[-15%] w-[70%] h-[70%] bg-orange-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute top-[-20%] left-[-15%] w-[70%] h-[70%] bg-orange-500/5 dark:bg-orange-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-500/5 dark:bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
 
       {/* Header */}
       <Header />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-6 border-b border-slate-900">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#020617)] z-0" />
+      <section className="relative overflow-hidden py-20 px-6 border-b border-slate-200 dark:border-slate-900 transition-colors">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#020617)] z-0 hidden dark:block" />
         {/* Animated grid lines pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0 animate-pulse-slow" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0 animate-pulse-slow" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-650 dark:text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
             <Sparkle className="w-3.5 h-3.5" />
             <span>Nossos Profissionais de Elite</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400 animate-fade-in-up">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400 animate-fade-in-up">
             Escolha seu Instrutor
           </h2>
-          <p className="text-slate-400 mt-6 text-sm md:text-lg max-w-2xl leading-relaxed animate-fade-in-up delay-100">
+          <p className="text-slate-600 dark:text-slate-400 mt-6 text-sm md:text-lg max-w-2xl leading-relaxed animate-fade-in-up delay-100">
             Agende suas aulas práticas de forma totalmente digital. Filtre por localização, preço, categoria de habilitação e encontre a melhor combinação para seu aprendizado.
           </p>
         </div>
@@ -324,35 +319,35 @@ export default function InstructorsPage() {
         
         {/* Bento Box Search Filters */}
         <section className="mb-10 animate-fade-in-up delay-200">
-          <div className="bg-slate-900/30 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
+          <div className="bg-slate-50 border border-slate-200 p-6 rounded-2xl dark:bg-slate-900/30 dark:border-slate-800 backdrop-blur-md shadow-sm">
             <div className="flex items-center gap-2.5 mb-6">
               <Funnel className="w-5 h-5 text-orange-500" />
-              <h3 className="text-lg font-bold text-white">Refinar Pesquisa</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Refinar Pesquisa</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
               {/* Query search */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Cidade, Bairro ou Nome</label>
+                <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Cidade, Bairro ou Nome</label>
                 <div className="relative">
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Ex: Amanda, Pinheiros, São Paulo..."
-                    className="w-full bg-slate-950/60 border border-slate-800/80 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500/60 focus:bg-slate-950 transition-all duration-300"
+                    className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950/60 dark:border-slate-800/80 dark:text-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-orange-500/60 transition-all duration-300 shadow-xs"
                   />
-                  <MagnifyingGlass className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                  <MagnifyingGlass className="w-4 h-4 text-slate-450 dark:text-slate-500 absolute left-3.5 top-3.5" />
                 </div>
               </div>
 
               {/* Category selector */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Categoria Habilitação</label>
+                <label className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Categoria Habilitação</label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-slate-950/60 border border-slate-800/80 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500/60 focus:bg-slate-950 transition-all duration-300"
+                  className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950/60 dark:border-slate-800/80 dark:text-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-orange-500/60 transition-all duration-300 shadow-xs"
                 >
                   <option value="TODAS">Todas as Categorias</option>
                   <option value="A">Moto (Cat. A)</option>
@@ -370,16 +365,16 @@ export default function InstructorsPage() {
                   setMaxPrice(150);
                   setMaxRadius(25);
                 }}
-                className="bg-slate-950/45 hover:bg-slate-950 text-slate-400 hover:text-white font-bold text-xs py-3 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer h-10 flex items-center justify-center"
+                className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 dark:bg-slate-950/45 dark:hover:bg-slate-950 dark:text-slate-400 dark:hover:text-white dark:border-slate-800/80 rounded-xl font-bold text-xs py-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer h-10 flex items-center justify-center shadow-xs"
               >
                 Limpar Filtros
               </button>
 
               {/* Price range */}
               <div className="flex flex-col gap-2 md:col-span-2">
-                <div className="flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-wider font-bold">
+                <div className="flex justify-between items-center text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">
                   <span>Valor Máximo por Aula</span>
-                  <span className="text-orange-400 font-semibold">R$ {maxPrice} / 50min</span>
+                  <span className="text-orange-600 dark:text-orange-400 font-semibold">R$ {maxPrice} / 50min</span>
                 </div>
                 <input
                   type="range"
@@ -388,15 +383,15 @@ export default function InstructorsPage() {
                   step="5"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                  className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
               </div>
 
               {/* Distance range */}
               <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-wider font-bold">
+                <div className="flex justify-between items-center text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">
                   <span>Distância Máxima</span>
-                  <span className="text-orange-400 font-semibold">{maxRadius} km</span>
+                  <span className="text-orange-600 dark:text-orange-400 font-semibold">{maxRadius} km</span>
                 </div>
                 <input
                   type="range"
@@ -405,7 +400,7 @@ export default function InstructorsPage() {
                   step="1"
                   value={maxRadius}
                   onChange={(e) => setMaxRadius(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                  className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
               </div>
             </div>
@@ -414,8 +409,8 @@ export default function InstructorsPage() {
 
         {/* Results Metadata */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2 sm:gap-0 animate-fade-in-up delay-300">
-          <p className="text-xs text-slate-400">
-            Encontramos <strong className="text-slate-200">{filteredInstructors.length}</strong> instrutores qualificados
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Encontramos <strong className="text-slate-800 dark:text-slate-200">{filteredInstructors.length}</strong> instrutores qualificados
           </p>
           {totalPages > 1 && (
             <p className="text-[10px] text-slate-500">
@@ -426,22 +421,22 @@ export default function InstructorsPage() {
 
         {/* Instructors Grid */}
         {currentInstructors.length === 0 ? (
-          <div className="text-center py-20 bg-slate-900/10 border border-dashed border-slate-900 rounded-3xl animate-fade-in-up delay-300">
-            <svg className="w-12 h-12 text-slate-700 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <div className="text-center py-20 bg-slate-50 border border-dashed border-slate-200 dark:bg-slate-900/10 dark:border-slate-900 rounded-3xl animate-fade-in-up delay-300">
+            <svg className="w-12 h-12 text-slate-400 dark:text-slate-700 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h4 className="font-bold text-slate-400 text-lg">Nenhum instrutor atende a esses filtros</h4>
-            <p className="text-xs text-slate-500 mt-1.5 max-w-sm mx-auto">Tente reajustar os controles deslizantes de preço e distância ou pesquise por outro bairro.</p>
+            <h4 className="font-bold text-slate-500 dark:text-slate-400 text-lg">Nenhum instrutor atende a esses filtros</h4>
+            <p className="text-xs text-slate-550 dark:text-slate-500 mt-1.5 max-w-sm mx-auto">Tente reajustar os controles deslizantes de preço e distância ou pesquise por outro bairro.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in-up delay-300">
             {currentInstructors.map((inst) => (
               <div 
                 key={inst.id}
-                className="bg-slate-900/20 border border-slate-800/80 rounded-2xl p-6 hover:border-orange-500/35 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6 relative overflow-hidden group hover:bg-slate-900/30"
+                className="bg-white border border-slate-200 dark:bg-slate-900/20 dark:border-slate-800/80 rounded-2xl p-6 hover:border-orange-500/35 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6 relative overflow-hidden group hover:bg-slate-50/5 dark:hover:bg-slate-900/30 shadow-sm"
               >
                 {/* Distance Badge */}
-                <div className="absolute top-5 right-5 flex items-center gap-1 text-[9px] font-bold bg-slate-950/80 border border-slate-850 px-2.5 py-1 rounded-full text-slate-400 backdrop-blur-sm">
+                <div className="absolute top-5 right-5 flex items-center gap-1 text-[9px] font-bold bg-slate-50 border border-slate-200 text-slate-600 dark:bg-slate-950/80 dark:border-slate-850 dark:text-slate-400 px-2.5 py-1 rounded-full backdrop-blur-sm shadow-xs">
                   <MapPin className="w-3 h-3 text-orange-500 animate-pulse" />
                   <span>{inst.distance} km de distância</span>
                 </div>
@@ -451,10 +446,10 @@ export default function InstructorsPage() {
                   <img
                     alt={inst.name}
                     src={inst.photo}
-                    className="w-16 h-16 rounded-2xl object-cover border border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-300"
+                    className="w-16 h-16 rounded-2xl object-cover border border-slate-200 dark:border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-extrabold text-lg text-white truncate leading-snug group-hover:text-orange-400 transition-colors duration-300">{inst.name}</h4>
+                    <h4 className="font-extrabold text-lg text-slate-900 dark:text-white truncate leading-snug group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">{inst.name}</h4>
                     
                     {/* Stars and reviews */}
                     <div className="flex items-center gap-2 mt-1.5">
@@ -467,7 +462,7 @@ export default function InstructorsPage() {
                           />
                         ))}
                       </div>
-                      <span className="text-xs font-bold text-slate-200">{inst.rating}</span>
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{inst.rating}</span>
                       <span className="text-[10px] text-slate-500">({inst.reviewsCount} avaliações)</span>
                     </div>
 
@@ -476,7 +471,7 @@ export default function InstructorsPage() {
                       {inst.categories.map((cat) => (
                         <span
                           key={cat}
-                          className="text-[9px] font-black px-2.5 py-0.5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 uppercase tracking-wider"
+                          className="text-[9px] font-black px-2.5 py-0.5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400 uppercase tracking-wider"
                         >
                           Cat. {cat}
                         </span>
@@ -486,32 +481,32 @@ export default function InstructorsPage() {
                 </div>
 
                 {/* Bio */}
-                <p className="text-xs text-slate-400 leading-relaxed italic border-l-2 border-slate-850 pl-3">
+                <p className="text-xs text-slate-650 dark:text-slate-400 leading-relaxed italic border-l-2 border-slate-200 dark:border-slate-850 pl-3">
                   "{inst.bio}"
                 </p>
 
                 {/* Location Grid Details */}
-                <div className="grid grid-cols-2 gap-4 text-[11px] bg-slate-950/40 p-4 rounded-xl border border-slate-900/60">
-                  <div className="flex flex-col gap-1.5 border-r border-slate-900/80 pr-2">
-                    <span className="text-[9px] text-slate-500 uppercase tracking-wider font-extrabold">Cidade / Bairros</span>
-                    <p className="text-slate-300 font-semibold truncate" title={inst.neighborhoods.join(", ")}>
+                <div className="grid grid-cols-2 gap-4 text-[11px] bg-slate-50 border border-slate-200 dark:bg-slate-950/40 dark:border-slate-900/60 p-4 rounded-xl shadow-xs">
+                  <div className="flex flex-col gap-1.5 border-r border-slate-200 dark:border-slate-900/80 pr-2">
+                    <span className="text-[9px] text-slate-500 dark:text-slate-500 uppercase tracking-wider font-extrabold">Cidade / Bairros</span>
+                    <p className="text-slate-800 dark:text-slate-300 font-semibold truncate" title={inst.neighborhoods.join(", ")}>
                       {inst.city} — {inst.neighborhoods.join(", ")}
                     </p>
                   </div>
                   <div className="flex flex-col gap-1.5 pl-2">
-                    <span className="text-[9px] text-slate-500 uppercase tracking-wider font-extrabold">Pontos de Encontro</span>
-                    <p className="text-slate-300 font-semibold truncate" title={inst.meetingPoints.join(", ")}>
+                    <span className="text-[9px] text-slate-500 dark:text-slate-500 uppercase tracking-wider font-extrabold">Pontos de Encontro</span>
+                    <p className="text-slate-800 dark:text-slate-300 font-semibold truncate" title={inst.meetingPoints.join(", ")}>
                       {inst.meetingPoints.join(", ")}
                     </p>
                   </div>
                 </div>
 
                 {/* Footer and CTA */}
-                <div className="flex justify-between items-center border-t border-slate-850 pt-5 mt-2">
+                <div className="flex justify-between items-center border-t border-slate-200 dark:border-slate-850 pt-5 mt-2">
                   <div>
-                    <span className="text-[9px] text-slate-500 uppercase tracking-wider font-bold block">Valor da Aula</span>
-                    <span className="text-xl font-black text-white">
-                      R$ {inst.hourlyRate} <span className="text-xs font-normal text-slate-400">/ 50min</span>
+                    <span className="text-[9px] text-slate-500 dark:text-slate-500 uppercase tracking-wider font-bold block">Valor da Aula</span>
+                    <span className="text-xl font-black text-slate-900 dark:text-white">
+                      R$ {inst.hourlyRate} <span className="text-xs font-normal text-slate-550 dark:text-slate-400">/ 50min</span>
                     </span>
                   </div>
                   <button
@@ -533,7 +528,7 @@ export default function InstructorsPage() {
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              className="p-2.5 rounded-xl border border-slate-800 bg-slate-900/30 text-slate-400 hover:text-white hover:border-slate-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
             >
               <CaretLeft className="w-4 h-4" />
             </button>
@@ -545,10 +540,10 @@ export default function InstructorsPage() {
                 <button
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`w-10 h-10 rounded-xl font-bold text-xs transition-all cursor-pointer ${
+                  className={`w-10 h-10 rounded-xl font-bold text-xs transition-all cursor-pointer shadow-xs ${
                     isSelected 
                       ? "bg-orange-600 text-white shadow-md shadow-orange-600/20" 
-                      : "border border-slate-800 bg-slate-900/30 text-slate-400 hover:text-white hover:border-slate-700"
+                      : "border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white"
                   }`}
                 >
                   {pageNum}
@@ -559,7 +554,7 @@ export default function InstructorsPage() {
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              className="p-2.5 rounded-xl border border-slate-800 bg-slate-900/30 text-slate-400 hover:text-white hover:border-slate-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+              className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
             >
               <CaretRight className="w-4 h-4" />
             </button>
@@ -570,10 +565,10 @@ export default function InstructorsPage() {
       {/* Booking Calendar Dialog Modal */}
       {selectedInstructor && (
         <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in-up overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8">
+          <div className="bg-white dark:bg-slate-900 border border-slate-250 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8 text-slate-900 dark:text-white transition-colors duration-300">
             <button
               onClick={() => setSelectedInstructor(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 hover:bg-slate-850 rounded-full cursor-pointer z-10 transition-colors"
+              className="absolute top-4 right-4 text-slate-550 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 hover:bg-slate-100 dark:hover:bg-slate-850 rounded-full cursor-pointer z-10 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -582,29 +577,29 @@ export default function InstructorsPage() {
 
             {bookingSuccess ? (
               <div className="text-center py-8 flex flex-col items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl font-bold animate-bounce">
+                <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold animate-bounce">
                   ✓
                 </div>
-                <h4 className="font-extrabold text-white text-lg">Solicitação Enviada com Sucesso!</h4>
-                <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-850 text-left w-full text-xs flex flex-col gap-2">
-                  <p><span className="text-slate-500 font-bold">Instrutor:</span> <span className="text-slate-300 font-semibold">{selectedInstructor.name}</span></p>
-                  <p><span className="text-slate-500 font-bold">Horário Solicitado:</span> <span className="text-orange-500 font-extrabold">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</span></p>
-                  <p><span className="text-slate-500 font-bold">Ponto de Encontro:</span> <span className="text-slate-300 font-semibold">{bookingMeetingPoint}</span></p>
-                  <p><span className="text-slate-500 font-bold">Status do Agendamento:</span> <span className="text-yellow-650 bg-yellow-555/10 px-2 py-0.5 rounded font-extrabold border border-yellow-500/20 uppercase text-[9px]">Pendente de Aprovação</span></p>
+                <h4 className="font-extrabold text-slate-900 dark:text-white text-lg">Solicitação Enviada com Sucesso!</h4>
+                <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-xl border border-slate-200 dark:border-slate-850 text-left w-full text-xs flex flex-col gap-2 shadow-xs">
+                  <p><span className="text-slate-500 font-bold">Instrutor:</span> <span className="text-slate-800 dark:text-slate-300 font-semibold">{selectedInstructor.name}</span></p>
+                  <p><span className="text-slate-500 font-bold">Horário Solicitado:</span> <span className="text-orange-600 dark:text-orange-500 font-extrabold">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</span></p>
+                  <p><span className="text-slate-500 font-bold">Ponto de Encontro:</span> <span className="text-slate-800 dark:text-slate-300 font-semibold">{bookingMeetingPoint}</span></p>
+                  <p><span className="text-slate-500 font-bold">Status do Agendamento:</span> <span className="text-yellow-600 dark:text-yellow-650 bg-yellow-500/10 dark:bg-yellow-555/10 px-2 py-0.5 rounded font-extrabold border border-yellow-500/20 dark:border-yellow-500/20 uppercase text-[9px]">Pendente de Aprovação</span></p>
                 </div>
-                <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-                  A solicitação foi adicionada ao painel do instrutor. Ele entrará em contato via WhatsApp no número <strong className="text-slate-200">{bookingPhone}</strong> para confirmar a aula.
+                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed">
+                  A solicitação foi adicionada ao painel do instrutor. Ele entrará em contato via WhatsApp no número <strong className="text-slate-800 dark:text-slate-200">{bookingPhone}</strong> para confirmar a aula.
                 </p>
               </div>
             ) : (
               <div className="flex flex-col gap-5 animate-fade-in-up">
                 <div>
-                  <h4 className="font-extrabold text-white text-lg">Agenda de {selectedInstructor.name}</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Selecione uma data e horário livre para fazer a solicitação.</p>
+                  <h4 className="font-extrabold text-slate-900 dark:text-white text-lg">Agenda de {selectedInstructor.name}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Selecione uma data e horário livre para fazer a solicitação.</p>
                 </div>
 
                 {/* Horizontal Date Selector */}
-                <div className="border-y border-slate-800/60 py-3">
+                <div className="border-y border-slate-200 dark:border-slate-800/60 py-3">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Junho de 2026</span>
                   </div>
@@ -622,10 +617,10 @@ export default function InstructorsPage() {
                             setSelectedDate(d.dateStr);
                             setSelectedSlot(null);
                           }}
-                          className={`py-2 px-3 min-w-[54px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all duration-300 active:scale-95 cursor-pointer snap-center ${
+                          className={`py-2 px-3 min-w-[54px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all duration-300 active:scale-95 cursor-pointer snap-center shadow-xs ${
                             isSelected
                               ? "bg-orange-600 text-white font-bold shadow-md shadow-orange-600/20"
-                              : "bg-slate-950 text-slate-400 hover:bg-slate-850 hover:text-white"
+                              : "bg-slate-50 border border-slate-200 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-950 dark:text-slate-400 dark:border-slate-850 dark:hover:bg-slate-850 dark:hover:text-white"
                           }`}
                         >
                           <span className="text-[9px] uppercase font-medium">{d.day}</span>
@@ -638,7 +633,7 @@ export default function InstructorsPage() {
 
                 {/* Slots List Grid */}
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block mb-3">Horários Disponíveis</span>
+                  <span className="text-[10px] text-slate-550 dark:text-slate-500 font-bold uppercase tracking-wider block mb-3">Horários Disponíveis</span>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots.map((slot) => {
                       const details = getSlotDetails(selectedInstructor, selectedDate, slot);
@@ -651,17 +646,17 @@ export default function InstructorsPage() {
                       const isLocked = details.isOutside || details.isLunch || details.isOccupied;
 
                       let label = slot;
-                      let btnStyle = "bg-slate-950 border border-slate-850 text-slate-300 hover:border-orange-500/40 hover:text-white";
+                      let btnStyle = "bg-slate-50 border border-slate-200 text-slate-700 hover:border-orange-500/40 hover:text-slate-900 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-300 dark:hover:border-orange-500/40 dark:hover:text-white";
                       
                       if (details.isLunch) {
                         label = "Almoço";
-                        btnStyle = "bg-orange-955/20 border border-orange-955/30 text-orange-650/75 cursor-not-allowed text-[10px]";
+                        btnStyle = "bg-orange-50 border border-orange-100 text-orange-600/60 dark:bg-orange-955/20 dark:border-orange-955/30 dark:text-orange-655/75 cursor-not-allowed text-[10px]";
                       } else if (details.isOutside) {
                         label = "Fechado";
-                        btnStyle = "bg-slate-955 opacity-40 border border-slate-955 text-slate-600 cursor-not-allowed text-[10px]";
+                        btnStyle = "bg-slate-100 opacity-40 border border-slate-200 text-slate-500 dark:bg-slate-955 dark:opacity-40 dark:border-slate-955 dark:text-slate-600 cursor-not-allowed text-[10px]";
                       } else if (details.isOccupied) {
                         label = "Ocupado";
-                        btnStyle = "bg-red-955/20 border border-red-955/30 text-red-500/75 cursor-not-allowed text-[10px]";
+                        btnStyle = "bg-red-50 border border-red-100 text-red-600/60 dark:bg-red-955/20 dark:border-red-955/30 dark:text-red-500/75 cursor-not-allowed text-[10px]";
                       } else if (isSelected) {
                         btnStyle = "bg-orange-600 border border-orange-600 text-white font-extrabold shadow-sm";
                       }
@@ -673,7 +668,7 @@ export default function InstructorsPage() {
                           disabled={isLocked}
                           onClick={() => setSelectedSlot(slot)}
                           className={`py-2.5 rounded-xl text-center text-xs font-bold transition-all duration-300 ${
-                            !isLocked ? "active:scale-95 hover:scale-[1.02]" : ""
+                            !isLocked ? "active:scale-95 hover:scale-[1.02] cursor-pointer" : ""
                           } ${btnStyle}`}
                         >
                           {label}
@@ -686,14 +681,14 @@ export default function InstructorsPage() {
                   {(() => {
                     const extraDayConfig = selectedInstructor.extraDays?.find((ed) => ed.date === selectedDate);
                     const dayOfWeek = new Date(selectedDate + "T00:00:00").getDay();
-                    const isNormalWorkDay = selectedInstructor.workDays.includes(dayOfWeek);
+                    const isNormalWorkDay = settings?.workDays ? settings.workDays.includes(dayOfWeek) : selectedInstructor.workDays.includes(dayOfWeek);
                     const isWorking = !!extraDayConfig || isNormalWorkDay;
                     
                     if (!isWorking) {
                       return (
-                        <div className="text-center py-6 border border-dashed border-slate-800 rounded-xl bg-slate-950/30">
-                          <span className="text-[11px] text-slate-500 font-semibold block">Dia de folga do instrutor</span>
-                          <span className="text-[9px] text-slate-600 block mt-0.5">Selecione outro dia da semana.</span>
+                        <div className="text-center py-6 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950/30">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-500 font-semibold block">Dia de folga do instrutor</span>
+                          <span className="text-[9px] text-slate-400 dark:text-slate-650 block mt-0.5">Selecione outro dia da semana.</span>
                         </div>
                       );
                     }
@@ -703,44 +698,44 @@ export default function InstructorsPage() {
 
                 {/* Form fields only visible when a slot is chosen */}
                 {selectedSlot && (
-                  <form onSubmit={handleConfirmBooking} className="flex flex-col gap-4 border-t border-slate-850 pt-4 animate-fade-in-up">
-                    <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
-                      Reserva de Slot: <strong className="text-orange-500">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</strong>
+                  <form onSubmit={handleConfirmBooking} className="flex flex-col gap-4 border-t border-slate-200 dark:border-slate-850 pt-4 animate-fade-in-up">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-bold uppercase tracking-wider">
+                      Reserva de Slot: <strong className="text-orange-655 dark:text-orange-500">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</strong>
                     </span>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">Seu Nome</label>
+                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">Seu Nome</label>
                         <input
                           type="text"
                           required
                           value={bookingName}
                           onChange={(e) => setBookingName(e.target.value)}
                           placeholder="Ex: Pedro Silva"
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                          className="w-full bg-white border border-slate-200 text-slate-850 focus:border-orange-500 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">WhatsApp</label>
+                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">WhatsApp</label>
                         <input
                           type="tel"
                           required
                           value={bookingPhone}
                           onChange={(e) => setBookingPhone(e.target.value)}
                           placeholder="Ex: (11) 99999-9999"
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                          className="w-full bg-white border border-slate-200 text-slate-850 focus:border-orange-500 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">Categoria</label>
+                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">Categoria</label>
                         <select
                           value={bookingCategory}
                           onChange={(e) => setBookingCategory(e.target.value)}
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none"
+                          className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
                         >
                           {selectedInstructor.categories.map((c) => (
                             <option key={c} value={c}>
@@ -751,11 +746,11 @@ export default function InstructorsPage() {
                       </div>
 
                       <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">Ponto de Encontro</label>
+                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">Ponto de Encontro</label>
                         <select
                           value={bookingMeetingPoint}
                           onChange={(e) => setBookingMeetingPoint(e.target.value)}
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none"
+                          className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
                         >
                           {selectedInstructor.meetingPoints.map((mp) => (
                             <option key={mp} value={mp}>
@@ -781,11 +776,11 @@ export default function InstructorsPage() {
       )}
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 text-slate-650 text-[10px] z-10 border-t border-slate-900 bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0">
-        <span className="text-slate-500 font-medium">Volante Certo S.A. &copy; {new Date().getFullYear()}</span>
-        <div className="flex gap-6 text-slate-400 font-medium">
-          <Link href="/politica-de-privacidade" className="hover:text-white transition-colors">Termos de Uso</Link>
-          <Link href="/termos" className="hover:text-white transition-colors">Política de Privacidade</Link>
+      <footer className="w-full text-center py-6 text-slate-500 dark:text-slate-655 text-[10px] z-10 border-t border-slate-200 dark:border-slate-900 bg-slate-50 dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0 transition-colors duration-300">
+        <span className="font-medium">Volante Certo S.A. &copy; {new Date().getFullYear()}</span>
+        <div className="flex gap-6 font-medium">
+          <Link href="/politica-de-privacidade" className="hover:text-slate-850 dark:hover:text-white transition-colors">Termos de Uso</Link>
+          <Link href="/termos" className="hover:text-slate-850 dark:hover:text-white transition-colors">Política de Privacidade</Link>
         </div>
       </footer>
     </div>

@@ -1,12 +1,15 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import {
-  Sparkle,
-  ArrowRight, CalendarCheck,
-  ShieldCheck, Clock, Coins, CaretDown
+import { 
+  Sparkle, 
+  ArrowRight, 
+  CalendarCheck, 
+  ShieldCheck, 
+  Clock, 
+  Coins, 
+  CaretDown
 } from "@phosphor-icons/react";
 import { Header } from "@/components/header";
 
@@ -102,10 +105,10 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white flex flex-col justify-between relative overflow-x-hidden font-sans transition-colors duration-300">
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-500/5 dark:bg-orange-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-500/5 dark:bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
 
       {/* Header */}
       <Header />
@@ -113,14 +116,14 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 px-6 flex flex-col items-center text-center z-10">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
             <Sparkle className="w-4.5 h-4.5" />
             <span>Sua CNH com muito mais tranquilidade</span>
           </span>
-          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-linear-to-b from-white via-slate-100 to-slate-400 animate-fade-in-up">
+          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-slate-100 dark:to-slate-400 animate-fade-in-up">
             Aprenda a Dirigir Sem Medo ou Complicação
           </h2>
-          <p className="text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed animate-fade-in-up delay-100">
+          <p className="text-slate-600 dark:text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed animate-fade-in-up delay-100">
             Conectamos você aos melhores instrutores particulares de trânsito. Agende suas aulas 100% online, selecione o ponto de encontro ideal e evolua no seu próprio ritmo.
           </p>
 
@@ -134,13 +137,13 @@ export default function Home() {
             </Link>
             <Link 
               href="/login?profile=student" 
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+              className="bg-slate-50 border border-slate-200 hover:border-slate-350 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 dark:text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
             >
               Portal do Aluno
             </Link>
             <Link 
               href="/login?profile=instructor" 
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+              className="bg-slate-50 border border-slate-200 hover:border-slate-350 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 dark:text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
             >
               Portal do Instrutor
             </Link>
@@ -149,17 +152,17 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 border-t border-b border-slate-900 bg-slate-950/40 relative z-10">
+      <section className="py-16 border-t border-b border-slate-200 dark:border-slate-900 bg-slate-50/50 dark:bg-slate-950/40 relative z-10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, idx) => (
               <div 
                 key={idx} 
-                className="bg-slate-900/20 border border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300 group"
+                className="bg-white border border-slate-200 dark:bg-slate-900/20 dark:border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300 group shadow-sm"
               >
-                <span className="text-3xl md:text-4xl font-black text-orange-500 group-hover:scale-105 transition-transform duration-300 inline-block origin-left">{stat.value}</span>
-                <h4 className="font-bold text-sm text-slate-200">{stat.label}</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">{stat.desc}</p>
+                <span className="text-3xl md:text-4xl font-black text-orange-550 group-hover:scale-105 transition-transform duration-300 inline-block origin-left">{stat.value}</span>
+                <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200">{stat.label}</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">{stat.desc}</p>
               </div>
             ))}
           </div>
@@ -169,48 +172,48 @@ export default function Home() {
       {/* How it works Section */}
       <section id="como-funciona" className="py-24 px-6 max-w-7xl mx-auto w-full z-10 scroll-mt-20">
         <div className="text-center max-w-xl mx-auto mb-16">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Como Funciona o Volante Certo?
           </h3>
-          <p className="text-slate-400 mt-3 text-sm">
+          <p className="text-slate-500 dark:text-slate-400 mt-3 text-sm">
             Em apenas três passos simples você agenda suas aulas práticas e inicia a sua jornada rumo à habilitação.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           {/* Arrow connectors for desktop */}
-          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-linear-to-r from-orange-500/40 to-blue-500/40 z-0" />
+          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-orange-500/20 to-blue-550/20 dark:from-orange-500/40 dark:to-blue-550/40 z-0" />
           
           {steps.map((step, idx) => (
             <div 
               key={idx} 
-              className="bg-slate-900/30 border border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-orange-500/30 hover:-translate-y-1 hover:bg-slate-900/50 transition-all duration-300"
+              className="bg-slate-50 border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-orange-500/30 hover:-translate-y-1 hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-all duration-300 shadow-sm"
             >
-              <div className="w-12 h-12 rounded-xl bg-orange-600/10 border border-orange-500/20 flex items-center justify-center font-black text-orange-500 text-lg group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all duration-350">
+              <div className="w-12 h-12 rounded-xl bg-orange-100 border border-orange-200/50 dark:bg-orange-600/10 dark:border-orange-500/20 flex items-center justify-center font-black text-orange-600 dark:text-orange-500 text-lg group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all duration-350">
                 {step.num}
               </div>
-              <h4 className="font-bold text-lg text-white leading-tight mt-2">{step.title}</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">{step.desc}</p>
+              <h4 className="font-bold text-lg text-slate-900 dark:text-white leading-tight mt-2">{step.title}</h4>
+              <p className="text-xs text-slate-550 dark:text-slate-400 leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-24 border-t border-slate-900 bg-slate-950/20 relative z-10">
+      <section className="py-24 border-t border-slate-200 dark:border-slate-900 bg-slate-50/20 dark:bg-slate-950/20 relative z-10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
           <div className="lg:col-span-1">
-            <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-3">Nossos diferenciais</span>
-            <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+            <span className="text-xs font-bold text-orange-600 dark:text-orange-500 uppercase tracking-widest block mb-3">Nossos diferenciais</span>
+            <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
               Por que escolher nossa plataforma?
             </h3>
-            <p className="text-slate-400 mt-4 text-sm leading-relaxed">
+            <p className="text-slate-650 dark:text-slate-400 mt-4 text-sm leading-relaxed">
               Trabalhamos duro para oferecer a melhor experiência de aprendizado, combinando tecnologia inovadora com instrutores de altíssimo nível.
             </p>
             <div className="mt-8">
               <Link 
                 href="/instrutores" 
-                className="inline-flex items-center gap-2 text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors group"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-orange-650 dark:text-orange-450 hover:text-orange-500 dark:hover:text-orange-300 transition-colors group"
               >
                 Conheça nossos instrutores agora
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
@@ -222,13 +225,13 @@ export default function Home() {
             {features.map((feat, idx) => (
               <div 
                 key={idx} 
-                className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl flex flex-col gap-3 hover:border-orange-500/20 hover:-translate-y-1 hover:bg-slate-900/40 transition-all duration-300 group"
+                className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800/80 p-6 rounded-2xl flex flex-col gap-3 hover:border-orange-500/20 hover:-translate-y-1 hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-all duration-300 group shadow-sm"
               >
-                <div className="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center border border-slate-850 group-hover:scale-105 group-hover:border-orange-500/30 transition-all">
+                <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center border border-slate-200 dark:border-slate-850 group-hover:scale-105 group-hover:border-orange-500/30 transition-all">
                   {feat.icon}
                 </div>
-                <h4 className="font-bold text-sm text-slate-200 mt-1">{feat.title}</h4>
-                <p className="text-xs text-slate-400 leading-relaxed">{feat.desc}</p>
+                <h4 className="font-bold text-sm text-slate-850 dark:text-slate-200 mt-1">{feat.title}</h4>
+                <p className="text-xs text-slate-550 dark:text-slate-400 leading-relaxed">{feat.desc}</p>
               </div>
             ))}
           </div>
@@ -236,12 +239,12 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 border-t border-slate-900 px-6 max-w-7xl mx-auto w-full z-10">
+      <section className="py-24 border-t border-slate-200 dark:border-slate-900 px-6 max-w-7xl mx-auto w-full z-10 transition-colors duration-300">
         <div className="text-center max-w-xl mx-auto mb-16">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             O que dizem os nossos alunos?
           </h3>
-          <p className="text-slate-400 mt-3 text-sm">
+          <p className="text-slate-500 dark:text-slate-400 mt-3 text-sm">
             Depoimentos reais de pessoas que transformaram o medo em confiança nas pistas.
           </p>
         </div>
@@ -250,9 +253,9 @@ export default function Home() {
           {testimonials.map((test, idx) => (
             <div 
               key={idx} 
-              className="bg-slate-900/10 border border-slate-900/80 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300"
+              className="bg-slate-50/50 border border-slate-200/85 dark:bg-slate-900/10 dark:border-slate-900/80 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300 shadow-sm"
             >
-              <p className="text-xs text-slate-400 leading-relaxed italic">
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed italic">
                 "{test.quote}"
               </p>
               
@@ -260,11 +263,11 @@ export default function Home() {
                 <img 
                   alt={test.name}
                   src={test.photo}
-                  className="w-10 h-10 rounded-full object-cover border border-slate-800"
+                  className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
                 />
                 <div>
-                  <h4 className="font-bold text-xs text-white">{test.name}</h4>
-                  <span className="text-[10px] text-orange-500 font-semibold">{test.role}</span>
+                  <h4 className="font-bold text-xs text-slate-900 dark:text-white">{test.name}</h4>
+                  <span className="text-[10px] text-orange-600 dark:text-orange-500 font-semibold">{test.role}</span>
                 </div>
               </div>
             </div>
@@ -273,12 +276,12 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-24 border-t border-slate-900 px-6 max-w-3xl mx-auto w-full z-10 scroll-mt-20">
+      <section id="faq" className="py-24 border-t border-slate-200 dark:border-slate-900 px-6 max-w-3xl mx-auto w-full z-10 scroll-mt-20 transition-colors duration-300">
         <div className="text-center mb-16">
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Perguntas Frequentes
           </h3>
-          <p className="text-slate-400 mt-3 text-sm">
+          <p className="text-slate-550 dark:text-slate-400 mt-3 text-sm">
             Ficou com alguma dúvida sobre a plataforma ou o agendamento? Veja as respostas rápidas abaixo.
           </p>
         </div>
@@ -289,18 +292,18 @@ export default function Home() {
             return (
               <div 
                 key={idx} 
-                className="bg-slate-900/30 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-slate-700"
+                className="bg-slate-50 border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
               >
                 <button
                   onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                  className="w-full px-6 py-4 flex items-center justify-between font-bold text-sm text-left text-white hover:bg-slate-900/50 transition-colors cursor-pointer"
+                  className="w-full px-6 py-4 flex items-center justify-between font-bold text-sm text-left text-slate-900 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer"
                 >
                   <span>{faq.question}</span>
                   <CaretDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-orange-500" : ""}`} />
                 </button>
                 
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 border-t border-slate-850 bg-slate-950/30 text-xs text-slate-400 leading-relaxed animate-fade-in-up">
+                  <div className="px-6 pb-5 pt-1 border-t border-slate-200 dark:border-slate-850 bg-slate-100/20 dark:bg-slate-950/30 text-xs text-slate-600 dark:text-slate-400 leading-relaxed animate-fade-in-up">
                     {faq.answer}
                   </div>
                 )}
@@ -312,12 +315,12 @@ export default function Home() {
 
       {/* Final Call to Action */}
       <section className="py-16 px-6 max-w-7xl mx-auto w-full z-10 mb-10">
-        <div className="bg-linear-to-tr from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center">
-          <div className="absolute inset-0 bg-linear-to-br from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
-          <h3 className="text-3xl md:text-5xl font-black tracking-tight relative z-10 leading-tight">
+        <div className="bg-gradient-to-tr from-slate-50 to-slate-100 border border-slate-200 dark:from-slate-900 dark:to-slate-950 dark:border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-md">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 dark:from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
+          <h3 className="text-3xl md:text-5xl font-black tracking-tight relative z-10 leading-tight text-slate-900 dark:text-white">
             Pronto para dar a sua primeira partida?
           </h3>
-          <p className="text-slate-400 mt-4 text-sm md:text-base max-w-xl relative z-10 leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 mt-4 text-sm md:text-base max-w-xl relative z-10 leading-relaxed">
             Encontre o instrutor perfeito agora e comece a treinar nas ruas com a segurança e a flexibilidade que você merece.
           </p>
           <div className="mt-8 relative z-10">
@@ -333,11 +336,11 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 text-slate-650 text-[10px] z-10 border-t border-slate-900 bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0">
-        <span className="text-slate-500 font-medium">Volante Certo S.A. &copy; {new Date().getFullYear()}</span>
-        <div className="flex gap-6 text-slate-400 font-medium">
-          <Link href="/politica-de-privacidade" className="hover:text-white transition-colors">Termos de Uso</Link>
-          <Link href="/termos" className="hover:text-white transition-colors">Política de Privacidade</Link>
+      <footer className="w-full text-center py-6 text-slate-500 dark:text-slate-650 text-[10px] z-10 border-t border-slate-200 dark:border-slate-900 bg-slate-50 dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0 transition-colors duration-300">
+        <span className="font-medium">Volante Certo S.A. &copy; {new Date().getFullYear()}</span>
+        <div className="flex gap-6 font-medium">
+          <Link href="/politica-de-privacidade" className="hover:text-slate-850 dark:hover:text-white transition-colors">Termos de Uso</Link>
+          <Link href="/termos" className="hover:text-slate-850 dark:hover:text-white transition-colors">Política de Privacidade</Link>
         </div>
       </footer>
     </div>
