@@ -12,6 +12,7 @@ import {
   CaretDown
 } from "@phosphor-icons/react";
 import { Header } from "@/components/header";
+import Image from "next/image";
 
 export default function Home() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
@@ -120,7 +121,7 @@ export default function Home() {
             <Sparkle className="w-4.5 h-4.5" />
             <span>Sua CNH com muito mais tranquilidade</span>
           </span>
-          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-slate-100 dark:to-slate-400 animate-fade-in-up">
+          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-linear-to-b from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-slate-100 dark:to-slate-400 animate-fade-in-up">
             Aprenda a Dirigir Sem Medo ou Complicação
           </h2>
           <p className="text-slate-600 dark:text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed animate-fade-in-up delay-100">
@@ -182,7 +183,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
           {/* Arrow connectors for desktop */}
-          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-orange-500/20 to-blue-550/20 dark:from-orange-500/40 dark:to-blue-550/40 z-0" />
+          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-linear-to-r from-orange-500/20 to-blue-550/20 dark:from-orange-500/40 dark:to-blue-550/40 z-0" />
           
           {steps.map((step, idx) => (
             <div 
@@ -256,13 +257,15 @@ export default function Home() {
               className="bg-slate-50/50 border border-slate-200/85 dark:bg-slate-900/10 dark:border-slate-900/80 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300 shadow-sm"
             >
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed italic">
-                "{test.quote}"
+                &ldquo;{test.quote}&rdquo;
               </p>
               
               <div className="flex items-center gap-3">
-                <img 
+                <Image 
                   alt={test.name}
                   src={test.photo}
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
                 />
                 <div>
@@ -315,8 +318,8 @@ export default function Home() {
 
       {/* Final Call to Action */}
       <section className="py-16 px-6 max-w-7xl mx-auto w-full z-10 mb-10">
-        <div className="bg-gradient-to-tr from-slate-50 to-slate-100 border border-slate-200 dark:from-slate-900 dark:to-slate-950 dark:border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-md">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 dark:from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
+        <div className="bg-linear-to-tr from-slate-50 to-slate-100 border border-slate-200 dark:from-slate-900 dark:to-slate-950 dark:border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-md">
+          <div className="absolute inset-0 bg-linear-to-br from-orange-500/5 dark:from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
           <h3 className="text-3xl md:text-5xl font-black tracking-tight relative z-10 leading-tight text-slate-900 dark:text-white">
             Pronto para dar a sua primeira partida?
           </h3>
