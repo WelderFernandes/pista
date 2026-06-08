@@ -1,11 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "@phosphor-icons/react";
 
 export default function InstructorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = [
     {
@@ -17,7 +25,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
           <path d="M5 3a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2H5zM15 3a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2h-4zM5 13a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2H5zM15 13a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2h-4z" />
         </svg>
       )
@@ -31,7 +39,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
           <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v13a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H8V3a1 1 0 00-1-1zM4 8h16v11H4V8zm2 2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1v-2z" />
         </svg>
       )
@@ -45,7 +53,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
           <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
       )
@@ -59,7 +67,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm1-15a1 1 0 10-2 0v1.07A2.993 2.993 0 009 11a1 1 0 102 0h1a1 1 0 100-2h-1a1 1 0 010-2v-.93zm-3 8a1 1 0 100-2H9a1 1 0 100 2h1a1 1 0 010 2v.93a1 1 0 102 0V17a2.993 2.993 0 002-2.93 1 1 0 10-2 0h-1a1 1 0 100 2h1a1 1 0 010 2H11v-.93a1 1 0 01-1-1.07z" clipRule="evenodd" />
         </svg>
       )
@@ -73,7 +81,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M18 10a6 6 0 11-12 0 6 6 0 0112 0zm-6 8a8 8 0 00-8 8h16a8 8 0 00-8-8z" clipRule="evenodd" />
         </svg>
       )
@@ -88,7 +96,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-655 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
         </svg>
       )
@@ -96,16 +104,16 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
   ];
 
   return (
-    <div className="bg-slate-50 min-h-screen text-slate-900 pb-[80px] md:pb-0 md:pl-[240px] flex flex-col font-sans">
+    <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 md:pl-[240px] flex flex-col font-sans transition-colors duration-300">
       {/* Top Selector Bar (Switch Portals) */}
       <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-          <span className="font-bold uppercase tracking-wider text-[10px] text-slate-300">Modo Instrutor Ativo</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
+          <span className="font-bold uppercase tracking-wider text-[10px] text-slate-350">Modo Instrutor Ativo</span>
         </div>
         <Link 
           href="/" 
-          className="text-orange-400 hover:text-orange-300 transition-colors font-semibold flex items-center gap-1"
+          className="text-orange-400 hover:text-orange-355 transition-colors font-semibold flex items-center gap-1 text-[11px]"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -114,34 +122,48 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </Link>
       </div>
 
-      {/* Top Nav Header for Desktop & Mobile */}
-      <header className="w-full sticky top-0 z-40 bg-white border-b border-slate-100 flex items-center justify-between px-6 py-4 shadow-sm">
+      {/* Top Nav Header */}
+      <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
         <div className="flex items-center gap-3">
           <img
             alt="Avatar do Instrutor"
-            className="w-10 h-10 rounded-full object-cover border border-slate-200"
+            className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k"
           />
           <div>
-            <h1 className="text-base font-bold text-slate-900 leading-tight">Olá, Carlos Eduardo</h1>
-            <p className="text-xs text-orange-600 font-medium">Instrutor Chefe</p>
+            <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">Olá, Carlos Eduardo</h1>
+            <p className="text-xs text-orange-600 dark:text-orange-500 font-semibold">Instrutor Chefe</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="p-2 rounded-full hover:bg-slate-50 relative cursor-pointer text-slate-500 hover:text-orange-600 transition-colors">
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="flex items-center gap-3">
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-950 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+              aria-label="Alternar tema"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4 text-amber-500" />
+              ) : (
+                <Moon className="w-4 h-4 text-indigo-600" />
+              )}
+            </button>
+          )}
+
+          <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-950/50 dark:hover:bg-slate-950 relative cursor-pointer text-slate-500 hover:text-orange-600 transition-all duration-300">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-orange-600 rounded-full border border-white" />
+            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-orange-655 rounded-full border border-white dark:border-slate-900" />
           </button>
         </div>
       </header>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-[240px] bg-slate-900 text-white fixed top-[37px] bottom-0 left-0 border-r border-slate-800 z-30 justify-between">
+      <aside className="hidden md:flex flex-col w-[240px] bg-white dark:bg-slate-900 text-slate-800 dark:text-white fixed top-[37px] bottom-0 left-0 border-r border-slate-200 dark:border-slate-850 z-30 justify-between transition-colors duration-300">
         <div className="py-6 flex flex-col gap-2">
           <div className="px-6 mb-6">
-            <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Navegação</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Navegação</span>
           </div>
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/instructor" && pathname.startsWith(item.href));
@@ -151,8 +173,8 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
                 href={item.href}
                 className={`flex items-center gap-3 px-6 py-3.5 text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-orange-600/10 text-orange-500 border-r-4 border-orange-500"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-orange-500/10 text-orange-600 dark:text-orange-500 border-r-4 border-orange-500 font-bold"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
                 }`}
               >
                 {isActive ? item.activeIcon : item.icon}
@@ -161,26 +183,26 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
             );
           })}
         </div>
-        <div className="p-6 border-t border-slate-800">
+        <div className="p-6 border-t border-slate-200 dark:border-slate-850">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center font-bold text-sm">
+            <div className="w-8 h-8 rounded-lg bg-orange-650 flex items-center justify-center font-bold text-sm text-white">
               V
             </div>
             <div>
-              <p className="text-xs font-bold">Volante Certo</p>
-              <p className="text-[9px] text-slate-400">v2.4.0-premium</p>
+              <p className="text-xs font-bold text-slate-850 dark:text-white">Volante Certo</p>
+              <p className="text-[9px] text-slate-500 dark:text-slate-400">v2.4.0-premium</p>
             </div>
           </div>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-4xl mx-auto p-4 md:p-8">
+      <main className="flex-1 w-full max-w-4xl mx-auto p-4 md:p-8 animate-fade-in-up">
         {children}
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-white border-t border-slate-100 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-50">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-850 shadow-[0_-4px_12px_rgba(0,0,0,0.04)] z-50 transition-colors duration-300">
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/instructor" && pathname.startsWith(item.href));
           return (
@@ -188,7 +210,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${
-                isActive ? "text-orange-600 font-bold" : "text-slate-400 font-medium"
+                isActive ? "text-orange-655 dark:text-orange-500 font-bold" : "text-slate-500 dark:text-slate-450 font-medium"
               }`}
             >
               <div className="mb-1">{isActive ? item.activeIcon : item.icon}</div>
