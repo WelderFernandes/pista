@@ -289,7 +289,7 @@ export default function InstructorsPage() {
   }, [selectedDate, selectedInstructor]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-x-hidden font-sans">
       {/* Decorative Blur Backgrounds */}
       <div className="absolute top-[-20%] left-[-15%] w-[70%] h-[70%] bg-orange-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />

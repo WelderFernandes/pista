@@ -110,7 +110,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-x-hidden font-sans">
       {/* Decorative Blur Backgrounds */}
       <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
