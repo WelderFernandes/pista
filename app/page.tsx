@@ -112,8 +112,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-hidden font-sans">
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-600/15 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
 
       {/* Header */}
       <header className="w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
@@ -138,7 +138,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <Link 
               href="/login" 
-              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all text-slate-200"
+              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all duration-300 text-slate-200 hover:scale-[1.02] active:scale-[0.98]"
             >
               Área Restrita
             </Link>
@@ -149,34 +149,34 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 px-6 flex flex-col items-center text-center z-10">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
             <Sparkle className="w-4.5 h-4.5" />
             <span>Sua CNH com muito mais tranquilidade</span>
           </span>
-          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-400">
+          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-400 animate-fade-in-up">
             Aprenda a Dirigir Sem Medo ou Complicação
           </h2>
-          <p className="text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed">
+          <p className="text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed animate-fade-in-up delay-100">
             Conectamos você aos melhores instrutores particulares de trânsito. Agende suas aulas 100% online, selecione o ponto de encontro ideal e evolua no seu próprio ritmo.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-10 w-full justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 mt-10 w-full justify-center animate-fade-in-up delay-200">
             <Link 
               href="/instrutores" 
-              className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-orange-600/15 flex items-center justify-center gap-2 transition-transform active:scale-98"
+              className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-orange-600/15 flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] hover:shadow-orange-600/25 active:scale-[0.97]"
             >
               Encontrar Instrutor
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               href="/login?profile=student" 
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
             >
               Portal do Aluno
             </Link>
             <Link 
               href="/login?profile=instructor" 
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
             >
               Portal do Instrutor
             </Link>
@@ -191,9 +191,9 @@ export default function Home() {
             {stats.map((stat, idx) => (
               <div 
                 key={idx} 
-                className="bg-slate-900/20 border border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:border-slate-800 transition-colors"
+                className="bg-slate-900/20 border border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300 group"
               >
-                <span className="text-3xl md:text-4xl font-black text-orange-500">{stat.value}</span>
+                <span className="text-3xl md:text-4xl font-black text-orange-500 group-hover:scale-105 transition-transform duration-300 inline-block origin-left">{stat.value}</span>
                 <h4 className="font-bold text-sm text-slate-200">{stat.label}</h4>
                 <p className="text-xs text-slate-500 leading-relaxed">{stat.desc}</p>
               </div>
@@ -220,9 +220,9 @@ export default function Home() {
           {steps.map((step, idx) => (
             <div 
               key={idx} 
-              className="bg-slate-900/30 border border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-orange-500/20 transition-all hover:bg-slate-900/40"
+              className="bg-slate-900/30 border border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-orange-500/30 hover:-translate-y-1 hover:bg-slate-900/50 transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-xl bg-orange-600/10 border border-orange-500/20 flex items-center justify-center font-black text-orange-500 text-lg group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-xl bg-orange-600/10 border border-orange-500/20 flex items-center justify-center font-black text-orange-500 text-lg group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all duration-350">
                 {step.num}
               </div>
               <h4 className="font-bold text-lg text-white leading-tight mt-2">{step.title}</h4>
@@ -246,10 +246,10 @@ export default function Home() {
             <div className="mt-8">
               <Link 
                 href="/instrutores" 
-                className="inline-flex items-center gap-2 text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors group"
               >
                 Conheça nossos instrutores agora
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
               </Link>
             </div>
           </div>
@@ -258,9 +258,9 @@ export default function Home() {
             {features.map((feat, idx) => (
               <div 
                 key={idx} 
-                className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl flex flex-col gap-3 hover:border-slate-700 transition-all"
+                className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl flex flex-col gap-3 hover:border-orange-500/20 hover:-translate-y-1 hover:bg-slate-900/40 transition-all duration-300 group"
               >
-                <div className="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center border border-slate-850">
+                <div className="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center border border-slate-850 group-hover:scale-105 group-hover:border-orange-500/30 transition-all">
                   {feat.icon}
                 </div>
                 <h4 className="font-bold text-sm text-slate-200 mt-1">{feat.title}</h4>
@@ -286,7 +286,7 @@ export default function Home() {
           {testimonials.map((test, idx) => (
             <div 
               key={idx} 
-              className="bg-slate-900/10 border border-slate-900/80 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:border-slate-800 transition-colors"
+              className="bg-slate-900/10 border border-slate-900/80 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:border-orange-500/20 hover:-translate-y-1 transition-all duration-300"
             >
               <p className="text-xs text-slate-400 leading-relaxed italic">
                 "{test.quote}"
@@ -325,18 +325,18 @@ export default function Home() {
             return (
               <div 
                 key={idx} 
-                className="bg-slate-900/30 border border-slate-800 rounded-xl overflow-hidden transition-all duration-200"
+                className="bg-slate-900/30 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-slate-700"
               >
                 <button
                   onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
                   className="w-full px-6 py-4 flex items-center justify-between font-bold text-sm text-left text-white hover:bg-slate-900/50 transition-colors cursor-pointer"
                 >
                   <span>{faq.question}</span>
-                  <CaretDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? "rotate-180 text-orange-500" : ""}`} />
+                  <CaretDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-orange-500" : ""}`} />
                 </button>
                 
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 border-t border-slate-850 bg-slate-950/30 text-xs text-slate-400 leading-relaxed animate-fade-in">
+                  <div className="px-6 pb-5 pt-1 border-t border-slate-850 bg-slate-950/30 text-xs text-slate-400 leading-relaxed animate-fade-in-up">
                     {faq.answer}
                   </div>
                 )}
@@ -349,7 +349,7 @@ export default function Home() {
       {/* Final Call to Action */}
       <section className="py-16 px-6 max-w-7xl mx-auto w-full z-10 mb-10">
         <div className="bg-gradient-to-tr from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/10 to-transparent pointer-events-none animate-pulse-slow" />
           <h3 className="text-3xl md:text-5xl font-black tracking-tight relative z-10 leading-tight">
             Pronto para dar a sua primeira partida?
           </h3>
@@ -359,7 +359,7 @@ export default function Home() {
           <div className="mt-8 relative z-10">
             <Link 
               href="/instrutores" 
-              className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-orange-600/25 inline-flex items-center gap-2 transition-transform active:scale-98"
+              className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-orange-600/25 inline-flex items-center gap-2 transition-all duration-300 hover:scale-[1.03] hover:shadow-orange-600/35 active:scale-[0.97]"
             >
               Começar Agora
               <ArrowRight className="w-4 h-4" />

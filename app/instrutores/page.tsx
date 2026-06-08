@@ -291,14 +291,14 @@ export default function InstructorsPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-hidden font-sans">
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-[-20%] left-[-15%] w-[70%] h-[70%] bg-orange-600/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-[-20%] left-[-15%] w-[70%] h-[70%] bg-orange-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
 
       {/* Header */}
       <header className="w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
               V
             </div>
             <div>
@@ -320,7 +320,7 @@ export default function InstructorsPage() {
           <div className="flex items-center gap-4">
             <Link 
               href="/login" 
-              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all text-slate-200"
+              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-slate-200"
             >
               Área Restrita
             </Link>
@@ -332,18 +332,18 @@ export default function InstructorsPage() {
       <section className="relative overflow-hidden py-20 px-6 border-b border-slate-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#020617)] z-0" />
         {/* Animated grid lines pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0 animate-pulse-slow" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
             <Sparkle className="w-3.5 h-3.5" />
             <span>Nossos Profissionais de Elite</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400 animate-fade-in-up">
             Escolha seu Instrutor
           </h2>
-          <p className="text-slate-400 mt-6 text-sm md:text-lg max-w-2xl leading-relaxed">
+          <p className="text-slate-400 mt-6 text-sm md:text-lg max-w-2xl leading-relaxed animate-fade-in-up delay-100">
             Agende suas aulas práticas de forma totalmente digital. Filtre por localização, preço, categoria de habilitação e encontre a melhor combinação para seu aprendizado.
           </p>
         </div>
@@ -353,7 +353,7 @@ export default function InstructorsPage() {
       <main className="max-w-7xl mx-auto px-6 py-12 w-full flex-1 z-10">
         
         {/* Bento Box Search Filters */}
-        <section className="mb-10">
+        <section className="mb-10 animate-fade-in-up delay-200">
           <div className="bg-slate-900/30 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
             <div className="flex items-center gap-2.5 mb-6">
               <Funnel className="w-5 h-5 text-orange-500" />
@@ -370,7 +370,7 @@ export default function InstructorsPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Ex: Amanda, Pinheiros, São Paulo..."
-                    className="w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500/60 transition-colors"
+                    className="w-full bg-slate-950/60 border border-slate-800/80 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500/60 focus:bg-slate-950 transition-all duration-300"
                   />
                   <MagnifyingGlass className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
                 </div>
@@ -382,7 +382,7 @@ export default function InstructorsPage() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500/60 transition-colors"
+                  className="w-full bg-slate-950/60 border border-slate-800/80 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-orange-500/60 focus:bg-slate-950 transition-all duration-300"
                 >
                   <option value="TODAS">Todas as Categorias</option>
                   <option value="A">Moto (Cat. A)</option>
@@ -400,7 +400,7 @@ export default function InstructorsPage() {
                   setMaxPrice(150);
                   setMaxRadius(25);
                 }}
-                className="bg-slate-950/45 hover:bg-slate-950 text-slate-400 hover:text-white font-bold text-xs py-3 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer h-10 flex items-center justify-center"
+                className="bg-slate-950/45 hover:bg-slate-950 text-slate-400 hover:text-white font-bold text-xs py-3 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer h-10 flex items-center justify-center"
               >
                 Limpar Filtros
               </button>
@@ -443,7 +443,7 @@ export default function InstructorsPage() {
         </section>
 
         {/* Results Metadata */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2 sm:gap-0">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2 sm:gap-0 animate-fade-in-up delay-300">
           <p className="text-xs text-slate-400">
             Encontramos <strong className="text-slate-200">{filteredInstructors.length}</strong> instrutores qualificados
           </p>
@@ -456,7 +456,7 @@ export default function InstructorsPage() {
 
         {/* Instructors Grid */}
         {currentInstructors.length === 0 ? (
-          <div className="text-center py-20 bg-slate-900/10 border border-dashed border-slate-900 rounded-3xl">
+          <div className="text-center py-20 bg-slate-900/10 border border-dashed border-slate-900 rounded-3xl animate-fade-in-up delay-300">
             <svg className="w-12 h-12 text-slate-700 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -464,15 +464,15 @@ export default function InstructorsPage() {
             <p className="text-xs text-slate-500 mt-1.5 max-w-sm mx-auto">Tente reajustar os controles deslizantes de preço e distância ou pesquise por outro bairro.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in-up delay-300">
             {currentInstructors.map((inst) => (
               <div 
                 key={inst.id}
-                className="bg-slate-900/20 border border-slate-800/80 rounded-2xl p-6 hover:border-orange-500/30 transition-all flex flex-col justify-between gap-6 relative overflow-hidden group hover:bg-slate-900/30"
+                className="bg-slate-900/20 border border-slate-800/80 rounded-2xl p-6 hover:border-orange-500/35 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6 relative overflow-hidden group hover:bg-slate-900/30"
               >
                 {/* Distance Badge */}
                 <div className="absolute top-5 right-5 flex items-center gap-1 text-[9px] font-bold bg-slate-950/80 border border-slate-850 px-2.5 py-1 rounded-full text-slate-400 backdrop-blur-sm">
-                  <MapPin className="w-3 h-3 text-orange-500" />
+                  <MapPin className="w-3 h-3 text-orange-500 animate-pulse" />
                   <span>{inst.distance} km de distância</span>
                 </div>
 
@@ -481,10 +481,10 @@ export default function InstructorsPage() {
                   <img
                     alt={inst.name}
                     src={inst.photo}
-                    className="w-16 h-16 rounded-2xl object-cover border border-slate-800 shadow-md group-hover:scale-102 transition-transform"
+                    className="w-16 h-16 rounded-2xl object-cover border border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-extrabold text-lg text-white truncate leading-snug">{inst.name}</h4>
+                    <h4 className="font-extrabold text-lg text-white truncate leading-snug group-hover:text-orange-400 transition-colors duration-300">{inst.name}</h4>
                     
                     {/* Stars and reviews */}
                     <div className="flex items-center gap-2 mt-1.5">
@@ -516,7 +516,7 @@ export default function InstructorsPage() {
                 </div>
 
                 {/* Bio */}
-                <p className="text-xs text-slate-400 leading-relaxed italic border-l-2 border-slate-800 pl-3">
+                <p className="text-xs text-slate-400 leading-relaxed italic border-l-2 border-slate-850 pl-3">
                   "{inst.bio}"
                 </p>
 
@@ -546,9 +546,9 @@ export default function InstructorsPage() {
                   </div>
                   <button
                     onClick={() => handleOpenBooking(inst)}
-                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer flex items-center gap-2"
+                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer flex items-center gap-2"
                   >
-                    <CalendarBlank className="w-4 h-4" />
+                    <CalendarBlank className="w-4 h-4 animate-float" />
                     Reservar Horário
                   </button>
                 </div>
@@ -559,7 +559,7 @@ export default function InstructorsPage() {
 
         {/* Pagination Controls */}
         {totalPages > 1 && (
-          <section className="flex justify-center items-center gap-3 mt-12">
+          <section className="flex justify-center items-center gap-3 mt-12 animate-fade-in-up">
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -599,11 +599,11 @@ export default function InstructorsPage() {
 
       {/* Booking Calendar Dialog Modal */}
       {selectedInstructor && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in overflow-y-auto">
+        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in-up overflow-y-auto">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8">
             <button
               onClick={() => setSelectedInstructor(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 hover:bg-slate-850 rounded-full cursor-pointer z-10"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 hover:bg-slate-850 rounded-full cursor-pointer z-10 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -620,14 +620,14 @@ export default function InstructorsPage() {
                   <p><span className="text-slate-500 font-bold">Instrutor:</span> <span className="text-slate-300 font-semibold">{selectedInstructor.name}</span></p>
                   <p><span className="text-slate-500 font-bold">Horário Solicitado:</span> <span className="text-orange-500 font-extrabold">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</span></p>
                   <p><span className="text-slate-500 font-bold">Ponto de Encontro:</span> <span className="text-slate-300 font-semibold">{bookingMeetingPoint}</span></p>
-                  <p><span className="text-slate-500 font-bold">Status do Agendamento:</span> <span className="text-yellow-650 bg-yellow-550/10 px-2 py-0.5 rounded font-extrabold border border-yellow-500/20 uppercase text-[9px]">Pendente de Aprovação</span></p>
+                  <p><span className="text-slate-500 font-bold">Status do Agendamento:</span> <span className="text-yellow-650 bg-yellow-555/10 px-2 py-0.5 rounded font-extrabold border border-yellow-500/20 uppercase text-[9px]">Pendente de Aprovação</span></p>
                 </div>
                 <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
                   A solicitação foi adicionada ao painel do instrutor. Ele entrará em contato via WhatsApp no número <strong className="text-slate-200">{bookingPhone}</strong> para confirmar a aula.
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 animate-fade-in-up">
                 <div>
                   <h4 className="font-extrabold text-white text-lg">Agenda de {selectedInstructor.name}</h4>
                   <p className="text-xs text-slate-400 mt-0.5">Selecione uma data e horário livre para fazer a solicitação.</p>
@@ -652,7 +652,7 @@ export default function InstructorsPage() {
                             setSelectedDate(d.dateStr);
                             setSelectedSlot(null);
                           }}
-                          className={`py-2 px-3 min-w-[54px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 cursor-pointer snap-center ${
+                          className={`py-2 px-3 min-w-[54px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all duration-300 active:scale-95 cursor-pointer snap-center ${
                             isSelected
                               ? "bg-orange-600 text-white font-bold shadow-md shadow-orange-600/20"
                               : "bg-slate-950 text-slate-400 hover:bg-slate-850 hover:text-white"
@@ -685,10 +685,10 @@ export default function InstructorsPage() {
                       
                       if (details.isLunch) {
                         label = "Almoço";
-                        btnStyle = "bg-orange-950/20 border border-orange-950/30 text-orange-650/75 cursor-not-allowed text-[10px]";
+                        btnStyle = "bg-orange-955/20 border border-orange-955/30 text-orange-650/75 cursor-not-allowed text-[10px]";
                       } else if (details.isOutside) {
                         label = "Fechado";
-                        btnStyle = "bg-slate-950 opacity-40 border border-slate-950 text-slate-600 cursor-not-allowed text-[10px]";
+                        btnStyle = "bg-slate-955 opacity-40 border border-slate-955 text-slate-600 cursor-not-allowed text-[10px]";
                       } else if (details.isOccupied) {
                         label = "Ocupado";
                         btnStyle = "bg-red-955/20 border border-red-955/30 text-red-500/75 cursor-not-allowed text-[10px]";
@@ -702,7 +702,9 @@ export default function InstructorsPage() {
                           type="button"
                           disabled={isLocked}
                           onClick={() => setSelectedSlot(slot)}
-                          className={`py-2.5 rounded-xl text-center text-xs font-bold transition-all active:scale-95 ${btnStyle}`}
+                          className={`py-2.5 rounded-xl text-center text-xs font-bold transition-all duration-300 ${
+                            !isLocked ? "active:scale-95 hover:scale-[1.02]" : ""
+                          } ${btnStyle}`}
                         >
                           {label}
                         </button>
@@ -731,7 +733,7 @@ export default function InstructorsPage() {
 
                 {/* Form fields only visible when a slot is chosen */}
                 {selectedSlot && (
-                  <form onSubmit={handleConfirmBooking} className="flex flex-col gap-4 border-t border-slate-800/60 pt-4 animate-fade-in">
+                  <form onSubmit={handleConfirmBooking} className="flex flex-col gap-4 border-t border-slate-850 pt-4 animate-fade-in-up">
                     <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
                       Reserva de Slot: <strong className="text-orange-500">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</strong>
                     </span>
@@ -796,7 +798,7 @@ export default function InstructorsPage() {
 
                     <button
                       type="submit"
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3 rounded-xl shadow-lg mt-1 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3 rounded-xl shadow-lg mt-1 text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       Enviar Solicitação de Agendamento
                     </button>
@@ -809,8 +811,12 @@ export default function InstructorsPage() {
       )}
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 text-slate-600 text-[10px] z-10 border-t border-slate-900 bg-slate-950">
-        &copy; {new Date().getFullYear()} Volante Certo S.A. Todos os direitos reservados.
+      <footer className="w-full text-center py-6 text-slate-650 text-[10px] z-10 border-t border-slate-900 bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0">
+        <span className="text-slate-500 font-medium">Volante Certo S.A. &copy; {new Date().getFullYear()}</span>
+        <div className="flex gap-6 text-slate-400 font-medium">
+          <Link href="/politica-de-privacidade" className="hover:text-white transition-colors">Termos de Uso</Link>
+          <Link href="/termos" className="hover:text-white transition-colors">Política de Privacidade</Link>
+        </div>
       </footer>
     </div>
   );
