@@ -1,809 +1,380 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { useApp } from "@/lib/context";
-
-interface Instructor {
-  id: string;
-  name: string;
-  photo: string;
-  rating: number;
-  reviewsCount: number;
-  city: string;
-  neighborhoods: string[];
-  meetingPoints: string[];
-  hourlyRate: number;
-  categories: string[];
-  bio: string;
-  distance: number; // simulated distance in km
-  // Schedule constraints for mock instructors
-  workDays: number[];
-  workStart: string;
-  workEnd: string;
-  lunchStart: string;
-  lunchEnd: string;
-  extraDays: { date: string; start: string; end: string }[];
-}
+import { 
+  Sparkle, 
+  ArrowRight, 
+  CheckCircle, 
+  SteeringWheel, 
+  CalendarCheck, 
+  ShieldCheck, 
+  Users, 
+  Clock, 
+  Question, 
+  Chat,
+  Coins,
+  MapPin,
+  CaretDown
+} from "@phosphor-icons/react";
 
 export default function Home() {
-  const { settings, classes, addClass } = useApp();
-  const [hoveredCard, setHoveredCard] = useState<"instructor" | "student" | null>(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
-  // Search and filter states
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("TODAS");
-  const [maxPrice, setMaxPrice] = useState(150);
-  const [maxRadius, setMaxRadius] = useState(20);
-
-  // Booking Modal states
-  const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
-  const [selectedDate, setSelectedDate] = useState("2026-06-08");
-  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  const [bookingName, setBookingName] = useState("");
-  const [bookingPhone, setBookingPhone] = useState("");
-  const [bookingCategory, setBookingCategory] = useState("");
-  const [bookingMeetingPoint, setBookingMeetingPoint] = useState("");
-  const [bookingSuccess, setBookingSuccess] = useState(false);
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // Generate June 2026 dates dynamically
-  const dates = Array.from({ length: 30 }, (_, i) => {
-    const dayNum = String(i + 1).padStart(2, "0");
-    const dateStr = `2026-06-${dayNum}`;
-    const dateObj = new Date(dateStr + "T00:00:00");
-    const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-    return {
-      day: daysOfWeek[dateObj.getDay()],
-      num: dayNum,
-      dateStr,
-    };
-  });
-
-  // Resolve dynamic values for Carlos Eduardo from settings context
-  const activeInstructor: Instructor = {
-    id: "carlos-eduardo",
-    name: "Carlos Eduardo",
-    photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k",
-    rating: 4.9,
-    reviewsCount: 48,
-    city: settings?.city || "São Paulo",
-    neighborhoods: settings?.neighborhoods || ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
-    meetingPoints: settings?.meetingPoints || ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
-    hourlyRate: settings?.hourlyRate || 120,
-    categories: settings?.categories || ["B"],
-    bio: settings?.bio || "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos.",
-    distance: 2.4,
-    // Dynamic schedules
-    workDays: settings?.workDays || [1, 2, 3, 4, 5, 6],
-    workStart: settings?.workStart || "08:00",
-    workEnd: settings?.workEnd || "18:00",
-    lunchStart: settings?.lunchStart || "12:00",
-    lunchEnd: settings?.lunchEnd || "13:30",
-    extraDays: settings?.extraDays || [],
-  };
-
-  // Mocked list of other instructors with their schedules
-  const otherInstructors: Instructor[] = [
-    {
-      id: "amanda-rodrigues",
-      name: "Amanda Rodrigues",
-      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY",
-      rating: 4.8,
-      reviewsCount: 36,
-      city: "São Paulo",
-      neighborhoods: ["Pinheiros", "Butantã", "Lapa", "Perdizes"],
-      meetingPoints: ["Metrô Butantã", "Praça Panamericana", "Autoescola Lapa"],
-      hourlyRate: 110,
-      categories: ["A", "B"],
-      bio: "Especialista em alunos com ansiedade e medo de dirigir. Paciência e didática focada no ritmo do aluno.",
-      distance: 5.1,
-      workDays: [1, 2, 3, 4, 5], // Mon to Fri
-      workStart: "09:00",
-      workEnd: "17:00",
-      lunchStart: "12:00",
-      lunchEnd: "13:00",
-      extraDays: [],
-    },
-    {
-      id: "roberto-silva",
-      name: "Roberto Silva",
-      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
-      rating: 4.7,
-      reviewsCount: 24,
-      city: "Campinas",
-      neighborhoods: ["Cambuí", "Guanabara", "Taquaral", "Centro"],
-      meetingPoints: ["Lagoa do Taquaral", "Largo do Pará"],
-      hourlyRate: 95,
-      categories: ["B", "C", "D"],
-      bio: "Ampla experiência em veículos de grande porte. Aulas práticas para categorias profissionais C e D.",
-      distance: 18.5,
-      workDays: [1, 2, 3, 4, 5, 6],
-      workStart: "08:00",
-      workEnd: "18:00",
-      lunchStart: "12:30",
-      lunchEnd: "13:30",
-      extraDays: [],
-    },
-    {
-      id: "juliana-mendes",
-      name: "Juliana Mendes",
-      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuBXI6m_H1FJGSYFqoFQmc2TkCWx-gBC6HiGsXCQUA8yrATa1IzKcZbryflfWubUVop34t_FPqEP1Cj-gU3lezS7CHv7nsQ_dkiu5A9VSNDcq8MtcfE8q_EpTNXfkTR7qy-UTYoT_k6vsLcnliZBqHfFDbwzIynUGp5j6OuHlsptpv4C3p6Am5FywHlkyEBgZfsDxMtI0ymOORILUOfRuReR7FDYw8R9BcnGrcDpeb9aaRd6yf19SkgyqmTrccyeItntzQeIGA3_fDc",
-      rating: 5.0,
-      reviewsCount: 52,
-      city: "São Paulo",
-      neighborhoods: ["Santo Amaro", "Brooklin", "Itaim Bibi", "Morumbi"],
-      meetingPoints: ["Shopping Morumbi", "Estação Brooklin", "Autoescola Santo Amaro"],
-      hourlyRate: 130,
-      categories: ["A"],
-      bio: "Instrutora de pilotagem de motocicletas com foco em segurança urbana e técnicas avançadas de curvas.",
-      distance: 9.7,
-      workDays: [2, 3, 4, 5, 6], // Tue to Sat
-      workStart: "08:00",
-      workEnd: "15:00",
-      lunchStart: "11:30",
-      lunchEnd: "12:30",
-      extraDays: [],
-    },
+  const stats = [
+    { value: "+15.000", label: "Aulas Concluídas", desc: "Aulas práticas realizadas com sucesso em nossa plataforma." },
+    { value: "99.2%", label: "Taxa de Aprovação", desc: "Alunos aprovados de primeira no exame do DETRAN." },
+    { value: "4.95 / 5", label: "Avaliação Média", desc: "Nota atribuída pelos alunos aos nossos instrutores parceiros." },
+    { value: "+50", label: "Bairros Atendidos", desc: "Ampla cobertura na grande São Paulo e Campinas." }
   ];
 
-  const allInstructors = [activeInstructor, ...otherInstructors];
-
-  // Filtering Logic
-  const filteredInstructors = allInstructors.filter((inst) => {
-    // 1. Search Query (matches city, name or neighborhoods)
-    const matchesSearch =
-      searchQuery === "" ||
-      inst.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inst.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      inst.neighborhoods.some((n) => n.toLowerCase().includes(searchQuery.toLowerCase()));
-
-    // 2. Category
-    const matchesCategory =
-      selectedCategory === "TODAS" || inst.categories.includes(selectedCategory);
-
-    // 3. Price
-    const matchesPrice = inst.hourlyRate <= maxPrice;
-
-    // 4. Radius / Distance
-    const matchesRadius = inst.distance <= maxRadius;
-
-    return matchesSearch && matchesCategory && matchesPrice && matchesRadius;
-  });
-
-  const handleOpenBooking = (instructor: Instructor) => {
-    setSelectedInstructor(instructor);
-    setSelectedSlot(null);
-    setBookingCategory(instructor.categories[0] || "B");
-    setBookingMeetingPoint(instructor.meetingPoints[0] || "");
-    setBookingSuccess(false);
-  };
-
-  const calculateEndTime = (timeStr: string) => {
-    const [hour, min] = timeStr.split(":").map(Number);
-    let endHour = hour + 1;
-    let endMin = min + 40;
-    if (endMin >= 60) {
-      endHour += 1;
-      endMin -= 60;
+  const steps = [
+    {
+      num: "01",
+      title: "Escolha o Instrutor Ideal",
+      desc: "Navegue por nossa lista de instrutores certificados, filtre por preço, distância, categoria de habilitação e veja a opinião de outros alunos."
+    },
+    {
+      num: "02",
+      title: "Selecione a Data e Horário",
+      desc: "Visualize a agenda do instrutor em tempo real. Escolha os dias e horários que melhor se encaixam na sua rotina diária."
+    },
+    {
+      num: "03",
+      title: "Pronto! Inicie as Aulas",
+      desc: "O instrutor se desloca até o ponto de encontro combinado. Receba instruções didáticas, controle a sua evolução e conquiste a sua CNH."
     }
-    return `${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}`;
-  };
+  ];
 
-  // Helper to determine slot parameters on a specific day for an instructor
-  const getSlotDetails = (instructor: Instructor, date: string, slot: string) => {
-    const extraDayConfig = instructor.extraDays?.find((ed) => ed.date === date);
-    const dayOfWeek = new Date(date + "T00:00:00").getDay();
-    const isNormalWorkDay = instructor.workDays.includes(dayOfWeek);
-    const isWorking = !!extraDayConfig || isNormalWorkDay;
-
-    if (!isWorking) {
-      return { isWorking: false, status: "folga" };
+  const features = [
+    {
+      icon: <CalendarCheck className="w-6 h-6 text-orange-500" />,
+      title: "Agendamento Online Dinâmico",
+      desc: "Esqueça burocracias de autoescolas. Reserve seus horários diretamente no painel de forma rápida e 100% digital."
+    },
+    {
+      icon: <ShieldCheck className="w-6 h-6 text-orange-500" />,
+      title: "Instrutores Credenciados e Verificados",
+      desc: "Todos os profissionais passam por testes de antecedentes, verificação de credencial do DETRAN e avaliações constantes."
+    },
+    {
+      icon: <Coins className="w-6 h-6 text-orange-500" />,
+      title: "Economia e Transparência",
+      desc: "Pague diretamente pelas horas de aula contratadas, sem taxas ocultas ou mensalidades surpresa. Excelente custo-benefício."
+    },
+    {
+      icon: <Clock className="w-6 h-6 text-orange-500" />,
+      title: "Flexibilidade Total de Horários",
+      desc: "Aulas no período da manhã, tarde, noite ou aos sábados. Você escolhe o ritmo e quando deseja aprender."
     }
+  ];
 
-    const start = extraDayConfig ? extraDayConfig.start : instructor.workStart;
-    const end = extraDayConfig ? extraDayConfig.end : instructor.workEnd;
-    const lunchStart = instructor.lunchStart;
-    const lunchEnd = instructor.lunchEnd;
-
-    const slotEnd = calculateEndTime(slot);
-    const isOutside = slot < start || slot >= end;
-    const isLunch = !extraDayConfig && ((slot >= lunchStart && slot < lunchEnd) || (slotEnd > lunchStart && slotEnd <= lunchEnd));
-
-    // Check if slot is already taken in the global classes state
-    const isOccupied = classes.some(
-      (c) => c.date === date && c.time === slot && c.instructorName === instructor.name && c.status !== "Cancelada"
-    );
-
-    return {
-      isWorking: true,
-      isOutside,
-      isLunch,
-      isOccupied,
-    };
-  };
-
-  const timeSlots = ["08:00", "09:40", "11:20", "14:00", "15:40", "17:20", "19:00"];
-
-  const handleConfirmBooking = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!bookingName || !bookingPhone || !selectedSlot || !selectedInstructor) {
-      alert("Por favor, preencha todos os campos e selecione um horário.");
-      return;
+  const testimonials = [
+    {
+      name: "Mariana Souza",
+      role: "Aprovada na Cat. B",
+      photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120",
+      quote: "Tinha muito medo de dirigir e ansiedade. A didática da instrutora Amanda foi maravilhosa, ela teve muita paciência e consegui passar de primeira no exame!"
+    },
+    {
+      name: "Thiago Ramos",
+      role: "Aprovado na Cat. A",
+      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120",
+      quote: "Excelente plataforma. Consegui agendar minhas aulas de moto nos meus dias de folga do trabalho e de forma rápida. O instrutor Juliana é nota 10."
+    },
+    {
+      name: "Renato Silveira",
+      role: "Aprovado na Cat. D",
+      photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120&h=120",
+      quote: "Contratei o instrutor Roberto para aulas de ônibus visando concurso público. Didática fantástica e veículo em perfeitas condições. Recomendo muito!"
     }
+  ];
 
-    const duration = `${selectedSlot} - ${calculateEndTime(selectedSlot)}`;
-
-    // Call dynamic addClass from context
-    addClass({
-      studentId: `guest-${Date.now()}`,
-      studentName: bookingName,
-      studentPhoto: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
-      type: `Aula Prática (Cat. ${bookingCategory})`,
-      date: selectedDate,
-      time: selectedSlot,
-      duration: duration,
-      meetingPoint: bookingMeetingPoint,
-      instructorName: selectedInstructor.name,
-    });
-
-    setBookingSuccess(true);
-    setTimeout(() => {
-      setSelectedInstructor(null);
-      setBookingName("");
-      setBookingPhone("");
-      setSelectedSlot(null);
-      setBookingSuccess(false);
-    }, 4000);
-  };
-
-  // Scroll active date button to center in booking modal
-  useEffect(() => {
-    if (selectedInstructor) {
-      const activeEl = document.getElementById(`modal-date-btn-${selectedDate}`);
-      if (activeEl && scrollContainerRef.current) {
-        const container = scrollContainerRef.current;
-        const leftPos = activeEl.offsetLeft - container.offsetWidth / 2 + activeEl.offsetWidth / 2;
-        container.scrollTo({ left: leftPos, behavior: "smooth" });
-      }
+  const faqs = [
+    {
+      question: "Como funciona o ponto de encontro das aulas?",
+      answer: "Cada instrutor possui pontos de encontro pré-definidos (como estações de metrô, praças centrais ou em frente a autoescolas parceiras). No momento do agendamento, você seleciona o ponto de encontro que preferir e o instrutor estará lá te esperando com o veículo."
+    },
+    {
+      question: "Posso cancelar ou reagendar uma aula?",
+      answer: "Sim! Pelo portal do aluno você pode gerenciar seus horários. Cancelamentos realizados com até 24 horas de antecedência não geram cobranças adicionais e liberam o horário para remarcação."
+    },
+    {
+      question: "Quais são as formas de pagamento disponíveis?",
+      answer: "O pagamento é combinado diretamente na plataforma de forma segura, podendo ser feito via PIX, boleto ou cartão de crédito. Você paga o valor hora/aula do instrutor escolhido."
+    },
+    {
+      question: "Os veículos possuem comandos duplos?",
+      answer: "Sim. Todos os instrutores parceiros utilizam veículos devidamente equipados com sistema de duplo comando de pedais (freio e embreagem adicionais para o instrutor), além de estarem devidamente segurados e vistoriados."
     }
-  }, [selectedDate, selectedInstructor]);
+  ];
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between relative overflow-hidden font-sans">
-      {/* Background Decorative Gradients */}
+      {/* Decorative Blur Backgrounds */}
       <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-600/15 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Header */}
-      <header className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20">
-            V
+      <header className="w-full border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-orange-500/20">
+              V
+            </div>
+            <div>
+              <h1 className="font-bold text-lg leading-tight tracking-tight">Volante Certo</h1>
+              <p className="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Plataforma de Direção</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-bold text-lg leading-tight tracking-tight">Volante Certo</h1>
-            <p className="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Plataforma de Direção</p>
+          
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+            <Link href="/" className="text-orange-500 hover:text-orange-400 transition-colors">Início</Link>
+            <Link href="/instrutores" className="hover:text-white transition-colors">Instrutores</Link>
+            <Link href="#como-funciona" className="hover:text-white transition-colors">Como Funciona</Link>
+            <Link href="#faq" className="hover:text-white transition-colors">Dúvidas</Link>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/login" 
+              className="text-xs font-semibold px-4 py-2 border border-slate-800 hover:border-slate-700 rounded-xl bg-slate-900/40 hover:bg-slate-900 transition-all text-slate-200"
+            >
+              Área Restrita
+            </Link>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-xs text-slate-300 font-medium">Sistema Online</span>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 z-10 max-w-7xl mx-auto w-full gap-12">
-        <div className="text-center max-w-2xl mt-4">
-          <span className="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider">
-            Bem-vindo ao Volante Certo
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32 px-6 flex flex-col items-center text-center z-10">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
+            <Sparkle className="w-4.5 h-4.5" />
+            <span>Sua CNH com muito mais tranquilidade</span>
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mt-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-300">
-            Encontre o Instrutor Ideal
+          <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-400">
+            Aprenda a Dirigir Sem Medo ou Complicação
           </h2>
-          <p className="text-slate-400 mt-3 text-sm md:text-base">
-            Gerencie suas aulas através dos portais de acesso rápidos ou busque e conecte-se com instrutores credenciados perto de você.
+          <p className="text-slate-400 mt-6 text-base md:text-xl max-w-2xl leading-relaxed">
+            Conectamos você aos melhores instrutores particulares de trânsito. Agende suas aulas 100% online, selecione o ponto de encontro ideal e evolua no seu próprio ritmo.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 mt-10 w-full justify-center">
+            <Link 
+              href="/instrutores" 
+              className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-orange-600/15 flex items-center justify-center gap-2 transition-transform active:scale-98"
+            >
+              Encontrar Instrutor
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link 
+              href="/login?profile=student" 
+              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+            >
+              Portal do Aluno
+            </Link>
+            <Link 
+              href="/login?profile=instructor" 
+              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+            >
+              Portal do Instrutor
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 border-t border-b border-slate-900 bg-slate-950/40 relative z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((stat, idx) => (
+              <div 
+                key={idx} 
+                className="bg-slate-900/20 border border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:border-slate-800 transition-colors"
+              >
+                <span className="text-3xl md:text-4xl font-black text-orange-500">{stat.value}</span>
+                <h4 className="font-bold text-sm text-slate-200">{stat.label}</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">{stat.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works Section */}
+      <section id="como-funciona" className="py-24 px-6 max-w-7xl mx-auto w-full z-10 scroll-mt-20">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
+            Como Funciona o Volante Certo?
+          </h3>
+          <p className="text-slate-400 mt-3 text-sm">
+            Em apenas três passos simples você agenda suas aulas práticas e inicia a sua jornada rumo à habilitação.
           </p>
         </div>
 
-        {/* Portal Cards Selector */}
-        <div className="grid md:grid-cols-2 gap-6 w-full max-w-4xl">
-          {/* Instructor Card */}
-          <Link
-            href="/login?profile=instructor"
-            onMouseEnter={() => setHoveredCard("instructor")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`group relative rounded-2xl border p-6 bg-slate-900/40 backdrop-blur-md transition-all duration-300 flex flex-col justify-between h-[220px] overflow-hidden ${
-              hoveredCard === "instructor"
-                ? "border-orange-500/50 shadow-2xl shadow-orange-500/10 -translate-y-1"
-                : "border-slate-800"
-            }`}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="z-10">
-              <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 text-orange-500 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          {/* Arrow connectors for desktop */}
+          <div className="hidden md:block absolute top-12 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-orange-500/40 to-blue-500/40 z-0" />
+          
+          {steps.map((step, idx) => (
+            <div 
+              key={idx} 
+              className="bg-slate-900/30 border border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-orange-500/20 transition-all hover:bg-slate-900/40"
+            >
+              <div className="w-12 h-12 rounded-xl bg-orange-600/10 border border-orange-500/20 flex items-center justify-center font-black text-orange-500 text-lg group-hover:scale-105 transition-transform">
+                {step.num}
               </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">Portal do Instrutor</h3>
-              <p className="text-slate-400 mt-1.5 text-xs">
-                Gerencie sua agenda de aulas, configure horários de almoço, expediente e abra agendas extras.
-              </p>
+              <h4 className="font-bold text-lg text-white leading-tight mt-2">{step.title}</h4>
+              <p className="text-xs text-slate-400 leading-relaxed">{step.desc}</p>
             </div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-orange-400 z-10 group-hover:translate-x-1 transition-transform mt-4">
-              Acessar Painel
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </Link>
+          ))}
+        </div>
+      </section>
 
-          {/* Student Card */}
-          <Link
-            href="/login?profile=student"
-            onMouseEnter={() => setHoveredCard("student")}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`group relative rounded-2xl border p-6 bg-slate-900/40 backdrop-blur-md transition-all duration-300 flex flex-col justify-between h-[220px] overflow-hidden ${
-              hoveredCard === "student"
-                ? "border-blue-500/50 shadow-2xl shadow-blue-500/10 -translate-y-1"
-                : "border-slate-800"
-            }`}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="z-10">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4 text-blue-500 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l9-5-9-5-9 5 9 5zm0 0v6m0 0l3-3m-3 3l-3-3" />
-                </svg>
+      {/* Features Section */}
+      <section className="py-24 border-t border-slate-900 bg-slate-950/20 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+          <div className="lg:col-span-1">
+            <span className="text-xs font-bold text-orange-500 uppercase tracking-widest block mb-3">Nossos diferenciais</span>
+            <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+              Por que escolher nossa plataforma?
+            </h3>
+            <p className="text-slate-400 mt-4 text-sm leading-relaxed">
+              Trabalhamos duro para oferecer a melhor experiência de aprendizado, combinando tecnologia inovadora com instrutores de altíssimo nível.
+            </p>
+            <div className="mt-8">
+              <Link 
+                href="/instrutores" 
+                className="inline-flex items-center gap-2 text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors"
+              >
+                Conheça nossos instrutores agora
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {features.map((feat, idx) => (
+              <div 
+                key={idx} 
+                className="bg-slate-900/30 border border-slate-800/80 p-6 rounded-2xl flex flex-col gap-3 hover:border-slate-700 transition-all"
+              >
+                <div className="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center border border-slate-850">
+                  {feat.icon}
+                </div>
+                <h4 className="font-bold text-sm text-slate-200 mt-1">{feat.title}</h4>
+                <p className="text-xs text-slate-400 leading-relaxed">{feat.desc}</p>
               </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">Portal do Aluno</h3>
-              <p className="text-slate-400 mt-1.5 text-xs">
-                Visualize seu cronograma de aulas práticas, verifique pagamentos pendentes e seu progresso operacional.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-blue-400 z-10 group-hover:translate-x-1 transition-transform mt-4">
-              Ver Meu Painel
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 border-t border-slate-900 px-6 max-w-7xl mx-auto w-full z-10">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
+            O que dizem os nossos alunos?
+          </h3>
+          <p className="text-slate-400 mt-3 text-sm">
+            Depoimentos reais de pessoas que transformaram o medo em confiança nas pistas.
+          </p>
         </div>
 
-        {/* Discovery Search Section */}
-        <section className="w-full flex flex-col gap-6 border-t border-slate-900 pt-10">
-          <div className="flex flex-col gap-1.5 mb-2">
-            <h3 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              <svg className="w-6 h-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              Buscar Instrutores Disponíveis
-            </h3>
-            <p className="text-slate-400 text-xs md:text-sm">Filtre por cidade, bairro, faixa de preço, raio de proximidade e categoria de habilitação.</p>
-          </div>
-
-          {/* Search Filters Bento Box */}
-          <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
-            
-            {/* Neighborhood / City Search Input */}
-            <div className="flex flex-col gap-2 md:col-span-2">
-              <label className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Cidade ou Bairro</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ex: Pinheiros, São Paulo ou Amanda..."
-                  className="w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-orange-500"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((test, idx) => (
+            <div 
+              key={idx} 
+              className="bg-slate-900/10 border border-slate-900/80 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:border-slate-800 transition-colors"
+            >
+              <p className="text-xs text-slate-400 leading-relaxed italic">
+                "{test.quote}"
+              </p>
+              
+              <div className="flex items-center gap-3">
+                <img 
+                  alt={test.name}
+                  src={test.photo}
+                  className="w-10 h-10 rounded-full object-cover border border-slate-800"
                 />
-                <svg className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <div>
+                  <h4 className="font-bold text-xs text-white">{test.name}</h4>
+                  <span className="text-[10px] text-orange-500 font-semibold">{test.role}</span>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
 
-            {/* Category Select Filter */}
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Categoria</label>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-orange-500"
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 border-t border-slate-900 px-6 max-w-3xl mx-auto w-full z-10 scroll-mt-20">
+        <div className="text-center mb-16">
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight">
+            Perguntas Frequentes
+          </h3>
+          <p className="text-slate-400 mt-3 text-sm">
+            Ficou com alguma dúvida sobre a plataforma ou o agendamento? Veja as respostas rápidas abaixo.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {faqs.map((faq, idx) => {
+            const isOpen = openFaqIndex === idx;
+            return (
+              <div 
+                key={idx} 
+                className="bg-slate-900/30 border border-slate-800 rounded-xl overflow-hidden transition-all duration-200"
               >
-                <option value="TODAS">Todas Categorias</option>
-                <option value="A">Moto (A)</option>
-                <option value="B">Carro (B)</option>
-                <option value="C">Caminhão (C)</option>
-                <option value="D">Ônibus (D)</option>
-              </select>
-            </div>
-
-            {/* Clear Filters Button */}
-            <button
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("TODAS");
-                setMaxPrice(150);
-                setMaxRadius(25);
-              }}
-              className="bg-slate-950/40 hover:bg-slate-950 text-slate-400 hover:text-white font-bold text-xs py-3 rounded-xl border border-slate-800 transition-all cursor-pointer"
-            >
-              Limpar Filtros
-            </button>
-
-            {/* Price slider */}
-            <div className="flex flex-col gap-2 md:col-span-2">
-              <div className="flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-wider font-bold">
-                <span>Valor Máximo da Aula</span>
-                <span className="text-orange-400 font-semibold">Até R$ {maxPrice}/aula</span>
-              </div>
-              <input
-                type="range"
-                min="80"
-                max="200"
-                step="5"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500"
-              />
-            </div>
-
-            {/* Radius slider */}
-            <div className="flex flex-col gap-2 md:col-span-2">
-              <div className="flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-wider font-bold">
-                <span>Raio de Busca (Distância)</span>
-                <span className="text-orange-400 font-semibold">Até {maxRadius} km</span>
-              </div>
-              <input
-                type="range"
-                min="2"
-                max="25"
-                step="1"
-                value={maxRadius}
-                onChange={(e) => setMaxRadius(Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500"
-              />
-            </div>
-          </div>
-
-          {/* Results Count Info */}
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-slate-400 font-medium">
-              Mostrando <strong className="text-white">{filteredInstructors.length}</strong> instrutores com os filtros aplicados
-            </span>
-          </div>
-
-          {/* Instructors Grid list */}
-          {filteredInstructors.length === 0 ? (
-            <div className="text-center py-16 bg-slate-900/20 border border-dashed border-slate-900 rounded-2xl">
-              <svg className="w-10 h-10 text-slate-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h4 className="font-bold text-slate-400">Nenhum instrutor encontrado</h4>
-              <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Tente alterar os termos de busca ou aumentar os limites de preço e raio de distância.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredInstructors.map((inst) => (
-                <div
-                  key={inst.id}
-                  className="bg-slate-900/30 border border-slate-800/80 rounded-2xl p-5 hover:border-orange-500/40 transition-all flex flex-col justify-between gap-5 relative overflow-hidden group"
+                <button
+                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  className="w-full px-6 py-4 flex items-center justify-between font-bold text-sm text-left text-white hover:bg-slate-900/50 transition-colors cursor-pointer"
                 >
-                  {/* Subtle distance pill */}
-                  <span className="absolute top-4 right-4 text-[9px] font-bold bg-slate-950 border border-slate-850 px-2.5 py-1 rounded-full text-slate-400">
-                    a {inst.distance} km de você
-                  </span>
-
-                  {/* Header info */}
-                  <div className="flex gap-4 items-start">
-                    <img
-                      alt={inst.name}
-                      src={inst.photo}
-                      className="w-14 h-14 rounded-xl object-cover border border-slate-800"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-base text-white truncate">{inst.name}</h4>
-                      
-                      {/* Rating details */}
-                      <div className="flex items-center gap-1.5 mt-1">
-                        <div className="flex text-amber-500">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <svg
-                              key={i}
-                              className={`w-3.5 h-3.5 ${
-                                i < Math.floor(inst.rating) ? "fill-current" : "stroke-current fill-none"
-                              }`}
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                        <span className="text-xs font-bold text-slate-300">{inst.rating}</span>
-                        <span className="text-[10px] text-slate-500">({inst.reviewsCount} aulas)</span>
-                      </div>
-
-                      {/* Categories Badges */}
-                      <div className="flex gap-1 mt-2">
-                        {inst.categories.map((cat) => (
-                          <span
-                            key={cat}
-                            className="text-[8px] font-extrabold px-2 py-0.5 rounded bg-orange-600/15 border border-orange-500/30 text-orange-400 uppercase tracking-wider"
-                          >
-                            Cat. {cat}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                  <span>{faq.question}</span>
+                  <CaretDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? "rotate-180 text-orange-500" : ""}`} />
+                </button>
+                
+                {isOpen && (
+                  <div className="px-6 pb-5 pt-1 border-t border-slate-850 bg-slate-950/30 text-xs text-slate-400 leading-relaxed animate-fade-in">
+                    {faq.answer}
                   </div>
-
-                  {/* Bio Description */}
-                  <p className="text-xs text-slate-400 leading-relaxed line-clamp-2 italic">
-                    "{inst.bio}"
-                  </p>
-
-                  {/* Grid details (city, neighborhoods served & meeting points) */}
-                  <div className="grid grid-cols-2 gap-3 text-[11px] bg-slate-950/40 p-3.5 rounded-xl border border-slate-900/60">
-                    <div className="flex flex-col gap-1 border-r border-slate-900 pr-2">
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider font-bold">Atende em ({inst.city})</span>
-                      <p className="text-slate-300 font-semibold truncate" title={inst.neighborhoods.join(", ")}>
-                        {inst.neighborhoods.join(", ")}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-1 pl-2">
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider font-bold">Encontros Padrão</span>
-                      <p className="text-slate-300 font-semibold truncate" title={inst.meetingPoints.join(", ")}>
-                        {inst.meetingPoints.join(", ")}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Footer Card actions */}
-                  <div className="flex justify-between items-center border-t border-slate-800/60 pt-4 mt-1">
-                    <div>
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider font-bold block">Valor da Aula</span>
-                      <span className="text-lg font-black text-white">R$ {inst.hourlyRate} <span className="text-xs font-normal text-slate-400">/ 50min</span></span>
-                    </div>
-                    <button
-                      onClick={() => handleOpenBooking(inst)}
-                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
-                      </svg>
-                      Ver Agenda & Reservar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-      </main>
-
-      {/* Booking Form and Calendar Dialog Modal */}
-      {selectedInstructor && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8">
-            <button
-              onClick={() => setSelectedInstructor(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 hover:bg-slate-850 rounded-full cursor-pointer z-10"
-            >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {bookingSuccess ? (
-              <div className="text-center py-8 flex flex-col items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl font-bold animate-bounce">
-                  ✓
-                </div>
-                <h4 className="font-extrabold text-white text-lg">Solicitação Enviada com Sucesso!</h4>
-                <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-850 text-left w-full text-xs flex flex-col gap-2">
-                  <p><span className="text-slate-500 font-bold">Instrutor:</span> <span className="text-slate-300 font-semibold">{selectedInstructor.name}</span></p>
-                  <p><span className="text-slate-500 font-bold">Horário Solicitado:</span> <span className="text-orange-500 font-extrabold">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</span></p>
-                  <p><span className="text-slate-500 font-bold">Ponto de Encontro:</span> <span className="text-slate-300 font-semibold">{bookingMeetingPoint}</span></p>
-                  <p><span className="text-slate-500 font-bold">Status do Agendamento:</span> <span className="text-yellow-600 bg-yellow-500/10 px-2 py-0.5 rounded font-extrabold border border-yellow-500/20 uppercase text-[9px]">Pendente de Aprovação</span></p>
-                </div>
-                <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-                  A solicitação foi adicionada ao painel do instrutor. Ele entrará em contato via WhatsApp no número <strong className="text-slate-200">{bookingPhone}</strong> para confirmar a aula.
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-5">
-                <div>
-                  <h4 className="font-extrabold text-white text-lg">Agenda de {selectedInstructor.name}</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Selecione uma data e horário livre para fazer a solicitação.</p>
-                </div>
-
-                {/* Horizontal Date Selector */}
-                <div className="border-y border-slate-800/60 py-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Junho de 2026</span>
-                  </div>
-                  <div
-                    ref={scrollContainerRef}
-                    className="flex overflow-x-auto gap-2 pb-2 scrollbar-none snap-x"
-                  >
-                    {dates.map((d) => {
-                      const isSelected = selectedDate === d.dateStr;
-                      return (
-                        <button
-                          key={d.dateStr}
-                          id={`modal-date-btn-${d.dateStr}`}
-                          onClick={() => {
-                            setSelectedDate(d.dateStr);
-                            setSelectedSlot(null);
-                          }}
-                          className={`py-2 px-3 min-w-[54px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 cursor-pointer snap-center ${
-                            isSelected
-                              ? "bg-orange-600 text-white font-bold shadow-md shadow-orange-600/20"
-                              : "bg-slate-950 text-slate-400 hover:bg-slate-850 hover:text-white"
-                          }`}
-                        >
-                          <span className="text-[9px] uppercase font-medium">{d.day}</span>
-                          <span className="text-sm font-extrabold">{d.num}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Slots List Grid */}
-                <div>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block mb-3">Horários Disponíveis</span>
-                  <div className="grid grid-cols-3 gap-2">
-                    {timeSlots.map((slot) => {
-                      const details = getSlotDetails(selectedInstructor, selectedDate, slot);
-
-                      if (!details.isWorking) {
-                        return null; // Don't render slots on days off
-                      }
-
-                      const isSelected = selectedSlot === slot;
-                      const isLocked = details.isOutside || details.isLunch || details.isOccupied;
-
-                      let label = slot;
-                      let btnStyle = "bg-slate-950 border border-slate-850 text-slate-300 hover:border-orange-500/40 hover:text-white";
-                      
-                      if (details.isLunch) {
-                        label = "Almoço";
-                        btnStyle = "bg-orange-950/20 border border-orange-950/30 text-orange-600/70 cursor-not-allowed text-[10px]";
-                      } else if (details.isOutside) {
-                        label = "Fechado";
-                        btnStyle = "bg-slate-950 opacity-40 border border-slate-950 text-slate-600 cursor-not-allowed text-[10px]";
-                      } else if (details.isOccupied) {
-                        label = "Ocupado";
-                        btnStyle = "bg-red-950/20 border border-red-950/30 text-red-500/70 cursor-not-allowed text-[10px]";
-                      } else if (isSelected) {
-                        btnStyle = "bg-orange-600 border border-orange-600 text-white font-extrabold shadow-sm";
-                      }
-
-                      return (
-                        <button
-                          key={slot}
-                          type="button"
-                          disabled={isLocked}
-                          onClick={() => setSelectedSlot(slot)}
-                          className={`py-2.5 rounded-xl text-center text-xs font-bold transition-all active:scale-95 ${btnStyle}`}
-                        >
-                          {label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  
-                  {/* If the day is a day off */}
-                  {(() => {
-                    const extraDayConfig = selectedInstructor.extraDays?.find((ed) => ed.date === selectedDate);
-                    const dayOfWeek = new Date(selectedDate + "T00:00:00").getDay();
-                    const isNormalWorkDay = selectedInstructor.workDays.includes(dayOfWeek);
-                    const isWorking = !!extraDayConfig || isNormalWorkDay;
-                    
-                    if (!isWorking) {
-                      return (
-                        <div className="text-center py-6 border border-dashed border-slate-800 rounded-xl bg-slate-950/30">
-                          <span className="text-[11px] text-slate-500 font-semibold block">Dia de folga do instrutor</span>
-                          <span className="text-[9px] text-slate-600 block mt-0.5">Selecione outro dia da semana.</span>
-                        </div>
-                      );
-                    }
-                    return null;
-                  })()}
-                </div>
-
-                {/* Form fields only visible when a slot is chosen */}
-                {selectedSlot && (
-                  <form onSubmit={handleConfirmBooking} className="flex flex-col gap-4 border-t border-slate-800/60 pt-4 animate-fade-in">
-                    <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">
-                      Reserva de Slot: <strong className="text-orange-500">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</strong>
-                    </span>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {/* Student Name */}
-                      <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">Seu Nome</label>
-                        <input
-                          type="text"
-                          required
-                          value={bookingName}
-                          onChange={(e) => setBookingName(e.target.value)}
-                          placeholder="Ex: Pedro Silva"
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
-                        />
-                      </div>
-
-                      {/* Phone */}
-                      <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">WhatsApp</label>
-                        <input
-                          type="tel"
-                          required
-                          value={bookingPhone}
-                          onChange={(e) => setBookingPhone(e.target.value)}
-                          placeholder="Ex: (11) 99999-9999"
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {/* Select Category */}
-                      <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">Categoria</label>
-                        <select
-                          value={bookingCategory}
-                          onChange={(e) => setBookingCategory(e.target.value)}
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none"
-                        >
-                          {selectedInstructor.categories.map((c) => (
-                            <option key={c} value={c}>
-                              Categoria {c}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* Select Meeting Point */}
-                      <div>
-                        <label className="text-[9px] text-slate-400 block mb-1 font-bold uppercase">Ponto de Encontro</label>
-                        <select
-                          value={bookingMeetingPoint}
-                          onChange={(e) => setBookingMeetingPoint(e.target.value)}
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none"
-                        >
-                          {selectedInstructor.meetingPoints.map((mp) => (
-                            <option key={mp} value={mp}>
-                              {mp}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3 rounded-xl shadow-lg mt-1 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
-                      </svg>
-                      Enviar Solicitação de Agendamento
-                    </button>
-                  </form>
                 )}
               </div>
-            )}
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Final Call to Action */}
+      <section className="py-16 px-6 max-w-7xl mx-auto w-full z-10 mb-10">
+        <div className="bg-gradient-to-tr from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/10 to-transparent pointer-events-none" />
+          <h3 className="text-3xl md:text-5xl font-black tracking-tight relative z-10 leading-tight">
+            Pronto para dar a sua primeira partida?
+          </h3>
+          <p className="text-slate-400 mt-4 text-sm md:text-base max-w-xl relative z-10 leading-relaxed">
+            Encontre o instrutor perfeito agora e comece a treinar nas ruas com a segurança e a flexibilidade que você merece.
+          </p>
+          <div className="mt-8 relative z-10">
+            <Link 
+              href="/instrutores" 
+              className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg shadow-orange-600/25 inline-flex items-center gap-2 transition-transform active:scale-98"
+            >
+              Começar Agora
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
-      )}
+      </section>
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 text-slate-600 text-[10px] z-10 border-t border-slate-900 bg-slate-950">
-        &copy; {new Date().getFullYear()} Volante Certo S.A. Todos os direitos reservados.
+      <footer className="w-full text-center py-6 text-slate-650 text-[10px] z-10 border-t border-slate-900 bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0">
+        <span className="text-slate-500 font-medium">Volante Certo S.A. &copy; {new Date().getFullYear()}</span>
+        <div className="flex gap-6 text-slate-400 font-medium">
+          <Link href="/politica-de-privacidade" className="hover:text-white transition-colors">Termos de Uso</Link>
+          <Link href="/termos" className="hover:text-white transition-colors">Política de Privacidade</Link>
+        </div>
       </footer>
     </div>
   );
