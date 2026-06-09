@@ -1,7 +1,18 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Student, ClassSession, Transaction, InstructorSettings, getStoredData, saveStoredData } from "./store";
+import { Student, ClassSession, Transaction, InstructorSettings } from "./store";
+import {
+  getAppData,
+  addStudentAction,
+  addClassAction,
+  confirmClassAction,
+  startClassAction,
+  cancelClassAction,
+  completeClassAction,
+  payPendingPaymentAction,
+  updateSettingsAction,
+} from "@/app/actions";
 
 interface AppContextType {
   students: Student[];
@@ -38,143 +49,103 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       lunchEnd: "13:30",
       extraDays: [],
       city: "São Paulo",
-      neighborhoods: ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
-      meetingPoints: ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
-      hourlyRate: 120,
+      neighborhoods: [],
+      meetingPoints: [],
+      hourlyRate: 12000,
       categories: ["B"],
-      bio: "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
+      bio: "",
     },
   });
 
-  const [initialized, setInitialized] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Função para recarregar todos os dados do banco de dados correspondente ao Tenant ativo
+  const reloadData = async () => {
+    try {
+      const appData = await getAppData();
+      setData(appData);
+    } catch (error) {
+      console.error("Erro ao carregar dados do banco de dados:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Carrega dados iniciais na montagem do Provider
   useEffect(() => {
-    setData(getStoredData());
-    setInitialized(true);
+    reloadData();
   }, []);
 
-  useEffect(() => {
-    if (initialized) {
-      saveStoredData(data.students, data.classes, data.transactions, data.settings);
+  const addStudent = async (newS: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => {
+    try {
+      await addStudentAction(newS);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao adicionar aluno no banco:", err);
     }
-  }, [data, initialized]);
-
-  const addStudent = (newS: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => {
-    const id = newS.name.toLowerCase().replace(/\s+/g, "-");
-    const student: Student = {
-      ...newS,
-      id,
-      progress: 0,
-      completedClasses: 0,
-      totalClasses: 20,
-      photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc", // Default avatar
-    };
-
-    setData((prev) => ({
-      ...prev,
-      students: [...prev.students, student],
-    }));
   };
 
-  const addClass = (session: Omit<ClassSession, "id" | "status" | "studentPhoto" | "instructorName"> & { studentPhoto?: string; instructorName?: string }) => {
-    const student = data.students.find((s) => s.id === session.studentId);
-    const id = `class-${Date.now()}`;
-    const newClass: ClassSession = {
-      ...session,
-      id,
-      studentPhoto: session.studentPhoto || student?.photoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
-      status: "Pendente",
-      instructorName: session.instructorName || "Carlos Eduardo",
-    };
-
-    setData((prev) => ({
-      ...prev,
-      classes: [...prev.classes, newClass],
-    }));
+  const addClass = async (session: Omit<ClassSession, "id" | "status" | "studentPhoto" | "instructorName"> & { studentPhoto?: string; instructorName?: string }) => {
+    try {
+      await addClassAction(session);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao agendar aula no banco:", err);
+    }
   };
 
-  const confirmClass = (classId: string) => {
-    setData((prev) => ({
-      ...prev,
-      classes: prev.classes.map((c) => (c.id === classId ? { ...c, status: "Confirmada" as const } : c)),
-    }));
+  const confirmClass = async (classId: string) => {
+    try {
+      await confirmClassAction(classId);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao confirmar aula no banco:", err);
+    }
   };
 
-  const startClass = (classId: string) => {
-    setData((prev) => ({
-      ...prev,
-      classes: prev.classes.map((c) => (c.id === classId ? { ...c, status: "Em andamento" as const } : c)),
-    }));
+  const startClass = async (classId: string) => {
+    try {
+      await startClassAction(classId);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao iniciar aula no banco:", err);
+    }
   };
 
-  const cancelClass = (classId: string) => {
-    setData((prev) => ({
-      ...prev,
-      classes: prev.classes.map((c) => (c.id === classId ? { ...c, status: "Cancelada" as const } : c)),
-    }));
+  const cancelClass = async (classId: string) => {
+    try {
+      await cancelClassAction(classId);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao cancelar aula no banco:", err);
+    }
   };
 
-  const completeClass = (classId: string) => {
-    setData((prev) => {
-      const targetClass = prev.classes.find((c) => c.id === classId);
-      if (!targetClass) return prev;
-
-      const updatedClasses = prev.classes.map((c) =>
-        c.id === classId ? { ...c, status: "Concluída" as const } : c
-      );
-
-      // Increment student progress if they had a class completed
-      const updatedStudents = prev.students.map((s) => {
-        if (s.id === targetClass.studentId) {
-          const completed = Math.min(s.completedClasses + 1, s.totalClasses);
-          const progress = Math.round((completed / s.totalClasses) * 100);
-          return { ...s, completedClasses: completed, progress };
-        }
-        return s;
-      });
-
-      return {
-        ...prev,
-        classes: updatedClasses,
-        students: updatedStudents,
-      };
-    });
+  const completeClass = async (classId: string) => {
+    try {
+      await completeClassAction(classId);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao concluir aula no banco:", err);
+    }
   };
 
-  const payPendingPayment = (studentId: string, amount: number) => {
-    setData((prev) => {
-      const student = prev.students.find((s) => s.id === studentId);
-      if (!student) return prev;
-
-      const newTransaction: Transaction = {
-        id: `t-${Date.now()}`,
-        studentName: student.name,
-        amount,
-        type: "payment",
-        date: new Date().toISOString().split("T")[0],
-        status: "Recebido",
-        description: "Pagamento de Fatura Pendente (PIX)",
-      };
-
-      const updatedStudents = prev.students.map((s) => {
-        if (s.id === studentId) {
-          return { ...s, pendingPayment: Math.max(0, s.pendingPayment - amount) };
-        }
-        return s;
-      });
-      return {
-        ...prev,
-        students: updatedStudents,
-        transactions: [newTransaction, ...prev.transactions],
-      };
-    });
+  const payPendingPayment = async (studentId: string, amount: number) => {
+    try {
+      await payPendingPaymentAction(studentId, amount);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao registrar pagamento no banco:", err);
+    }
   };
 
-  const updateSettings = (newSettings: InstructorSettings) => {
-    setData((prev) => ({
-      ...prev,
-      settings: newSettings,
-    }));
+  const updateSettings = async (newSettings: InstructorSettings) => {
+    try {
+      await updateSettingsAction(newSettings);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao atualizar configurações no banco:", err);
+    }
   };
 
   return (
