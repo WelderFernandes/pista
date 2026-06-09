@@ -18,6 +18,10 @@ import { formatCentsToBRL, centsToBRL } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useInstructorsFilterStore } from "@/lib/store-instructors";
 import { getPublicInstructors, addPublicClassAction } from "@/app/actions";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+
 
 
 interface Instructor {
@@ -675,68 +679,78 @@ export default function InstructorsPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">Seu Nome</label>
-                        <input
-                          type="text"
-                          required
-                          value={bookingName}
-                          onChange={(e) => setBookingName(e.target.value)}
-                          placeholder="Ex: Pedro Silva"
-                          className="w-full bg-white border border-slate-200 text-slate-850 focus:border-orange-500 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
-                        />
+                        <Label htmlFor="bookingName" className="text-[9px]">Seu Nome</Label>
+                        <div className="mt-1">
+                          <Input
+                            type="text"
+                            id="bookingName"
+                            required
+                            value={bookingName}
+                            onChange={(e) => setBookingName(e.target.value)}
+                            placeholder="Ex: Pedro Silva"
+                          />
+                        </div>
                       </div>
 
                       <div>
-                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">WhatsApp</label>
-                        <input
-                          type="tel"
-                          required
-                          value={bookingPhone}
-                          onChange={(e) => setBookingPhone(e.target.value)}
-                          placeholder="Ex: (11) 99999-9999"
-                          className="w-full bg-white border border-slate-200 text-slate-850 focus:border-orange-500 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
-                        />
+                        <Label htmlFor="bookingPhone" className="text-[9px]">WhatsApp</Label>
+                        <div className="mt-1">
+                          <Input
+                            type="tel"
+                            id="bookingPhone"
+                            required
+                            value={bookingPhone}
+                            onChange={(e) => setBookingPhone(e.target.value)}
+                            placeholder="Ex: (11) 99999-9999"
+                          />
+                        </div>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">Categoria</label>
-                        <select
-                          value={bookingCategory}
-                          onChange={(e) => setBookingCategory(e.target.value)}
-                          className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
-                        >
-                          {selectedInstructor.categories.map((c) => (
-                            <option key={c} value={c}>
-                              Categoria {c}
-                            </option>
-                          ))}
-                        </select>
+                        <Label htmlFor="bookingCategory" className="text-[9px]">Categoria</Label>
+                        <div className="mt-1">
+                          <select
+                            id="bookingCategory"
+                            value={bookingCategory}
+                            onChange={(e) => setBookingCategory(e.target.value)}
+                            className="flex h-10 w-full rounded-xl border border-slate-250 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
+                          >
+                            {selectedInstructor.categories.map((c) => (
+                              <option key={c} value={c}>
+                                Categoria {c}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
 
                       <div>
-                        <label className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold uppercase">Ponto de Encontro</label>
-                        <select
-                          value={bookingMeetingPoint}
-                          onChange={(e) => setBookingMeetingPoint(e.target.value)}
-                          className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950 dark:border-slate-850 dark:text-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none"
-                        >
-                          {selectedInstructor.meetingPoints.map((mp) => (
-                            <option key={mp} value={mp}>
-                              {mp}
-                            </option>
-                          ))}
-                        </select>
+                        <Label htmlFor="bookingMeetingPoint" className="text-[9px]">Ponto de Encontro</Label>
+                        <div className="mt-1">
+                          <select
+                            id="bookingMeetingPoint"
+                            value={bookingMeetingPoint}
+                            onChange={(e) => setBookingMeetingPoint(e.target.value)}
+                            className="flex h-10 w-full rounded-xl border border-slate-250 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
+                          >
+                            {selectedInstructor.meetingPoints.map((mp) => (
+                              <option key={mp} value={mp}>
+                                {mp}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                     </div>
 
-                    <button
+                    <Button
                       type="submit"
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3 rounded-xl shadow-lg mt-1 text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold h-11 text-xs transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       Enviar Solicitação de Agendamento
-                    </button>
+                    </Button>
                   </form>
                 )}
               </div>

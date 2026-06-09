@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn, signUp, authClient } from "@/lib/auth-client";
 import { signUpSchema } from "@/lib/schemas";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,9 +22,13 @@ export default function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [orgName, setOrgName] = useState("");
   
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -159,10 +167,10 @@ export default function LoginPage() {
         {/* Left Side: Branding/Image */}
         <div className="md:w-1/2 relative hidden md:flex flex-col justify-between p-10 bg-slate-100 border-r border-slate-200 dark:bg-slate-900 dark:border-slate-800 overflow-hidden">
           {/* Subtle overlay decorative lines */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/5 to-blue-600/5 opacity-50" />
+          <div className="absolute inset-0 bg-linear-to-br from-orange-600/5 to-blue-600/5 opacity-50" />
           
           <div className="z-10 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-base shadow-lg shadow-orange-500/20 text-white">
+            <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-base shadow-lg shadow-orange-500/20 text-white">
               V
             </div>
             <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">Volante Certo</span>
@@ -192,7 +200,7 @@ export default function LoginPage() {
           <div className="max-w-md w-full mx-auto">
             {/* Mobile Logo Header */}
             <div className="md:hidden flex items-center gap-2 mb-6 justify-center">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-base shadow-lg shadow-orange-500/20 text-white">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-base shadow-lg shadow-orange-500/20 text-white">
                 V
               </div>
               <span className="font-bold text-lg text-slate-900 dark:text-white">Volante Certo</span>
@@ -249,83 +257,96 @@ export default function LoginPage() {
               {mode === "signup" && (
                 <>
                   <div>
-                    <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="name">
-                      Nome completo
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Ex: Carlos Eduardo Silva"
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
-                      required
-                    />
+                    <Label htmlFor="name">Nome completo</Label>
+                    <div className="mt-1">
+                      <Input
+                        type="text"
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Ex: Carlos Eduardo Silva"
+                        required
+                      />
+                    </div>
                   </div>
 
                   {profile === "instructor" && (
                     <div>
-                      <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="orgName">
-                        Nome da Autoescola (Organização / Tenant)
-                      </label>
-                      <input
-                        type="text"
-                        id="orgName"
-                        value={orgName}
-                        onChange={(e) => setOrgName(e.target.value)}
-                        placeholder="Ex: Autoescola Volante Certo Pinheiros"
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
-                        required
-                      />
+                      <Label htmlFor="orgName">Nome da Autoescola (Organização / Tenant)</Label>
+                      <div className="mt-1">
+                        <Input
+                          type="text"
+                          id="orgName"
+                          value={orgName}
+                          onChange={(e) => setOrgName(e.target.value)}
+                          placeholder="Ex: Autoescola Volante Certo Pinheiros"
+                          required
+                        />
+                      </div>
                     </div>
                   )}
                 </>
               )}
 
               <div>
-                <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="email">
+                <Label htmlFor="email">
                   {profile === "instructor" ? "E-mail institucional" : "E-mail de acesso"}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={profile === "instructor" ? "instrutor@volantecerto.com" : "aluno@provedor.com"}
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
-                  required
-                />
+                </Label>
+                <div className="mt-1">
+                  <Input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={profile === "instructor" ? "instrutor@volantecerto.com" : "aluno@provedor.com"}
+                    required
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="password">
-                  Senha de acesso
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
-                  required
-                />
+                <Label htmlFor="password">Senha de acesso</Label>
+                <div className="relative mt-1">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                  >
+                    {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               {mode === "signup" && (
                 <div>
-                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="confirmPassword">
-                    Confirmação de senha
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
-                    required
-                  />
+                  <Label htmlFor="confirmPassword">Confirmação de senha</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      type={showConfirmPassword ? "text" : "password"}
+                      id="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="pr-10"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    >
+                      {showConfirmPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -341,10 +362,10 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className={`w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 ${
+                className={`w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 h-11 ${
                   profile === "instructor"
                     ? "bg-orange-600 hover:bg-orange-700 shadow-orange-600/20"
                     : "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20"
@@ -367,7 +388,7 @@ export default function LoginPage() {
                     </svg>
                   </>
                 )}
-              </button>
+              </Button>
             </form>
 
             <div className="mt-8 text-center text-xs text-slate-500">
