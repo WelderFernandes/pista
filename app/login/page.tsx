@@ -3,13 +3,22 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { signIn, signUp, authClient } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [mode, setMode] = useState<"login" | "signup">("login");
   const [profile, setProfile] = useState<"instructor" | "student">("instructor");
+  
+  // Form fields
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [orgName, setOrgName] = useState("");
+  
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,18 +30,102 @@ export default function LoginPage() {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setError("Por favor, preencha todos os campos.");
-      return;
-    }
+  const slugify = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, "")
+      .replace(/\-\-+/g, "-")
+      .trim();
+  };
 
-    // Direct routing based on selection for simulation
-    if (profile === "instructor") {
-      router.push("/instructor");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    if (mode === "login") {
+      if (!email || !password) {
+        setError("Por favor, preencha todos os campos.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error: authError } = await signIn.email({
+          email,
+          password,
+        });
+
+        if (authError) {
+          setError(authError.message || "E-mail ou senha incorretos.");
+          setLoading(false);
+          return;
+        }
+
+        setSuccess("Login efetuado com sucesso! Redirecionando...");
+        
+        // Redireciona de acordo com o perfil
+        setTimeout(() => {
+          if (profile === "instructor") {
+            router.push("/instructor");
+          } else {
+            router.push("/student");
+          }
+        }, 1200);
+
+      } catch (err) {
+        setError("Ocorreu um erro ao tentar efetuar o login.");
+        setLoading(false);
+      }
     } else {
-      router.push("/student");
+      // Cadastro/SignUp
+      if (!name || !email || !password || !orgName) {
+        setError("Por favor, preencha todos os campos do formulário.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // 1. Criar o usuário via Better Auth
+        const { data: userData, error: signUpError } = await signUp.email({
+          email,
+          password,
+          name,
+        });
+
+        if (signUpError) {
+          setError(signUpError.message || "Erro ao criar sua conta.");
+          setLoading(false);
+          return;
+        }
+
+        // 2. Criar a Organização vinculada ao Usuário (o Better Auth associa automaticamente como Owner)
+        const { data: orgData, error: orgError } = await authClient.organization.create({
+          name: orgName,
+          slug: slugify(orgName),
+        });
+
+        if (orgError) {
+          setError(`Conta criada, mas falhou ao registrar a Autoescola: ${orgError.message}`);
+          setLoading(false);
+          return;
+        }
+
+        setSuccess("Autoescola e conta registradas com sucesso! Redirecionando...");
+        
+        setTimeout(() => {
+          router.push("/instructor");
+        }, 1500);
+
+      } catch (err) {
+        setError("Ocorreu um erro no processo de registro.");
+        setLoading(false);
+      }
     }
   };
 
@@ -60,7 +153,9 @@ export default function LoginPage() {
           <div className="z-10 mt-12 mb-6">
             <span className="text-xs text-orange-600 dark:text-orange-500 font-bold uppercase tracking-wider">Acelere seu Aprendizado</span>
             <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 leading-tight">
-              A ferramenta de alta performance para instrutores e alunos.
+              {mode === "login" 
+                ? "A ferramenta de alta performance para instrutores e alunos."
+                : "Cadastre sua Autoescola e comece a gerenciar hoje mesmo."}
             </h1>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
               Monitore sua agenda de aulas, visualize relatórios financeiros detalhados ou acompanhe o checklist prático para o exame do Detran em uma única plataforma integrada.
@@ -72,7 +167,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Right Side: Login Form */}
+        {/* Right Side: Form */}
         <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white dark:bg-slate-950/40 relative">
           <div className="max-w-md w-full mx-auto">
             {/* Mobile Logo Header */}
@@ -80,45 +175,93 @@ export default function LoginPage() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-base shadow-lg shadow-orange-500/20 text-white">
                 V
               </div>
-              <h1 className="font-bold text-lg text-slate-900 dark:text-white">Volante Certo</h1>
+              <span className="font-bold text-lg text-slate-900 dark:text-white">Volante Certo</span>
             </div>
 
-            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mb-1 tracking-tight">Acesse o Sistema</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">Digite suas credenciais de acesso abaixo.</p>
+            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mb-1 tracking-tight">
+              {mode === "login" ? "Acesse o Sistema" : "Crie sua Conta"}
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
+              {mode === "login" 
+                ? "Digite suas credenciais de acesso abaixo." 
+                : "Preencha as informações para registrar sua Autoescola."}
+            </p>
 
-            {/* Profile Tabs Selector */}
-            <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-xl mb-6">
-              <button
-                type="button"
-                onClick={() => setProfile("instructor")}
-                className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                  profile === "instructor"
-                    ? "bg-orange-600 text-white shadow-md shadow-orange-600/10"
-                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                }`}
-              >
-                Sou Instrutor
-              </button>
-              <button
-                type="button"
-                onClick={() => setProfile("student")}
-                className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                  profile === "student"
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
-                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                }`}
-              >
-                Sou Aluno
-              </button>
-            </div>
+            {/* Profile Tabs Selector - Only show on Login */}
+            {mode === "login" && (
+              <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-xl mb-6">
+                <button
+                  type="button"
+                  onClick={() => setProfile("instructor")}
+                  className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                    profile === "instructor"
+                      ? "bg-orange-600 text-white shadow-md shadow-orange-600/10"
+                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                  }`}
+                >
+                  Sou Instrutor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProfile("student")}
+                  className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                    profile === "student"
+                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
+                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                  }`}
+                >
+                  Sou Aluno
+                </button>
+              </div>
+            )}
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-650 dark:text-red-400 text-xs p-3 rounded-xl mb-4 font-semibold">
+              <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-xl mb-4 font-semibold">
                 {error}
               </div>
             )}
 
+            {success && (
+              <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs p-3 rounded-xl mb-4 font-semibold">
+                {success}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {mode === "signup" && (
+                <>
+                  <div>
+                    <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="name">
+                      Nome completo
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Ex: Carlos Eduardo Silva"
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="orgName">
+                      Nome da Autoescola (Organização / Tenant)
+                    </label>
+                    <input
+                      type="text"
+                      id="orgName"
+                      value={orgName}
+                      onChange={(e) => setOrgName(e.target.value)}
+                      placeholder="Ex: Autoescola Volante Certo Pinheiros"
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
               <div>
                 <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="email">
                   E-mail institucional
@@ -149,36 +292,69 @@ export default function LoginPage() {
                 />
               </div>
 
-              <div className="flex justify-between items-center text-xs mt-1">
-                <label className="flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400">
-                  <input type="checkbox" className="rounded bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-orange-655 focus:ring-0 focus:ring-offset-0" />
-                  Lembrar de mim
-                </label>
-                <Link href="#" className="text-slate-500 hover:underline">
-                  Esqueceu a senha?
-                </Link>
-              </div>
+              {mode === "login" && (
+                <div className="flex justify-between items-center text-xs mt-1">
+                  <label className="flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400">
+                    <input type="checkbox" className="rounded bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-orange-600 focus:ring-0 focus:ring-offset-0" />
+                    Lembrar de mim
+                  </label>
+                  <Link href="#" className="text-slate-500 hover:underline">
+                    Esqueceu a senha?
+                  </Link>
+                </div>
+              )}
 
               <button
                 type="submit"
-                className={`w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white ${
-                  profile === "instructor"
+                disabled={loading}
+                className={`w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 ${
+                  profile === "instructor" || mode === "signup"
                     ? "bg-orange-600 hover:bg-orange-700 shadow-orange-600/20"
                     : "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20"
                 }`}
               >
-                Entrar no Painel
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+                {loading ? (
+                  <span>Aguarde...</span>
+                ) : mode === "login" ? (
+                  <>
+                    Entrar no Painel
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </>
+                ) : (
+                  <>
+                    Registrar Autoescola
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </>
+                )}
               </button>
             </form>
 
             <div className="mt-8 text-center text-xs text-slate-500">
-              Não possui cadastro?{" "}
-              <Link href="#" className="font-bold text-slate-850 dark:text-white hover:underline">
-                Contate sua Autoescola
-              </Link>
+              {mode === "login" ? (
+                <>
+                  Deseja cadastrar sua Autoescola?{" "}
+                  <button 
+                    onClick={() => { setMode("signup"); setError(""); setSuccess(""); }}
+                    className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
+                  >
+                    Registre-se agora
+                  </button>
+                </>
+              ) : (
+                <>
+                  Já possui uma conta ativa?{" "}
+                  <button 
+                    onClick={() => { setMode("login"); setError(""); setSuccess(""); }}
+                    className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
+                  >
+                    Faça login aqui
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
