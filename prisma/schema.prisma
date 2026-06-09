@@ -1,0 +1,128 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ==========================================
+// MODELS DA APLICAÇÃO (VOLANTE CERTO)
+// ==========================================
+
+model Student {
+  id               String         @id
+  name             String
+  phone            String
+  city             String
+  neighborhoods    String[]
+  meetingPoints    String[]
+  categories       String[]
+  photoUrl         String
+  progress         Int            @default(0)
+  completedClasses Int            @default(0)
+  totalClasses     Int            @default(20)
+  pendingPayment   Float          @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  classes          ClassSession[]
+}
+
+model ClassSession {
+  id             String   @id @default(uuid())
+  studentId      String
+  studentName    String
+  studentPhoto   String
+  type           String
+  date           String
+  time           String
+  duration       String
+  meetingPoint   String
+  instructorName String
+  status         String   @default("Pendente") // "Pendente" | "Confirmada" | "Em andamento" | "Concluída" | "Cancelada"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  studentName String
+  amount      Float
+  type        String   // "payment" | "expense"
+  date        String
+  status      String   // "Recebido" | "Pendente"
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model InstructorSettings {
+  id            String   @id @default("global")
+  workDays      Int[]
+  workStart     String   @default("08:00")
+  workEnd       String   @default("18:00")
+  lunchStart    String   @default("12:00")
+  lunchEnd      String   @default("13:30")
+  city          String   @default("São Paulo")
+  neighborhoods String[]
+  meetingPoints String[]
+  hourlyRate    Float    @default(120)
+  categories    String[]
+  bio           String
+  updatedAt     DateTime @updatedAt
+}
+
+// ==========================================
+// MODELS DO BETTER AUTH (AUTENTICAÇÃO)
+// ==========================================
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                    String    @id @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
