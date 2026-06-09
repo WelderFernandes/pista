@@ -3,6 +3,10 @@
 import React, { useState } from "react";
 import { useApp } from "@/lib/context";
 import { centsToBRL, brlToCents } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+
 
 const WEEKDAYS = [
   { value: 0, label: "Dom", fullName: "Domingo" },
@@ -177,15 +181,15 @@ export default function InstructorSettingsPage() {
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Configurações do Instrutor</h2>
           <p className="text-slate-500 text-sm">Defina seus horários de expediente, área de atuação e biografia profissional.</p>
         </div>
-        <button
+        <Button
           onClick={handleSaveAll}
-          className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-orange-600/20 transition-all active:scale-95 cursor-pointer flex items-center gap-2"
+          className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-orange-600/20 transition-all active:scale-95 cursor-pointer flex items-center gap-2 h-10"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
           Salvar Tudo
-        </button>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -206,55 +210,63 @@ export default function InstructorSettingsPage() {
               {/* City and Price */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Cidade</label>
-                  <input
-                    type="text"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="Ex: São Paulo"
-                    className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                  />
+                  <Label htmlFor="city">Cidade</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="text"
+                      id="city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      placeholder="Ex: São Paulo"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Valor da Hora/Aula (R$)</label>
-                  <input
-                    type="number"
-                    value={hourlyRate}
-                    onChange={(e) => setHourlyRate(Math.max(0, Number(e.target.value)))}
-                    placeholder="Ex: 120"
-                    className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                  />
+                  <Label htmlFor="hourlyRate">Valor da Hora/Aula (R$)</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="number"
+                      id="hourlyRate"
+                      value={hourlyRate}
+                      onChange={(e) => setHourlyRate(Math.max(0, Number(e.target.value)))}
+                      placeholder="Ex: 120"
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Served Neighborhoods */}
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Bairros de Atuação (separados por vírgula)</label>
-                <input
-                  type="text"
-                  value={neighborhoodsInput}
-                  onChange={(e) => setNeighborhoodsInput(e.target.value)}
-                  placeholder="Ex: Centro, Pinheiros, Vila Madalena"
-                  className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                />
+                <Label htmlFor="neighborhoods">Bairros de Atuação (separados por vírgula)</Label>
+                <div className="mt-1">
+                  <Input
+                    type="text"
+                    id="neighborhoods"
+                    value={neighborhoodsInput}
+                    onChange={(e) => setNeighborhoodsInput(e.target.value)}
+                    placeholder="Ex: Centro, Pinheiros, Vila Madalena"
+                  />
+                </div>
               </div>
 
               {/* Default Meeting Points */}
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Pontos de Encontro Padrão (separados por vírgula)</label>
-                <input
-                  type="text"
-                  value={meetingPointsInput}
-                  onChange={(e) => setMeetingPointsInput(e.target.value)}
-                  placeholder="Ex: Autoescola Centro, Metrô Pinheiros"
-                  className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                />
+                <Label htmlFor="meetingPoints">Pontos de Encontro Padrão (separados por vírgula)</Label>
+                <div className="mt-1">
+                  <Input
+                    type="text"
+                    id="meetingPoints"
+                    value={meetingPointsInput}
+                    onChange={(e) => setMeetingPointsInput(e.target.value)}
+                    placeholder="Ex: Autoescola Centro, Metrô Pinheiros"
+                  />
+                </div>
               </div>
 
               {/* Categories pills selection */}
               <div>
-                <label className="text-[10px] text-slate-400 block mb-2 font-semibold uppercase tracking-wider">Categorias de Ensino Habilitadas</label>
-                <div className="flex gap-2">
+                <Label>Categorias de Ensino Habilitadas</Label>
+                <div className="flex gap-2 mt-1.5">
                   {AVAILABLE_CATEGORIES.map((cat) => {
                     const isSelected = categories.includes(cat.value);
                     return (
@@ -277,14 +289,17 @@ export default function InstructorSettingsPage() {
 
               {/* Professional Description */}
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Apresentação / Minibiografia</label>
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  rows={3}
-                  placeholder="Fale brevemente sobre sua experiência e metodologia de ensino..."
-                  className="w-full bg-slate-50 border border-slate-150 rounded-xl px-3 py-2 text-sm font-medium text-slate-900 focus:outline-none focus:border-orange-500 resize-none"
-                />
+                <Label htmlFor="bio">Apresentação / Minibiografia</Label>
+                <div className="mt-1">
+                  <textarea
+                    id="bio"
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    rows={3}
+                    placeholder="Fale brevemente sobre sua experiência e metodologia de ensino..."
+                    className="w-full bg-slate-50 border border-slate-250 dark:border-slate-800 dark:bg-slate-950 rounded-xl px-3.5 py-2 text-xs font-medium text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 resize-none transition-colors duration-200"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -407,45 +422,51 @@ export default function InstructorSettingsPage() {
 
             <form onSubmit={handleAddExtraDay} className="flex flex-col gap-3">
               <div>
-                <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Data do Dia Extra</label>
-                <input
-                  type="date"
-                  required
-                  value={newExtraDate}
-                  onChange={(e) => setNewExtraDate(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                />
+                <Label htmlFor="newExtraDate">Data do Dia Extra</Label>
+                <div className="mt-1">
+                  <Input
+                    type="date"
+                    id="newExtraDate"
+                    required
+                    value={newExtraDate}
+                    onChange={(e) => setNewExtraDate(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Hora Início</label>
-                  <input
-                    type="time"
-                    required
-                    value={newExtraStart}
-                    onChange={(e) => setNewExtraStart(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-2 py-2 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                  />
+                  <Label htmlFor="newExtraStart">Hora Início</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="time"
+                      id="newExtraStart"
+                      required
+                      value={newExtraStart}
+                      onChange={(e) => setNewExtraStart(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1 font-semibold uppercase tracking-wider">Hora Fim</label>
-                  <input
-                    type="time"
-                    required
-                    value={newExtraEnd}
-                    onChange={(e) => setNewExtraEnd(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-2 py-2 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                  />
+                  <Label htmlFor="newExtraEnd">Hora Fim</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="time"
+                      id="newExtraEnd"
+                      required
+                      value={newExtraEnd}
+                      onChange={(e) => setNewExtraEnd(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
 
-              <button
+              <Button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl transition-all active:scale-95 cursor-pointer mt-1"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs h-10 transition-all active:scale-95 cursor-pointer mt-1"
               >
                 + Adicionar Exceção
-              </button>
+              </Button>
             </form>
 
             {/* List of active Extra Days exceptions */}
@@ -496,12 +517,12 @@ export default function InstructorSettingsPage() {
       
       {/* Mobile Save Button Area (fixed-like button spacer) */}
       <div className="flex justify-center mt-4 md:hidden">
-        <button
+        <Button
           onClick={handleSaveAll}
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm py-3.5 rounded-xl shadow-lg shadow-orange-600/20 active:scale-95 transition-all"
+          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm h-12 rounded-xl shadow-lg shadow-orange-600/20 active:scale-95 transition-all"
         >
           Salvar Configurações
-        </button>
+        </Button>
       </div>
     </div>
   );

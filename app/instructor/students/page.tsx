@@ -3,42 +3,66 @@
 import { useState } from "react";
 import { useApp } from "@/lib/context";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const studentSchema = z.object({
+  name: z.string().min(3, "O nome deve ter no mínimo 3 caracteres"),
+  category: z.string().min(1, "Selecione uma categoria"),
+  phone: z.string().min(8, "Telefone inválido ou incompleto"),
+  email: z.string().email("Insira um endereço de e-mail válido"),
+  meetingPoint: z.string().min(2, "Informe um ponto de encontro válido"),
+});
+
+type StudentFormInputs = z.infer<typeof studentSchema>;
 
 export default function InstructorStudents() {
   const { students, addStudent } = useApp();
   const [search, setSearch] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // Form state
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("B (Carro)");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [meetingPoint, setMeetingPoint] = useState("Centro");
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<StudentFormInputs>({
+    resolver: zodResolver(studentSchema),
+    defaultValues: {
+      name: "",
+      category: "B (Carro)",
+      phone: "",
+      email: "",
+      meetingPoint: "Centro"
+    }
+  });
 
   const filteredStudents = students.filter((s) =>
     s.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleAddStudent = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name) return;
+  const addStudentMutation = useMutation({
+    mutationFn: async (data: StudentFormInputs) => {
+      // Aqui encapsulamos o cadastro simulando uma operação assíncrona
+      addStudent({
+        name: data.name,
+        category: data.category,
+        phone: data.phone,
+        email: data.email,
+        meetingPoint: data.meetingPoint,
+        pendingPayment: 0,
+      });
+      return true;
+    },
+    onSuccess: () => {
+      reset();
+      setShowAddModal(false);
+    }
+  });
 
-    addStudent({
-      name,
-      category,
-      phone,
-      email,
-      meetingPoint,
-      pendingPayment: 0,
-    });
-
-    // Reset fields
-    setName("");
-    setPhone("");
-    setEmail("");
-    setMeetingPoint("Centro");
-    setShowAddModal(false);
+  const onSubmit = (data: StudentFormInputs) => {
+    if (!data.name) return;
+    addStudentMutation.mutate(data);
   };
 
   return (
@@ -145,72 +169,107 @@ export default function InstructorStudents() {
             </button>
             <h3 className="text-lg font-bold text-slate-900 mb-4">Adicionar Novo Aluno</h3>
 
-            <form onSubmit={handleAddStudent} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Nome Completo</label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Nome do Aluno"
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                />
+                <Label htmlFor="studentName">Nome Completo</Label>
+                <div className="mt-1">
+                  <Input
+                    type="text"
+                    id="studentName"
+                    placeholder="Nome do Aluno"
+                    className={errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}
+                    {...register("name")}
+                  />
+                </div>
+                {errors.name && (
+                  <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Categoria de CNH</label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                >
-                  <option value="B (Carro)">B (Carro)</option>
-                  <option value="A (Moto)">A (Moto)</option>
-                  <option value="AB (Carro e Moto)">AB (Carro e Moto)</option>
-                </select>
+                <Label htmlFor="studentCategory">Categoria de CNH</Label>
+                <div className="mt-1">
+                  <select
+                    id="studentCategory"
+                    className={`w-full rounded-xl border p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none transition-colors duration-200 ${errors.category ? "border-red-500 focus:border-red-500" : "border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:border-slate-350 dark:focus:border-slate-700"}`}
+                    {...register("category")}
+                  >
+                    <option value="B (Carro)">B (Carro)</option>
+                    <option value="A (Moto)">A (Moto)</option>
+                    <option value="AB (Carro e Moto)">AB (Carro e Moto)</option>
+                  </select>
+                </div>
+                {errors.category && (
+                  <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                    {errors.category.message}
+                  </p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-500 font-bold block mb-1">Telefone</label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="(11) 99999-9999"
-                    className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                  />
+                  <Label htmlFor="studentPhone">Telefone</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="tel"
+                      id="studentPhone"
+                      placeholder="(11) 99999-9999"
+                      className={errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      {...register("phone")}
+                    />
+                  </div>
+                  {errors.phone && (
+                    <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                      {errors.phone.message}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className="text-xs text-slate-500 font-bold block mb-1">Ponto de Encontro</label>
-                  <input
-                    type="text"
-                    value={meetingPoint}
-                    onChange={(e) => setMeetingPoint(e.target.value)}
-                    placeholder="Centro, Residência..."
-                    className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                  />
+                  <Label htmlFor="studentMeetingPoint">Ponto de Encontro</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="text"
+                      id="studentMeetingPoint"
+                      placeholder="Centro, Residência..."
+                      className={errors.meetingPoint ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      {...register("meetingPoint")}
+                    />
+                  </div>
+                  {errors.meetingPoint && (
+                    <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                      {errors.meetingPoint.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">E-mail</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="aluno@email.com"
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                />
+                <Label htmlFor="studentEmail">E-mail</Label>
+                <div className="mt-1">
+                  <Input
+                    type="email"
+                    id="studentEmail"
+                    placeholder="aluno@email.com"
+                    className={errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
+                    {...register("email")}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
-              <button
+              <Button
                 type="submit"
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3 rounded-xl shadow-lg mt-2 text-sm transition-transform active:scale-98 cursor-pointer"
+                disabled={addStudentMutation.isPending}
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold h-11 text-xs transition-transform active:scale-98 cursor-pointer mt-2"
               >
-                Cadastrar Aluno
-              </button>
+                {addStudentMutation.isPending ? "Cadastrando..." : "Cadastrar Aluno"}
+              </Button>
             </form>
           </div>
         </div>

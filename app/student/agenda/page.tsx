@@ -2,8 +2,12 @@
 
 import { useApp } from "@/lib/context";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function StudentAgenda() {
+
   const { classes, addClass } = useApp();
   const [showRequestModal, setShowRequestModal] = useState(false);
 
@@ -112,63 +116,73 @@ export default function StudentAgenda() {
 
             <form onSubmit={handleRequestClass} className="flex flex-col gap-4">
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Tipo de Aula</label>
-                <select
-                  value={classType}
-                  onChange={(e) => setClassType(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-blue-500 focus:outline-none"
-                >
-                  <option value="Aula de Baliza">Aula de Baliza</option>
-                  <option value="Prática de Direção">Prática de Direção</option>
-                  <option value="Percurso de Exame">Percurso de Exame</option>
-                </select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs text-slate-500 font-bold block mb-1">Data Desejada</label>
-                  <input
-                    type="date"
-                    value={classDate}
-                    onChange={(e) => setClassDate(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-blue-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-slate-500 font-bold block mb-1">Horário de Início</label>
+                <Label htmlFor="classType" className="text-xs">Tipo de Aula</Label>
+                <div className="mt-1">
                   <select
-                    value={classTime}
-                    onChange={(e) => setClassTime(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-blue-500 focus:outline-none"
+                    id="classType"
+                    value={classType}
+                    onChange={(e) => setClassType(e.target.value)}
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-slate-750 transition-colors duration-200"
                   >
-                    <option value="08:00">08:00</option>
-                    <option value="09:40">09:40</option>
-                    <option value="11:20">11:20</option>
-                    <option value="14:00">14:00</option>
-                    <option value="15:40">15:40</option>
-                    <option value="17:20">17:20</option>
-                    <option value="19:00">19:00</option>
+                    <option value="Aula de Baliza">Aula de Baliza</option>
+                    <option value="Prática de Direção">Prática de Direção</option>
+                    <option value="Percurso de Exame">Percurso de Exame</option>
                   </select>
                 </div>
               </div>
 
-              <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Ponto de Encontro</label>
-                <input
-                  type="text"
-                  value={meetingPoint}
-                  onChange={(e) => setMeetingPoint(e.target.value)}
-                  placeholder="Ex: Centro, Pista de Baliza"
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-blue-500 focus:outline-none"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="classDate" className="text-xs">Data Desejada</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="date"
+                      id="classDate"
+                      value={classDate}
+                      onChange={(e) => setClassDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="classTime" className="text-xs">Horário de Início</Label>
+                  <div className="mt-1">
+                    <select
+                      id="classTime"
+                      value={classTime}
+                      onChange={(e) => setClassTime(e.target.value)}
+                      className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-slate-750 transition-colors duration-200"
+                    >
+                      <option value="08:00">08:00</option>
+                      <option value="09:40">09:40</option>
+                      <option value="11:20">11:20</option>
+                      <option value="14:00">14:00</option>
+                      <option value="15:40">15:40</option>
+                      <option value="17:20">17:20</option>
+                      <option value="19:00">19:00</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              <button
+              <div>
+                <Label htmlFor="meetingPoint" className="text-xs">Ponto de Encontro</Label>
+                <div className="mt-1">
+                  <Input
+                    type="text"
+                    id="meetingPoint"
+                    value={meetingPoint}
+                    onChange={(e) => setMeetingPoint(e.target.value)}
+                    placeholder="Ex: Centro, Pista de Baliza"
+                  />
+                </div>
+              </div>
+
+              <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-xl shadow-lg mt-2 text-sm transition-transform active:scale-98 cursor-pointer"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-11 text-xs transition-transform active:scale-98 cursor-pointer mt-2"
               >
                 Enviar Solicitação
-              </button>
+              </Button>
             </form>
           </div>
         </div>

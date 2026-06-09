@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useApp } from "@/lib/context";
 import Link from "next/link";
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function InstructorDashboard() {
   const { students, classes, confirmClass, completeClass, addClass } = useApp();
@@ -147,10 +151,13 @@ export default function InstructorDashboard() {
                 />
 
                 <div className="flex items-center gap-3 pl-2">
-                  <img
+                  <Image
                     alt={item.studentName}
                     className="w-12 h-12 rounded-full object-cover border border-slate-100"
                     src={item.studentPhoto}
+                    width={48}
+                    height={48}
+                    unoptimized
                   />
                   <div>
                     <h4 className="font-bold text-slate-900 text-sm group-hover:text-orange-600 transition-colors">
@@ -233,71 +240,83 @@ export default function InstructorDashboard() {
 
             <form onSubmit={handleCreateClass} className="flex flex-col gap-4">
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Selecione o Aluno</label>
-                <select
-                  value={selectedStudent}
-                  onChange={(e) => setSelectedStudent(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                >
-                  {students.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} ({s.category})
-                    </option>
-                  ))}
-                </select>
+                <Label htmlFor="selectedStudent" className="text-xs">Selecione o Aluno</Label>
+                <div className="mt-1">
+                  <select
+                    id="selectedStudent"
+                    value={selectedStudent}
+                    onChange={(e) => setSelectedStudent(e.target.value)}
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-orange-500 dark:focus:border-slate-755 transition-colors duration-200"
+                  >
+                    {students.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name} ({s.category})
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Tipo de Aula</label>
-                <select
-                  value={classType}
-                  onChange={(e) => setClassType(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                >
-                  <option value="Aula de Baliza">Aula de Baliza</option>
-                  <option value="Prática de Direção">Prática de Direção</option>
-                  <option value="Percurso de Exame">Percurso de Exame</option>
-                </select>
+                <Label htmlFor="classType" className="text-xs">Tipo de Aula</Label>
+                <div className="mt-1">
+                  <select
+                    id="classType"
+                    value={classType}
+                    onChange={(e) => setClassType(e.target.value)}
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-orange-500 dark:focus:border-slate-755 transition-colors duration-200"
+                  >
+                    <option value="Aula de Baliza">Aula de Baliza</option>
+                    <option value="Prática de Direção">Prática de Direção</option>
+                    <option value="Percurso de Exame">Percurso de Exame</option>
+                  </select>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-500 font-bold block mb-1">Data</label>
-                  <input
-                    type="date"
-                    value={classDate}
-                    onChange={(e) => setClassDate(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                  />
+                  <Label htmlFor="classDate" className="text-xs">Data</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="date"
+                      id="classDate"
+                      value={classDate}
+                      onChange={(e) => setClassDate(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <div>
-                  <label className="text-xs text-slate-500 font-bold block mb-1">Horário</label>
-                  <input
-                    type="time"
-                    value={classTime}
-                    onChange={(e) => setClassTime(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                  />
+                  <Label htmlFor="classTime" className="text-xs">Horário</Label>
+                  <div className="mt-1">
+                    <Input
+                      type="time"
+                      id="classTime"
+                      value={classTime}
+                      onChange={(e) => setClassTime(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div>
-                <label className="text-xs text-slate-500 font-bold block mb-1">Ponto de Encontro</label>
-                <input
-                  type="text"
-                  value={meetingPoint}
-                  onChange={(e) => setMeetingPoint(e.target.value)}
-                  placeholder="Ex: Centro, Pista de Baliza"
-                  className="w-full rounded-xl border border-slate-200 p-2.5 text-sm text-slate-900 bg-slate-50 focus:border-orange-500 focus:outline-none"
-                />
+                <Label htmlFor="meetingPoint" className="text-xs">Ponto de Encontro</Label>
+                <div className="mt-1">
+                  <Input
+                    type="text"
+                    id="meetingPoint"
+                    value={meetingPoint}
+                    onChange={(e) => setMeetingPoint(e.target.value)}
+                    placeholder="Ex: Centro, Pista de Baliza"
+                  />
+                </div>
               </div>
 
-              <button
+              <Button
                 type="submit"
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold p-3 rounded-xl shadow-lg mt-2 text-sm transition-transform active:scale-98 cursor-pointer"
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold h-11 text-xs transition-transform active:scale-98 cursor-pointer mt-2"
               >
                 Confirmar Agendamento
-              </button>
+              </Button>
             </form>
           </div>
         </div>

@@ -21,6 +21,7 @@ import { getPublicInstructors, addPublicClassAction } from "@/app/actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 
 
@@ -218,8 +219,9 @@ export default function InstructorsPage() {
         setSelectedSlot(null);
         setBookingSuccess(false);
       }, 4000);
-    } catch (error: any) {
-      alert(error?.message || "Erro ao realizar o agendamento. Verifique os dados inseridos.");
+    } catch (error) {
+      const err = error as Error;
+      alert(err?.message || "Erro ao realizar o agendamento. Verifique os dados inseridos.");
     }
   };
 
@@ -417,9 +419,11 @@ export default function InstructorsPage() {
 
                 {/* Profile Information */}
                 <div className="flex gap-5 items-start">
-                  <img
+                  <Image
                     alt={inst.name}
                     src={inst.photo}
+                    width={100}
+                    height={100}
                     className="w-16 h-16 rounded-2xl object-cover border border-slate-200 dark:border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="flex-1 min-w-0">

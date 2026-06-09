@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function InstructorProfile() {
   const [vehicleName, setVehicleName] = useState("Hyundai HB20 1.0 Manual");
@@ -18,10 +21,13 @@ export default function InstructorProfile() {
 
       {/* Instructor Information */}
       <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <img
+        <Image
           alt="Carlos Eduardo"
           className="w-20 h-20 rounded-full object-cover border-2 border-orange-500/20"
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k"
+          width={80}
+          height={80}
+          unoptimized
         />
         <div className="flex-1 text-center sm:text-left">
           <h3 className="text-lg font-bold text-slate-900">Carlos Eduardo de Oliveira</h3>
@@ -52,43 +58,51 @@ export default function InstructorProfile() {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[10px] text-slate-400 font-bold block mb-1 uppercase">Modelo do Carro</label>
-              <input
-                type="text"
-                value={vehicleName}
-                onChange={(e) => setVehicleName(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-900 bg-slate-50 focus:outline-none focus:border-orange-500"
-              />
+              <Label htmlFor="vehicleName" className="text-[10px] uppercase">Modelo do Carro</Label>
+              <div className="mt-1">
+                <Input
+                  type="text"
+                  id="vehicleName"
+                  value={vehicleName}
+                  onChange={(e) => setVehicleName(e.target.value)}
+                />
+              </div>
             </div>
             <div>
-              <label className="text-[10px] text-slate-400 font-bold block mb-1 uppercase">Placa Mercosul</label>
-              <input
-                type="text"
-                value={plate}
-                onChange={(e) => setPlate(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-900 bg-slate-50 focus:outline-none focus:border-orange-500"
-              />
+              <Label htmlFor="plate" className="text-[10px] uppercase">Placa Mercosul</Label>
+              <div className="mt-1">
+                <Input
+                  type="text"
+                  id="plate"
+                  value={plate}
+                  onChange={(e) => setPlate(e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[10px] text-slate-400 font-bold block mb-1 uppercase">Quilometragem</label>
-              <input
-                type="text"
-                value={km}
-                onChange={(e) => setKm(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-900 bg-slate-50 focus:outline-none focus:border-orange-500"
-              />
+              <Label htmlFor="km" className="text-[10px] uppercase">Quilometragem</Label>
+              <div className="mt-1">
+                <Input
+                  type="text"
+                  id="km"
+                  value={km}
+                  onChange={(e) => setKm(e.target.value)}
+                />
+              </div>
             </div>
             <div>
-              <label className="text-[10px] text-slate-400 font-bold block mb-1 uppercase">Nível de Combustível</label>
-              <input
-                type="text"
-                value={fuel}
-                onChange={(e) => setFuel(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-900 bg-slate-50 focus:outline-none focus:border-orange-500"
-              />
+              <Label htmlFor="fuel" className="text-[10px] uppercase">Nível de Combustível</Label>
+              <div className="mt-1">
+                <Input
+                  type="text"
+                  id="fuel"
+                  value={fuel}
+                  onChange={(e) => setFuel(e.target.value)}
+                />
+              </div>
             </div>
           </div>
         </div>
