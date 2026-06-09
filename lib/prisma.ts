@@ -32,7 +32,10 @@ export const getTenantPrisma = (organizationId: string) => {
           const tenantModels = ["Student", "ClassSession", "Transaction", "InstructorSettings"];
           
           if (tenantModels.includes(model) && args && typeof args === "object") {
-            const typedArgs = args as { where?: Record<string, any>; data?: Record<string, any> };
+            const typedArgs = args as { 
+              where?: Record<string, unknown>; 
+              data?: Record<string, unknown> | Record<string, unknown>[]; 
+            };
             
             // Injeta o organizationId no filtro de busca
             typedArgs.where = typedArgs.where || {};
