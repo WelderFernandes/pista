@@ -1,8 +1,10 @@
 "use server";
+import { z } from "zod";
 
 import { requireTenant } from "@/lib/auth-helpers";
-import { getTenantPrisma } from "@/lib/prisma";
+import { getTenantPrisma, prisma } from "@/lib/prisma";
 import { Student, ClassSession, Transaction, InstructorSettings } from "@/lib/store";
+
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
@@ -269,3 +271,120 @@ export async function updateSettingsAction(data: InstructorSettings) {
     },
   });
 }
+
+export async function getPublicInstructors() {
+  const settingsList = await prisma.instructorSettings.findMany({
+    include: {
+      organization: {
+        select: {
+          name: true,
+          logo: true,
+          classes: {
+            where: {
+              status: { not: "Cancelada" },
+            },
+            select: {
+              date: true,
+              time: true,
+              instructorName: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return settingsList.map((settings) => ({
+    id: settings.organizationId,
+    name: settings.organization.name,
+    photo: settings.organization.logo || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=120&h=120&fit=crop&q=80",
+    rating: 4.9,
+    reviewsCount: 38,
+    city: settings.city,
+    neighborhoods: settings.neighborhoods,
+    meetingPoints: settings.meetingPoints,
+    hourlyRate: settings.hourlyRate,
+    categories: settings.categories,
+    bio: settings.bio,
+    distance: 2.4,
+    workDays: settings.workDays,
+    workStart: settings.workStart,
+    workEnd: settings.workEnd,
+    lunchStart: settings.lunchStart,
+    lunchEnd: settings.lunchEnd,
+    classes: settings.organization.classes,
+  }));
+}
+
+export const publicBookingSchema = z.object({
+  organizationId: z.string(),
+  studentName: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
+  studentPhone: z.string().min(10, "Telefone de WhatsApp inválido"),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
+  time: z.string().regex(/^\d{2}:\d{2}$/, "Horário inválido"),
+  duration: z.string().min(1, "Duração é obrigatória"),
+  meetingPoint: z.string().min(1, "Ponto de encontro é obrigatório"),
+  type: z.string().min(1, "Categoria é obrigatória"),
+  instructorName: z.string().min(1, "Nome do instrutor é obrigatório"),
+});
+
+export type PublicBookingData = z.infer<typeof publicBookingSchema>;
+
+/**
+ * Adiciona um agendamento de aula pública de visitante anônimo.
+ * Cria o estudante caso não exista na organização.
+ */
+export async function addPublicClassAction(rawData: PublicBookingData) {
+  const data = publicBookingSchema.parse(rawData);
+
+  // Sanitiza o telefone para criar um ID único coerente
+  const sanitizedPhone = data.studentPhone.replace(/\D/g, "");
+  const studentId = `guest-${sanitizedPhone}`;
+
+  // Tenta localizar ou criar o estudante correspondente nessa organização
+  let student = await prisma.student.findFirst({
+    where: {
+      id: studentId,
+      organizationId: data.organizationId,
+    },
+  });
+
+  if (!student) {
+    student = await prisma.student.create({
+      data: {
+        id: studentId,
+        organizationId: data.organizationId,
+        name: data.studentName,
+        phone: data.studentPhone,
+        city: data.meetingPoint,
+        neighborhoods: [data.meetingPoint],
+        meetingPoints: [data.meetingPoint],
+        categories: [data.type.replace("Aula Prática (Cat. ", "").replace(")", "")],
+        photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
+        progress: 0,
+        completedClasses: 0,
+        totalClasses: 20,
+        pendingPayment: 0,
+      },
+    });
+  }
+
+  // Cria a ClassSession
+  return await prisma.classSession.create({
+    data: {
+      organizationId: data.organizationId,
+      studentId: student.id,
+      studentName: data.studentName,
+      studentPhoto: student.photoUrl,
+      type: data.type,
+      date: data.date,
+      time: data.time,
+      duration: data.duration,
+      meetingPoint: data.meetingPoint,
+      instructorName: data.instructorName,
+      status: "Pendente",
+    },
+  });
+}
+
+

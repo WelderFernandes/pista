@@ -15,6 +15,10 @@ import {
 } from "@phosphor-icons/react";
 import { Header } from "@/components/header";
 import { formatCentsToBRL, centsToBRL } from "@/lib/utils";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInstructorsFilterStore } from "@/lib/store-instructors";
+import { getPublicInstructors, addPublicClassAction } from "@/app/actions";
+
 
 interface Instructor {
   id: string;
@@ -35,20 +39,36 @@ interface Instructor {
   lunchStart: string;
   lunchEnd: string;
   extraDays: { date: string; start: string; end: string }[];
+  classes?: { date: string; time: string; instructorName: string }[];
 }
 
+
 export default function InstructorsPage() {
-  const { settings, classes, addClass } = useApp();
+  const queryClient = useQueryClient();
+  const { settings } = useApp();
 
-  // Search and filter states
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("TODAS");
-  const [maxPrice, setMaxPrice] = useState(150);
-  const [maxRadius, setMaxRadius] = useState(25);
+  // Zustand state and filters
+  const {
+    searchQuery,
+    selectedCategory,
+    maxPrice,
+    maxRadius,
+    currentPage,
+    setSearchQuery,
+    setSelectedCategory,
+    setMaxPrice,
+    setMaxRadius,
+    setCurrentPage,
+    resetFilters,
+  } = useInstructorsFilterStore();
 
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 2; // 2 instructors per page to show pagination
+
+  // TanStack Query to fetch public instructors from the database
+  const { data: dbInstructors = [], isLoading } = useQuery<Instructor[]>({
+    queryKey: ["public-instructors"],
+    queryFn: () => getPublicInstructors() as unknown as Promise<Instructor[]>,
+  });
 
   // Booking Modal states
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
@@ -62,10 +82,17 @@ export default function InstructorsPage() {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Reset pagination when filters change
+  // Disable background scroll when modal is open
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedCategory, maxPrice, maxRadius]);
+    if (selectedInstructor) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedInstructor]);
 
   // Generate June 2026 dates dynamically
   const dates = Array.from({ length: 30 }, (_, i) => {
@@ -80,96 +107,8 @@ export default function InstructorsPage() {
     };
   });
 
-  // Resolve dynamic values for Carlos Eduardo from settings context
-  const activeInstructor: Instructor = {
-    id: "carlos-eduardo",
-    name: "Carlos Eduardo",
-    photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k",
-    rating: 4.9,
-    reviewsCount: 48,
-    city: settings?.city || "São Paulo",
-    neighborhoods: settings?.neighborhoods || ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
-    meetingPoints: settings?.meetingPoints || ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
-    hourlyRate: settings?.hourlyRate ?? 12000,
-    categories: settings?.categories || ["B"],
-    bio: settings?.bio || "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos.",
-    distance: 2.4,
-    workDays: settings?.workDays || [1, 2, 3, 4, 5, 6],
-    workStart: settings?.workStart || "08:00",
-    workEnd: settings?.workEnd || "18:00",
-    lunchStart: settings?.lunchStart || "12:00",
-    lunchEnd: settings?.lunchEnd || "13:30",
-    extraDays: settings?.extraDays || [],
-  };
-
-  // Mocked list of other instructors
-  const otherInstructors: Instructor[] = [
-    {
-      id: "amanda-rodrigues",
-      name: "Amanda Rodrigues",
-      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY",
-      rating: 4.8,
-      reviewsCount: 36,
-      city: "São Paulo",
-      neighborhoods: ["Pinheiros", "Butantã", "Lapa", "Perdizes"],
-      meetingPoints: ["Metrô Butantã", "Praça Panamericana", "Autoescola Lapa"],
-      hourlyRate: 11000,
-      categories: ["A", "B"],
-      bio: "Especialista em alunos com ansiedade e medo de dirigir. Paciência e didática focada no ritmo do aluno.",
-      distance: 5.1,
-      workDays: [1, 2, 3, 4, 5],
-      workStart: "09:00",
-      workEnd: "17:00",
-      lunchStart: "12:00",
-      lunchEnd: "13:00",
-      extraDays: [],
-    },
-    {
-      id: "roberto-silva",
-      name: "Roberto Silva",
-      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
-      rating: 4.7,
-      reviewsCount: 24,
-      city: "Campinas",
-      neighborhoods: ["Cambuí", "Guanabara", "Taquaral", "Centro"],
-      meetingPoints: ["Lagoa do Taquaral", "Largo do Pará"],
-      hourlyRate: 9500,
-      categories: ["B", "C", "D"],
-      bio: "Ampla experiência em veículos de grande porte. Aulas práticas para categorias profissionais C e D.",
-      distance: 18.5,
-      workDays: [1, 2, 3, 4, 5, 6],
-      workStart: "08:00",
-      workEnd: "18:00",
-      lunchStart: "12:30",
-      lunchEnd: "13:30",
-      extraDays: [],
-    },
-    {
-      id: "juliana-mendes",
-      name: "Juliana Mendes",
-      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuBXI6m_H1FJGSYFqoFQmc2TkCWx-gBC6HiGsXCQUA8yrATa1IzKcZbryflfWubUVop34t_FPqEP1Cj-gU3lezS7CHv7nsQ_dkiu5A9VSNDcq8MtcfE8q_EpTNXfkTR7qy-UTYoT_k6vsLcnliZBqHfFDbwzIynUGp5j6OuHlsptpv4C3p6Am5FywHlkyEBgZfsDxMtI0ymOORILUOfRuReR7FDYw8R9BcnGrcDpeb9aaRd6yf19SkgyqmTrccyeItntzQeIGA3_fDc",
-      rating: 5.0,
-      reviewsCount: 52,
-      city: "São Paulo",
-      neighborhoods: ["Santo Amaro", "Brooklin", "Itaim Bibi", "Morumbi"],
-      meetingPoints: ["Shopping Morumbi", "Estação Brooklin", "Autoescola Santo Amaro"],
-      hourlyRate: 13000,
-      categories: ["A"],
-      bio: "Instrutora de pilotagem de motocicletas com foco em segurança urbana e técnicas avançadas de curvas.",
-      distance: 9.7,
-      workDays: [2, 3, 4, 5, 6],
-      workStart: "08:00",
-      workEnd: "15:00",
-      lunchStart: "11:30",
-      lunchEnd: "12:30",
-      extraDays: [],
-    },
-  ];
-
-  const allInstructors = [activeInstructor, ...otherInstructors];
-
   // Filtering Logic
-  const filteredInstructors = allInstructors.filter((inst) => {
+  const filteredInstructors = dbInstructors.filter((inst) => {
     const matchesSearch =
       searchQuery === "" ||
       inst.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -229,21 +168,21 @@ export default function InstructorsPage() {
     const isOutside = slot < start || slot >= end;
     const isLunch = !extraDayConfig && ((slot >= lunchStart && slot < lunchEnd) || (slotEnd > lunchStart && slotEnd <= lunchEnd));
 
-    const isOccupied = classes.some(
-      (c) => c.date === date && c.time === slot && c.instructorName === instructor.name && c.status !== "Cancelada"
+    const isOccupied = instructor.classes?.some(
+      (c) => c.date === date && c.time === slot && c.instructorName === instructor.name
     );
 
     return {
       isWorking: true,
       isOutside,
       isLunch,
-      isOccupied,
+      isOccupied: !!isOccupied,
     };
   };
 
   const timeSlots = ["08:00", "09:40", "11:20", "14:00", "15:40", "17:20", "19:00"];
 
-  const handleConfirmBooking = (e: React.FormEvent) => {
+  const handleConfirmBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!bookingName || !bookingPhone || !selectedSlot || !selectedInstructor) {
       alert("Por favor, preencha todos os campos e selecione um horário.");
@@ -252,27 +191,34 @@ export default function InstructorsPage() {
 
     const duration = `${selectedSlot} - ${calculateEndTime(selectedSlot)}`;
 
-    addClass({
-      studentId: `guest-${Date.now()}`,
-      studentName: bookingName,
-      studentPhoto: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
-      type: `Aula Prática (Cat. ${bookingCategory})`,
-      date: selectedDate,
-      time: selectedSlot,
-      duration: duration,
-      meetingPoint: bookingMeetingPoint,
-      instructorName: selectedInstructor.name,
-    });
+    try {
+      await addPublicClassAction({
+        organizationId: selectedInstructor.id,
+        studentName: bookingName,
+        studentPhone: bookingPhone,
+        date: selectedDate,
+        time: selectedSlot,
+        duration: duration,
+        meetingPoint: bookingMeetingPoint,
+        type: `Aula Prática (Cat. ${bookingCategory})`,
+        instructorName: selectedInstructor.name,
+      });
 
-    setBookingSuccess(true);
-    setTimeout(() => {
-      setSelectedInstructor(null);
-      setBookingName("");
-      setBookingPhone("");
-      setSelectedSlot(null);
-      setBookingSuccess(false);
-    }, 4000);
+      setBookingSuccess(true);
+      queryClient.invalidateQueries({ queryKey: ["public-instructors"] });
+
+      setTimeout(() => {
+        setSelectedInstructor(null);
+        setBookingName("");
+        setBookingPhone("");
+        setSelectedSlot(null);
+        setBookingSuccess(false);
+      }, 4000);
+    } catch (error: any) {
+      alert(error?.message || "Erro ao realizar o agendamento. Verifique os dados inseridos.");
+    }
   };
+
 
   useEffect(() => {
     if (selectedInstructor) {
@@ -421,7 +367,30 @@ export default function InstructorsPage() {
         </div>
 
         {/* Instructors Grid */}
-        {currentInstructors.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[1, 2].map((idx) => (
+              <div 
+                key={idx}
+                className="bg-slate-50/50 border border-slate-200 dark:bg-slate-900/10 dark:border-slate-800/80 rounded-2xl p-6 h-[290px] flex flex-col justify-between animate-pulse"
+              >
+                <div className="flex gap-5 items-start">
+                  <div className="w-16 h-16 rounded-2xl bg-slate-200 dark:bg-slate-800" />
+                  <div className="flex-1 space-y-2 py-1">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-3/4" />
+                    <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-1/2" />
+                    <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-1/4" />
+                  </div>
+                </div>
+                <div className="h-10 bg-slate-200 dark:bg-slate-800 rounded w-full" />
+                <div className="flex justify-between items-center pt-2">
+                  <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded w-28" />
+                  <div className="h-8 bg-slate-200 dark:bg-slate-800 rounded w-28" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : currentInstructors.length === 0 ? (
           <div className="text-center py-20 bg-slate-50 border border-dashed border-slate-200 dark:bg-slate-900/10 dark:border-slate-900 rounded-3xl animate-fade-in-up delay-300">
             <svg className="w-12 h-12 text-slate-400 dark:text-slate-700 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -528,7 +497,7 @@ export default function InstructorsPage() {
           <section className="flex justify-center items-center gap-3 mt-12 animate-fade-in-up">
             <button
               disabled={currentPage === 1}
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
               className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
             >
               <CaretLeft className="w-4 h-4" />
@@ -554,7 +523,7 @@ export default function InstructorsPage() {
 
             <button
               disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
               className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
             >
               <CaretRight className="w-4 h-4" />
