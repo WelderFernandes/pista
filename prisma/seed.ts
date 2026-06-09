@@ -1,9 +1,13 @@
 import "dotenv/config";
 import { auth } from "../lib/auth";
 import { prisma } from "../lib/prisma";
+import { fakerPT_BR as faker } from "@faker-js/faker";
 
 async function main() {
-  console.log("Iniciando o seeding do banco de dados...");
+  console.log("Iniciando o seeding com dados realistas gerados pelo Faker JS...");
+
+  // Configura um seed fixo para consistência nas execuções consecutivas se necessário
+  faker.seed(42);
 
   // 1. Limpar dados antigos por segurança
   await prisma.transaction.deleteMany();
@@ -24,13 +28,13 @@ async function main() {
     data: {
       name: "Autoescola Volante Certo",
       slug: "volante-certo",
-      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
+      logo: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=120&h=120&fit=crop&q=80",
     },
   });
   console.log(`Organização criada: ${org.name} (${org.id})`);
 
-  // 3. Criar Usuário do Instrutor usando o Better Auth API para criptografar a senha corretamente
-  // A senha será "Carlos123!"
+  // 3. Criar Usuário do Instrutor usando o Better Auth API
+  // A senha será "SenhaSegura123"
   const instructorUser = await auth.api.signUpEmail({
     body: {
       email: "carlos@volantecerto.com",
@@ -45,7 +49,7 @@ async function main() {
 
   console.log(`Usuário do Instrutor criado: ${instructorUser.user.name}`);
 
-  // 4. Associar o Instrutor à Organização como Owner (Membro administrativo)
+  // 4. Associar o Instrutor à Organização como Owner
   await prisma.member.create({
     data: {
       organizationId: org.id,
@@ -58,7 +62,7 @@ async function main() {
   // 5. Criar Configurações do Instrutor para esta organização
   await prisma.instructorSettings.create({
     data: {
-      id: org.id, // ID da configuração é igual ao ID da organização para o relacionamento 1-para-1
+      id: org.id,
       organizationId: org.id,
       workDays: [1, 2, 3, 4, 5, 6], // Seg a Sáb
       workStart: "08:00",
@@ -66,159 +70,219 @@ async function main() {
       lunchStart: "12:00",
       lunchEnd: "13:30",
       city: "São Paulo",
-      neighborhoods: ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
-      meetingPoints: ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
+      neighborhoods: ["Centro", "Pinheiros", "Vila Madalena", "Jardins", "Butantã", "Perdizes"],
+      meetingPoints: ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard", "Praça Panamericana"],
       hourlyRate: 12000, // R$ 120,00 em centavos
-      categories: ["B"],
+      categories: ["A", "B"],
       bio: "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos.",
     },
   });
   console.log("Configurações do instrutor criadas.");
 
-  // 6. Criar Estudantes (Students) vinculados à organização
-  const student1 = await prisma.student.create({
-    data: {
+  // 6. Alunos Principais e Fixos para não quebrar testes de frontend
+  const fixedStudentsData = [
+    {
       id: "mariana-costa",
-      organizationId: org.id,
       name: "Mariana Costa Silva",
       categories: ["B (Carro)"],
       progress: 60,
       completedClasses: 12,
       totalClasses: 20,
-      photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY",
+      photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&q=80",
       pendingPayment: 15000, // R$ 150,00 em centavos
       meetingPoints: ["Centro"],
       phone: "(11) 98765-4321",
       city: "São Paulo",
       neighborhoods: ["Centro"],
     },
-  });
-
-  const student2 = await prisma.student.create({
-    data: {
+    {
       id: "rafael-souza",
-      organizationId: org.id,
       name: "Rafael Souza",
       categories: ["B (Carro)"],
       progress: 40,
       completedClasses: 8,
       totalClasses: 20,
-      photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
+      photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&q=80",
       pendingPayment: 0,
       meetingPoints: ["Busca na Residência"],
       phone: "(11) 91234-5678",
       city: "São Paulo",
       neighborhoods: ["Pinheiros"],
     },
-  });
-
-  const student3 = await prisma.student.create({
-    data: {
+    {
       id: "beatriz-lima",
-      organizationId: org.id,
       name: "Beatriz Lima",
       categories: ["A (Moto)"],
       progress: 80,
       completedClasses: 16,
       totalClasses: 20,
-      photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBXI6m_H1FJGSYFqoFQmc2TkCWx-gBC6HiGsXCQUA8yrATa1IzKcZbryflfWubUVop34t_FPqEP1Cj-gU3lezS7CHv7nsQ_dkiu5A9VSNDcq8MtcfE8q_EpTNXfkTR7qy-UTYoT_k6vsLcnliZBqHfFDbwzIynUGp5j6OuHlsptpv4C3p6Am5FywHlkyEBgZfsDxMtI0ymOORILUOfRuReR7FDYw8R9BcnGrcDpeb9aaRd6yf19SkgyqmTrccyeItntzQeIGA3_fDc",
+      photoUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&q=80",
       pendingPayment: 32000, // R$ 320,00 em centavos
       meetingPoints: ["Pista de Treinamento"],
       phone: "(11) 99887-7665",
       city: "São Paulo",
       neighborhoods: ["Jardins"],
     },
-  });
+  ];
 
-  console.log("Alunos de teste criados.");
+  const students = [];
 
-  // 7. Criar Aulas (ClassSessions) vinculadas aos alunos e à organização
+  // Salvar os alunos fixos
+  for (const item of fixedStudentsData) {
+    const student = await prisma.student.create({
+      data: {
+        ...item,
+        organizationId: org.id,
+      },
+    });
+    students.push(student);
+  }
+
+  // Gerar mais 12 alunos fictícios com o Faker
+  const totalFakerStudents = 12;
+  const categoriesList = [["A (Moto)"], ["B (Carro)"], ["A (Moto)", "B (Carro)"]];
+  const meetingPointsList = ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard", "Busca na Residência"];
+  const neighborhoodsList = ["Centro", "Pinheiros", "Vila Madalena", "Jardins", "Butantã", "Perdizes"];
+
+  for (let i = 0; i < totalFakerStudents; i++) {
+    const name = faker.person.fullName();
+    const id = name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
+    
+    // Gerar foto baseada em gênero fictício
+    const isMale = faker.datatype.boolean();
+    const photoId = faker.number.int({ min: 1, max: 70 });
+    const photoUrl = isMale 
+      ? `https://xsgames.co/randomusers/assets/avatars/male/${photoId}.jpg`
+      : `https://xsgames.co/randomusers/assets/avatars/female/${photoId}.jpg`;
+
+    const totalClasses = faker.helpers.arrayElement([20, 25, 30]);
+    const completedClasses = faker.number.int({ min: 2, max: totalClasses - 2 });
+    const progress = Math.round((completedClasses / totalClasses) * 100);
+
+    const student = await prisma.student.create({
+      data: {
+        id,
+        organizationId: org.id,
+        name,
+        phone: `(11) 9${faker.string.numeric(4)}-${faker.string.numeric(4)}`,
+        city: "São Paulo",
+        neighborhoods: [faker.helpers.arrayElement(neighborhoodsList)],
+        meetingPoints: [faker.helpers.arrayElement(meetingPointsList)],
+        categories: faker.helpers.arrayElement(categoriesList),
+        photoUrl,
+        progress,
+        completedClasses,
+        totalClasses,
+        pendingPayment: faker.helpers.arrayElement([0, 0, 12000, 24000, 48000]), // R$0, R$120 ou R$240 ou R$480
+      },
+    });
+    students.push(student);
+  }
+
+  console.log(`Total de ${students.length} alunos cadastrados com sucesso.`);
+
+  // 7. Gerar Aulas (ClassSessions) com Faker
+  const classTypes = ["Aula de Baliza", "Prática de Direção", "Percurso de Exame", "Treinamento em Rodovia"];
+  const hoursList = ["08:00", "09:40", "11:20", "14:00", "15:40", "17:20"];
+  const statuses = ["Confirmada", "Pendente", "Concluída", "Cancelada"];
+
+  const classesToCreate = [];
+
+  // Criar 30 aulas distribuídas
+  for (let i = 0; i < 40; i++) {
+    const student = faker.helpers.arrayElement(students);
+    const date = faker.date.between({
+      from: new Date("2026-05-15T00:00:00.000Z"),
+      to: new Date("2026-06-25T00:00:00.000Z"),
+    });
+
+    const formattedDate = date.toISOString().split("T")[0];
+    const time = faker.helpers.arrayElement(hoursList);
+    
+    // Calcula fim da aula (exemplo: 1h40m de duração padrão)
+    const [h, m] = time.split(":").map(Number);
+    let endH = h + 1;
+    let endM = m + 40;
+    if (endM >= 60) {
+      endH += 1;
+      endM -= 60;
+    }
+    const duration = `${time} - ${endH.toString().padStart(2, "0")}:${endM.toString().padStart(2, "0")}`;
+
+    classesToCreate.push({
+      organizationId: org.id,
+      studentId: student.id,
+      studentName: student.name,
+      studentPhoto: student.photoUrl,
+      type: faker.helpers.arrayElement(classTypes),
+      date: formattedDate,
+      time,
+      duration,
+      meetingPoint: student.meetingPoints[0],
+      status: faker.helpers.arrayElement(statuses),
+      instructorName: "Carlos Eduardo",
+    });
+  }
+
   await prisma.classSession.createMany({
-    data: [
-      {
-        id: "class-1",
-        organizationId: org.id,
-        studentId: student1.id,
-        studentName: student1.name,
-        studentPhoto: student1.photoUrl,
-        type: "Aula de Baliza",
-        date: "2026-06-08",
-        time: "14:00",
-        duration: "14:00 - 15:40",
-        meetingPoint: "Centro",
-        status: "Confirmada",
-        instructorName: "Carlos Eduardo",
-      },
-      {
-        id: "class-2",
-        organizationId: org.id,
-        studentId: student2.id,
-        studentName: student2.name,
-        studentPhoto: student2.photoUrl,
-        type: "Busca na Residência",
-        date: "2026-06-08",
-        time: "16:30",
-        duration: "16:30 - 18:10",
-        meetingPoint: "Residência do Aluno",
-        status: "Pendente",
-        instructorName: "Carlos Eduardo",
-      },
-      {
-        id: "class-3",
-        organizationId: org.id,
-        studentId: student3.id,
-        studentName: student3.name,
-        studentPhoto: student3.photoUrl,
-        type: "Prática de Baliza",
-        date: "2026-06-08",
-        time: "18:00",
-        duration: "18:00 - 19:40",
-        meetingPoint: "Pista de Treinamento",
-        status: "Pendente",
-        instructorName: "Carlos Eduardo",
-      },
-    ],
+    data: classesToCreate,
   });
-  console.log("Aulas de teste criadas.");
+  console.log("40 Aulas práticas de teste criadas.");
 
-  // 8. Criar Histórico de Transações (Transactions) vinculadas à organização
+  // 8. Gerar Transações Financeiras (Transactions) com Faker
+  const transactionsToCreate = [];
+
+  // Gerar 25 pagamentos recebidos ou pendentes
+  for (let i = 0; i < 25; i++) {
+    const student = faker.helpers.arrayElement(students);
+    const amount = faker.helpers.arrayElement([12000, 15000, 24000, 32000, 48000]); // em centavos
+    const isPayment = faker.datatype.boolean(0.85); // 85% são entradas financeiras (pagamentos de alunos)
+
+    const date = faker.date.between({
+      from: new Date("2026-05-01T00:00:00.000Z"),
+      to: new Date("2026-06-08T00:00:00.000Z"),
+    });
+
+    if (isPayment) {
+      transactionsToCreate.push({
+        organizationId: org.id,
+        studentName: student.name,
+        amount,
+        type: "payment",
+        date: date.toISOString().split("T")[0],
+        status: faker.helpers.arrayElement(["Recebido", "Pendente"]),
+        description: faker.helpers.arrayElement([
+          "Pacote de Aulas Práticas",
+          "Taxa de Exame Prático Detran",
+          "Aula Avulsa de Direção",
+          "Simulado de Baliza",
+        ]),
+      });
+    } else {
+      // Despesa (expense)
+      transactionsToCreate.push({
+        organizationId: org.id,
+        studentName: "Fornecedores Diversos",
+        amount: faker.number.int({ min: 5000, max: 25000 }), // despesa de R$ 50 a R$ 250 em centavos
+        type: "expense",
+        date: date.toISOString().split("T")[0],
+        status: "Recebido",
+        description: faker.helpers.arrayElement([
+          "Abastecimento Veículo de Treino",
+          "Manutenção e Higienização de Frota",
+          "Renovação de Taxas do CFC",
+          "Material de Escritório",
+        ]),
+      });
+    }
+  }
+
   await prisma.transaction.createMany({
-    data: [
-      {
-        id: "t-1",
-        organizationId: org.id,
-        studentName: student1.name,
-        amount: 15000, // R$ 150,00 em centavos
-        type: "payment",
-        date: "2026-06-05",
-        status: "Recebido",
-        description: "Pacote 10 Aulas Práticas (Parcela 1)",
-      },
-      {
-        id: "t-2",
-        organizationId: org.id,
-        studentName: student3.name,
-        amount: 32000, // R$ 320,00 em centavos
-        type: "payment",
-        date: "2026-06-04",
-        status: "Pendente",
-        description: "Taxa de Exame Prático Detran",
-      },
-      {
-        id: "t-3",
-        organizationId: org.id,
-        studentName: student2.name,
-        amount: 12000, // R$ 120,00 em centavos
-        type: "payment",
-        date: "2026-06-03",
-        status: "Recebido",
-        description: "Aula Avulsa de Direção",
-      },
-    ],
+    data: transactionsToCreate,
   });
-  console.log("Transações financeiras de teste criadas.");
+  console.log("25 Transações de teste de fluxo de caixa criadas.");
 
-  console.log("Seeding completado com sucesso absoluto!");
+  console.log("Seeding com Faker JS completado com sucesso absoluto!");
 }
 
 main()
