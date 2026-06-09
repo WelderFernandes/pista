@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn, signUp, authClient } from "@/lib/auth-client";
+import { signUpSchema } from "@/lib/schemas";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [orgName, setOrgName] = useState("");
   
   const [loading, setLoading] = useState(false);
@@ -83,9 +85,18 @@ export default function LoginPage() {
         setLoading(false);
       }
     } else {
-      // Cadastro/SignUp
-      if (!name || !email || !password || !orgName) {
-        setError("Por favor, preencha todos os campos do formulário.");
+      // Cadastro/SignUp - Validação com Zod no Frontend
+      const parsed = signUpSchema.safeParse({
+        name,
+        email,
+        password,
+        confirmPassword,
+        role: profile,
+        orgName: profile === "instructor" ? orgName : undefined,
+      });
+
+      if (!parsed.success) {
+        setError(parsed.error.issues[0]?.message || "Dados de cadastro inválidos.");
         setLoading(false);
         return;
       }
@@ -104,23 +115,30 @@ export default function LoginPage() {
           return;
         }
 
-        // 2. Criar a Organização vinculada ao Usuário (o Better Auth associa automaticamente como Owner)
-        const { data: orgData, error: orgError } = await authClient.organization.create({
-          name: orgName,
-          slug: slugify(orgName),
-        });
+        // 2. Se for Instrutor, criar a Organização associada
+        if (profile === "instructor") {
+          const { data: orgData, error: orgError } = await authClient.organization.create({
+            name: orgName,
+            slug: slugify(orgName),
+          });
 
-        if (orgError) {
-          setError(`Conta criada, mas falhou ao registrar a Autoescola: ${orgError.message}`);
-          setLoading(false);
-          return;
+          if (orgError) {
+            setError(`Conta criada, mas falhou ao registrar a Autoescola: ${orgError.message}`);
+            setLoading(false);
+            return;
+          }
+
+          setSuccess("Autoescola e conta registradas com sucesso! Redirecionando...");
+          setTimeout(() => {
+            router.push("/instructor");
+          }, 1500);
+        } else {
+          // Se for Aluno, redireciona diretamente para a área do aluno
+          setSuccess("Conta de aluno criada com sucesso! Redirecionando...");
+          setTimeout(() => {
+            router.push("/student");
+          }, 1500);
         }
-
-        setSuccess("Autoescola e conta registradas com sucesso! Redirecionando...");
-        
-        setTimeout(() => {
-          router.push("/instructor");
-        }, 1500);
 
       } catch (err) {
         setError("Ocorreu um erro no processo de registro.");
@@ -155,7 +173,9 @@ export default function LoginPage() {
             <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 leading-tight">
               {mode === "login" 
                 ? "A ferramenta de alta performance para instrutores e alunos."
-                : "Cadastre sua Autoescola e comece a gerenciar hoje mesmo."}
+                : profile === "instructor" 
+                  ? "Cadastre sua Autoescola e comece a gerenciar hoje mesmo." 
+                  : "Crie sua conta de aluno e encontre instrutores credenciados."}
             </h1>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
               Monitore sua agenda de aulas, visualize relatórios financeiros detalhados ou acompanhe o checklist prático para o exame do Detran em uma única plataforma integrada.
@@ -179,41 +199,39 @@ export default function LoginPage() {
             </div>
 
             <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mb-1 tracking-tight">
-              {mode === "login" ? "Acesse o Sistema" : "Crie sua Conta"}
+              {mode === "login" ? "Acesse o Sistema" : (profile === "instructor" ? "Registre sua Autoescola" : "Criar Conta de Aluno")}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
               {mode === "login" 
                 ? "Digite suas credenciais de acesso abaixo." 
-                : "Preencha as informações para registrar sua Autoescola."}
+                : (profile === "instructor" ? "Preencha as informações para registrar sua Autoescola." : "Preencha os campos para iniciar sua jornada de aprendizado.")}
             </p>
 
-            {/* Profile Tabs Selector - Only show on Login */}
-            {mode === "login" && (
-              <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-xl mb-6">
-                <button
-                  type="button"
-                  onClick={() => setProfile("instructor")}
-                  className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    profile === "instructor"
-                      ? "bg-orange-600 text-white shadow-md shadow-orange-600/10"
-                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                  }`}
-                >
-                  Sou Instrutor
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setProfile("student")}
-                  className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    profile === "student"
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
-                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                  }`}
-                >
-                  Sou Aluno
-                </button>
-              </div>
-            )}
+            {/* Profile Tabs Selector - Always show to let users choose role */}
+            <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-xl mb-6">
+              <button
+                type="button"
+                onClick={() => setProfile("instructor")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  profile === "instructor"
+                    ? "bg-orange-600 text-white shadow-md shadow-orange-600/10"
+                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                }`}
+              >
+                Sou Instrutor
+              </button>
+              <button
+                type="button"
+                onClick={() => setProfile("student")}
+                className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  profile === "student"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
+                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                }`}
+              >
+                Sou Aluno
+              </button>
+            </div>
 
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-xl mb-4 font-semibold">
@@ -245,33 +263,35 @@ export default function LoginPage() {
                     />
                   </div>
 
-                  <div>
-                    <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="orgName">
-                      Nome da Autoescola (Organização / Tenant)
-                    </label>
-                    <input
-                      type="text"
-                      id="orgName"
-                      value={orgName}
-                      onChange={(e) => setOrgName(e.target.value)}
-                      placeholder="Ex: Autoescola Volante Certo Pinheiros"
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
-                      required
-                    />
-                  </div>
+                  {profile === "instructor" && (
+                    <div>
+                      <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="orgName">
+                        Nome da Autoescola (Organização / Tenant)
+                      </label>
+                      <input
+                        type="text"
+                        id="orgName"
+                        value={orgName}
+                        onChange={(e) => setOrgName(e.target.value)}
+                        placeholder="Ex: Autoescola Volante Certo Pinheiros"
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
+                        required
+                      />
+                    </div>
+                  )}
                 </>
               )}
 
               <div>
                 <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="email">
-                  E-mail institucional
+                  {profile === "instructor" ? "E-mail institucional" : "E-mail de acesso"}
                 </label>
                 <input
                   type="email"
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={profile === "instructor" ? "instrutor@volantecerto.com" : "aluno@volantecerto.com"}
+                  placeholder={profile === "instructor" ? "instrutor@volantecerto.com" : "aluno@provedor.com"}
                   className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
                   required
                 />
@@ -292,6 +312,23 @@ export default function LoginPage() {
                 />
               </div>
 
+              {mode === "signup" && (
+                <div>
+                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block mb-1 uppercase" htmlFor="confirmPassword">
+                    Confirmação de senha
+                  </label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-350 dark:focus:border-slate-700"
+                    required
+                  />
+                </div>
+              )}
+
               {mode === "login" && (
                 <div className="flex justify-between items-center text-xs mt-1">
                   <label className="flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400">
@@ -308,7 +345,7 @@ export default function LoginPage() {
                 type="submit"
                 disabled={loading}
                 className={`w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 ${
-                  profile === "instructor" || mode === "signup"
+                  profile === "instructor"
                     ? "bg-orange-600 hover:bg-orange-700 shadow-orange-600/20"
                     : "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20"
                 }`}
@@ -324,7 +361,7 @@ export default function LoginPage() {
                   </>
                 ) : (
                   <>
-                    Registrar Autoescola
+                    {profile === "instructor" ? "Registrar Autoescola" : "Criar Conta de Aluno"}
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
@@ -336,9 +373,9 @@ export default function LoginPage() {
             <div className="mt-8 text-center text-xs text-slate-500">
               {mode === "login" ? (
                 <>
-                  Deseja cadastrar sua Autoescola?{" "}
+                  {profile === "instructor" ? "Deseja cadastrar sua Autoescola? " : "Ainda não tem conta de aluno? "}
                   <button 
-                    onClick={() => { setMode("signup"); setError(""); setSuccess(""); }}
+                    onClick={() => { setMode("signup"); setError(""); setSuccess(""); setPassword(""); setConfirmPassword(""); }}
                     className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
                   >
                     Registre-se agora
@@ -348,7 +385,7 @@ export default function LoginPage() {
                 <>
                   Já possui uma conta ativa?{" "}
                   <button 
-                    onClick={() => { setMode("login"); setError(""); setSuccess(""); }}
+                    onClick={() => { setMode("login"); setError(""); setSuccess(""); setPassword(""); setConfirmPassword(""); }}
                     className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
                   >
                     Faça login aqui

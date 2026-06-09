@@ -13,3 +13,26 @@ export const publicBookingSchema = z.object({
 });
 
 export type PublicBookingData = z.infer<typeof publicBookingSchema>;
+
+export const signUpSchema = z.object({
+  name: z.string().min(3, "O nome completo deve ter pelo menos 3 caracteres"),
+  email: z.string().email("E-mail inválido"),
+  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+  confirmPassword: z.string().min(6, "A confirmação de senha deve ter pelo menos 6 caracteres"),
+  role: z.enum(["instructor", "student"]),
+  orgName: z.string().optional(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "As senhas não coincidem",
+  path: ["confirmPassword"],
+}).refine((data) => {
+  if (data.role === "instructor" && (!data.orgName || data.orgName.trim().length === 0)) {
+    return false;
+  }
+  return true;
+}, {
+  message: "O nome da autoescola é obrigatório para instrutores",
+  path: ["orgName"],
+});
+
+export type SignUpInput = z.infer<typeof signUpSchema>;
+
