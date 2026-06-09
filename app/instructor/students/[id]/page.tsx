@@ -4,6 +4,7 @@ import { use, useState } from "react";
 import { useApp } from "@/lib/context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatCentsToBRL } from "@/lib/utils";
 
 export default function StudentDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -153,7 +154,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
               <span className="bg-amber-50 border border-amber-100 text-amber-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
                 Fatura Pendente
               </span>
-              <p className="text-xl font-extrabold text-amber-700">R$ {student.pendingPayment.toLocaleString("pt-BR")}</p>
+              <p className="text-xl font-extrabold text-amber-700">{formatCentsToBRL(student.pendingPayment)}</p>
             </>
           ) : (
             <>

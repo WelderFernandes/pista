@@ -2,6 +2,7 @@
 
 import { useApp } from "@/lib/context";
 import { useState } from "react";
+import { formatCentsToBRL } from "@/lib/utils";
 
 export default function StudentProfile() {
   const { students, transactions, payPendingPayment } = useApp();
@@ -91,7 +92,7 @@ export default function StudentProfile() {
                 <p className="text-[10px] text-amber-700 mt-0.5">Vencimento em aberto</p>
               </div>
               <div className="text-right">
-                <span className="text-sm font-extrabold text-amber-700">R$ {student.pendingPayment.toLocaleString("pt-BR")}</span>
+                <span className="text-sm font-extrabold text-amber-700">{formatCentsToBRL(student.pendingPayment)}</span>
                 <span className="block text-[8px] text-amber-600 font-bold uppercase mt-0.5">Aguardando PIX</span>
               </div>
             </div>
@@ -109,7 +110,7 @@ export default function StudentProfile() {
                 </p>
               </div>
               <div className="text-right">
-                <span className="text-xs font-extrabold text-slate-800">R$ {t.amount.toLocaleString("pt-BR")}</span>
+                <span className="text-xs font-extrabold text-slate-800">{formatCentsToBRL(t.amount)}</span>
                 <span className="block text-[8px] text-emerald-600 font-bold uppercase mt-0.5">{t.status}</span>
               </div>
             </div>
@@ -144,7 +145,7 @@ export default function StudentProfile() {
             </div>
 
             <p className="text-xs font-semibold text-slate-500 mb-1">Valor da fatura</p>
-            <p className="text-2xl font-extrabold text-blue-600 mb-6">R$ {student.pendingPayment.toLocaleString("pt-BR")}</p>
+            <p className="text-2xl font-extrabold text-blue-600 mb-6">{formatCentsToBRL(student.pendingPayment)}</p>
 
             <button
               onClick={handlePayPix}

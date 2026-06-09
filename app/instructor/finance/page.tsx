@@ -1,6 +1,7 @@
 "use client";
 
 import { useApp } from "@/lib/context";
+import { formatCentsToBRL } from "@/lib/utils";
 
 export default function InstructorFinance() {
   const { transactions, students } = useApp();
@@ -36,7 +37,7 @@ export default function InstructorFinance() {
           </div>
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Recebido (Mês)</p>
-            <p className="text-3xl font-extrabold text-slate-900 mt-1">R$ {totalInflow.toLocaleString("pt-BR")}</p>
+            <p className="text-3xl font-extrabold text-slate-900 mt-1">{formatCentsToBRL(totalInflow)}</p>
           </div>
         </div>
 
@@ -55,7 +56,7 @@ export default function InstructorFinance() {
           </div>
           <div>
             <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">A receber (Alunos)</p>
-            <p className="text-3xl font-extrabold text-slate-900 mt-1">R$ {pendingInflow.toLocaleString("pt-BR")}</p>
+            <p className="text-3xl font-extrabold text-slate-900 mt-1">{formatCentsToBRL(pendingInflow)}</p>
           </div>
         </div>
       </section>
@@ -110,7 +111,7 @@ export default function InstructorFinance() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-extrabold text-slate-800">R$ {t.amount.toLocaleString("pt-BR")}</p>
+                <p className="text-sm font-extrabold text-slate-800">{formatCentsToBRL(t.amount)}</p>
                 <span className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-bold mt-1 uppercase ${
                   t.status === "Recebido" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-amber-50 text-amber-700 border border-amber-100"
                 }`}>

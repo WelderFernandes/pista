@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useApp } from "@/lib/context";
+import { centsToBRL, brlToCents } from "@/lib/utils";
 
 const WEEKDAYS = [
   { value: 0, label: "Dom", fullName: "Domingo" },
@@ -41,7 +42,7 @@ export default function InstructorSettingsPage() {
   const [meetingPointsInput, setMeetingPointsInput] = useState<string>(
     settings?.meetingPoints?.join(", ") || "Centro Comercial, Estação de Metrô Pinheiros, Shopping Boulevard"
   );
-  const [hourlyRate, setHourlyRate] = useState<number>(settings?.hourlyRate || 120);
+  const [hourlyRate, setHourlyRate] = useState<number>(centsToBRL(settings?.hourlyRate ?? 12000));
   const [categories, setCategories] = useState<string[]>(settings?.categories || ["B"]);
   const [bio, setBio] = useState<string>(
     settings?.bio || "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
@@ -152,7 +153,7 @@ export default function InstructorSettingsPage() {
       city: city.trim(),
       neighborhoods: parsedNeighborhoods,
       meetingPoints: parsedMeetingPoints,
-      hourlyRate: Number(hourlyRate),
+      hourlyRate: brlToCents(Number(hourlyRate)),
       categories,
       bio: bio.trim(),
     });

@@ -24,7 +24,7 @@ model Student {
   progress         Int            @default(0)
   completedClasses Int            @default(0)
   totalClasses     Int            @default(20)
-  pendingPayment   Float          @default(0)
+  pendingPayment   Int            @default(0) // Valores monetários em centavos (ex: R$ 120.00 = 12000)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   classes          ClassSession[]
@@ -54,7 +54,7 @@ model Transaction {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   studentName    String
-  amount         Float
+  amount         Int          // Valores monetários em centavos (ex: R$ 50.00 = 5000)
   type           String       // "payment" | "expense"
   date           String
   status         String       // "Recebido" | "Pendente"
@@ -75,7 +75,7 @@ model InstructorSettings {
   city           String       @default("São Paulo")
   neighborhoods  String[]
   meetingPoints  String[]
-  hourlyRate     Float        @default(120)
+  hourlyRate     Int          @default(12000) // Valores monetários em centavos (R$ 120.00 = 12000)
   categories     String[]
   bio            String
   updatedAt      DateTime     @updatedAt

@@ -3,6 +3,7 @@
 import { useApp } from "@/lib/context";
 import Link from "next/link";
 import { useState } from "react";
+import { formatCentsToBRL } from "@/lib/utils";
 
 export default function StudentDashboard() {
   const { students, classes, payPendingPayment } = useApp();
@@ -151,7 +152,7 @@ export default function StudentDashboard() {
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-bold block uppercase">Fatura Pendente</span>
-              <span className="text-base font-extrabold text-blue-600">R$ {student.pendingPayment.toLocaleString("pt-BR")}</span>
+              <span className="text-base font-extrabold text-blue-600">{formatCentsToBRL(student.pendingPayment)}</span>
             </div>
           </div>
         ) : (
@@ -220,7 +221,7 @@ export default function StudentDashboard() {
             </div>
 
             <p className="text-xs font-semibold text-slate-500 mb-1">Valor da fatura</p>
-            <p className="text-2xl font-extrabold text-blue-600 mb-6">R$ {student.pendingPayment.toLocaleString("pt-BR")}</p>
+            <p className="text-2xl font-extrabold text-blue-600 mb-6">{formatCentsToBRL(student.pendingPayment)}</p>
 
             <button
               onClick={handlePayPix}

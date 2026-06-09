@@ -64,7 +64,7 @@ const INITIAL_STUDENTS: Student[] = [
     completedClasses: 12,
     totalClasses: 20,
     photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY",
-    pendingPayment: 150.00,
+    pendingPayment: 15000,
     meetingPoint: "Centro",
     phone: "(11) 98765-4321",
     email: "mariana.silva@email.com"
@@ -77,7 +77,7 @@ const INITIAL_STUDENTS: Student[] = [
     completedClasses: 8,
     totalClasses: 20,
     photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0dVE5Ook3028s84NS2xR72gOa8NLCpcAjTIQCIJJagtsW47vItwX-4ELXMzWTDo-ugiktO3_1ybUjSePZ6mzFRnLdT6PpunhJB-P-WC6jYR-v6oW-OFX63304dI4LfqITuW2AwVaLyI3qms9_K812TSju4FYIcaJD6hzv9dYBDHr_8VdWbYmfjx79apTjo4YciQxwLSlY4pCSEZaUy9T8o5xUAUobs610jcXUCUAr9V-1OUEa5cB5kU2_pr3HhOFdu3jdqrX99yc",
-    pendingPayment: 0.00,
+    pendingPayment: 0,
     meetingPoint: "Busca na Residência",
     phone: "(11) 91234-5678",
     email: "rafael.souza@email.com"
@@ -90,7 +90,7 @@ const INITIAL_STUDENTS: Student[] = [
     completedClasses: 16,
     totalClasses: 20,
     photoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBXI6m_H1FJGSYFqoFQmc2TkCWx-gBC6HiGsXCQUA8yrATa1IzKcZbryflfWubUVop34t_FPqEP1Cj-gU3lezS7CHv7nsQ_dkiu5A9VSNDcq8MtcfE8q_EpTNXfkTR7qy-UTYoT_k6vsLcnliZBqHfFDbwzIynUGp5j6OuHlsptpv4C3p6Am5FywHlkyEBgZfsDxMtI0ymOORILUOfRuReR7FDYw8R9BcnGrcDpeb9aaRd6yf19SkgyqmTrccyeItntzQeIGA3_fDc",
-    pendingPayment: 320.00,
+    pendingPayment: 32000,
     meetingPoint: "Pista de Treinamento",
     phone: "(11) 99887-7665",
     email: "beatriz.lima@email.com"
@@ -143,7 +143,7 @@ const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: "t-1",
     studentName: "Mariana Costa Silva",
-    amount: 150.00,
+    amount: 15000,
     type: "payment",
     date: "2026-06-05",
     status: "Recebido",
@@ -152,7 +152,7 @@ const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: "t-2",
     studentName: "Beatriz Lima",
-    amount: 320.00,
+    amount: 32000,
     type: "payment",
     date: "2026-06-04",
     status: "Pendente",
@@ -161,7 +161,7 @@ const INITIAL_TRANSACTIONS: Transaction[] = [
   {
     id: "t-3",
     studentName: "Rafael Souza",
-    amount: 120.00,
+    amount: 12000,
     type: "payment",
     date: "2026-06-03",
     status: "Recebido",
@@ -179,7 +179,7 @@ const DEFAULT_SETTINGS: InstructorSettings = {
   city: "São Paulo",
   neighborhoods: ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
   meetingPoints: ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
-  hourlyRate: 120,
+  hourlyRate: 12000,
   categories: ["B"],
   bio: "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
 };

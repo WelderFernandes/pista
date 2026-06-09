@@ -14,6 +14,7 @@ import {
   Sparkle
 } from "@phosphor-icons/react";
 import { Header } from "@/components/header";
+import { formatCentsToBRL, centsToBRL } from "@/lib/utils";
 
 interface Instructor {
   id: string;
@@ -89,7 +90,7 @@ export default function InstructorsPage() {
     city: settings?.city || "São Paulo",
     neighborhoods: settings?.neighborhoods || ["Centro", "Pinheiros", "Vila Madalena", "Jardins"],
     meetingPoints: settings?.meetingPoints || ["Centro Comercial", "Estação de Metrô Pinheiros", "Shopping Boulevard"],
-    hourlyRate: settings?.hourlyRate || 120,
+    hourlyRate: settings?.hourlyRate ?? 12000,
     categories: settings?.categories || ["B"],
     bio: settings?.bio || "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos.",
     distance: 2.4,
@@ -112,7 +113,7 @@ export default function InstructorsPage() {
       city: "São Paulo",
       neighborhoods: ["Pinheiros", "Butantã", "Lapa", "Perdizes"],
       meetingPoints: ["Metrô Butantã", "Praça Panamericana", "Autoescola Lapa"],
-      hourlyRate: 110,
+      hourlyRate: 11000,
       categories: ["A", "B"],
       bio: "Especialista em alunos com ansiedade e medo de dirigir. Paciência e didática focada no ritmo do aluno.",
       distance: 5.1,
@@ -132,7 +133,7 @@ export default function InstructorsPage() {
       city: "Campinas",
       neighborhoods: ["Cambuí", "Guanabara", "Taquaral", "Centro"],
       meetingPoints: ["Lagoa do Taquaral", "Largo do Pará"],
-      hourlyRate: 95,
+      hourlyRate: 9500,
       categories: ["B", "C", "D"],
       bio: "Ampla experiência em veículos de grande porte. Aulas práticas para categorias profissionais C e D.",
       distance: 18.5,
@@ -152,7 +153,7 @@ export default function InstructorsPage() {
       city: "São Paulo",
       neighborhoods: ["Santo Amaro", "Brooklin", "Itaim Bibi", "Morumbi"],
       meetingPoints: ["Shopping Morumbi", "Estação Brooklin", "Autoescola Santo Amaro"],
-      hourlyRate: 130,
+      hourlyRate: 13000,
       categories: ["A"],
       bio: "Instrutora de pilotagem de motocicletas com foco em segurança urbana e técnicas avançadas de curvas.",
       distance: 9.7,
@@ -178,7 +179,7 @@ export default function InstructorsPage() {
     const matchesCategory =
       selectedCategory === "TODAS" || inst.categories.includes(selectedCategory);
 
-    const matchesPrice = inst.hourlyRate <= maxPrice;
+    const matchesPrice = centsToBRL(inst.hourlyRate) <= maxPrice;
     const matchesRadius = inst.distance <= maxRadius;
 
     return matchesSearch && matchesCategory && matchesPrice && matchesRadius;
@@ -506,7 +507,7 @@ export default function InstructorsPage() {
                   <div>
                     <span className="text-[9px] text-slate-500 dark:text-slate-500 uppercase tracking-wider font-bold block">Valor da Aula</span>
                     <span className="text-xl font-black text-slate-900 dark:text-white">
-                      R$ {inst.hourlyRate} <span className="text-xs font-normal text-slate-550 dark:text-slate-400">/ 50min</span>
+                      {formatCentsToBRL(inst.hourlyRate)} <span className="text-xs font-normal text-slate-550 dark:text-slate-400">/ 50min</span>
                     </span>
                   </div>
                   <button
