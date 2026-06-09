@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "@phosphor-icons/react";
@@ -12,7 +13,9 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => {
+      setMounted(true);
+    }, 0);
   }, []);
 
   const navItems = [
@@ -125,10 +128,13 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
       {/* Top Nav Header */}
       <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
         <div className="flex items-center gap-3">
-          <img
+          <Image
             alt="Avatar do Instrutor"
             className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k"
+            width={40}
+            height={40}
+            unoptimized
           />
           <div>
             <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">Olá, Carlos Eduardo</h1>

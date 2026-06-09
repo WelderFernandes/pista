@@ -3,39 +3,47 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import { signIn, signUp, authClient } from "@/lib/auth-client";
 import { signUpSchema } from "@/lib/schemas";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { z } from "zod";
+
+type FormData = z.infer<typeof signUpSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [profile, setProfile] = useState<"instructor" | "student">("instructor");
   
-  // Form fields
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [orgName, setOrgName] = useState("");
-  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<FormData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      orgName: ""
+    }
+  });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const queryProfile = params.get("profile");
       if (queryProfile === "instructor" || queryProfile === "student") {
-        setProfile(queryProfile);
+        setTimeout(() => {
+          setProfile(queryProfile);
+        }, 0);
       }
     }
   }, []);
@@ -52,106 +60,95 @@ export default function LoginPage() {
       .trim();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setLoading(true);
-
-    if (mode === "login") {
-      if (!email || !password) {
-        setError("Por favor, preencha todos os campos.");
-        setLoading(false);
-        return;
+  const loginMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const { data: authData, error: authError } = await signIn.email({
+        email: data.email,
+        password: data.password,
+      });
+      if (authError) {
+        throw new Error(authError.message || "E-mail ou senha incorretos.");
       }
-
-      try {
-        const { data, error: authError } = await signIn.email({
-          email,
-          password,
-        });
-
-        if (authError) {
-          setError(authError.message || "E-mail ou senha incorretos.");
-          setLoading(false);
-          return;
+      return authData;
+    },
+    onSuccess: () => {
+      setSuccess("Login efetuado com sucesso! Redirecionando...");
+      setTimeout(() => {
+        if (profile === "instructor") {
+          router.push("/instructor");
+        } else {
+          router.push("/student");
         }
+      }, 1200);
+    },
+    onError: (err: any) => {
+      setError(err.message || "Ocorreu um erro ao tentar efetuar o login.");
+    }
+  });
 
-        setSuccess("Login efetuado com sucesso! Redirecionando...");
-        
-        // Redireciona de acordo com o perfil
-        setTimeout(() => {
-          if (profile === "instructor") {
-            router.push("/instructor");
-          } else {
-            router.push("/student");
-          }
-        }, 1200);
-
-      } catch (err) {
-        setError("Ocorreu um erro ao tentar efetuar o login.");
-        setLoading(false);
-      }
-    } else {
-      // Cadastro/SignUp - Validação com Zod no Frontend
+  const signUpMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      // Validação com Zod
       const parsed = signUpSchema.safeParse({
-        name,
-        email,
-        password,
-        confirmPassword,
+        ...data,
         role: profile,
-        orgName: profile === "instructor" ? orgName : undefined,
+        orgName: profile === "instructor" ? data.orgName : undefined,
       });
 
       if (!parsed.success) {
-        setError(parsed.error.issues[0]?.message || "Dados de cadastro inválidos.");
-        setLoading(false);
-        return;
+        throw new Error(parsed.error.issues[0]?.message || "Dados de cadastro inválidos.");
       }
 
-      try {
-        // 1. Criar o usuário via Better Auth
-        const { data: userData, error: signUpError } = await signUp.email({
-          email,
-          password,
-          name,
+      // 1. Criar o usuário via Better Auth
+      const { data: userData, error: signUpError } = await signUp.email({
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      });
+
+      if (signUpError) {
+        throw new Error(signUpError.message || "Erro ao criar sua conta.");
+      }
+
+      // 2. Se for Instrutor, criar a Organização associada
+      if (profile === "instructor" && data.orgName) {
+        const { data: orgData, error: orgError } = await authClient.organization.create({
+          name: data.orgName,
+          slug: slugify(data.orgName),
         });
 
-        if (signUpError) {
-          setError(signUpError.message || "Erro ao criar sua conta.");
-          setLoading(false);
-          return;
+        if (orgError) {
+          throw new Error(`Conta criada, mas falhou ao registrar a Autoescola: ${orgError.message}`);
         }
-
-        // 2. Se for Instrutor, criar a Organização associada
-        if (profile === "instructor") {
-          const { data: orgData, error: orgError } = await authClient.organization.create({
-            name: orgName,
-            slug: slugify(orgName),
-          });
-
-          if (orgError) {
-            setError(`Conta criada, mas falhou ao registrar a Autoescola: ${orgError.message}`);
-            setLoading(false);
-            return;
-          }
-
-          setSuccess("Autoescola e conta registradas com sucesso! Redirecionando...");
-          setTimeout(() => {
-            router.push("/instructor");
-          }, 1500);
-        } else {
-          // Se for Aluno, redireciona diretamente para a área do aluno
-          setSuccess("Conta de aluno criada com sucesso! Redirecionando...");
-          setTimeout(() => {
-            router.push("/student");
-          }, 1500);
-        }
-
-      } catch (err) {
-        setError("Ocorreu um erro no processo de registro.");
-        setLoading(false);
       }
+
+      return userData;
+    },
+    onSuccess: () => {
+      if (profile === "instructor") {
+        setSuccess("Autoescola e conta registradas com sucesso! Redirecionando...");
+        setTimeout(() => {
+          router.push("/instructor");
+        }, 1500);
+      } else {
+        setSuccess("Conta de aluno criada com sucesso! Redirecionando...");
+        setTimeout(() => {
+          router.push("/student");
+        }, 1500);
+      }
+    },
+    onError: (err: any) => {
+      setError(err.message || "Ocorreu um erro no processo de registro.");
+    }
+  });
+
+  const onSubmit = (data: FormData) => {
+    setError("");
+    setSuccess("");
+    if (mode === "login") {
+      loginMutation.mutate(data);
+    } else {
+      signUpMutation.mutate(data);
     }
   };
 
@@ -253,36 +250,56 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
               {mode === "signup" && (
                 <>
                   <div>
                     <Label htmlFor="name">Nome completo</Label>
                     <div className="mt-1">
-                      <Input
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Ex: Carlos Eduardo Silva"
-                        required
-                      />
+                      <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.name ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-orange-500'}`}>
+                        <InputGroupAddon align="inline-start">
+                          <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </InputGroupAddon>
+                        <InputGroupInput
+                          type="text"
+                          id="name"
+                          placeholder="Ex: Carlos Eduardo Silva"
+                          {...register("name")}
+                        />
+                      </InputGroup>
                     </div>
+                    {errors.name && (
+                      <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                        {errors.name.message}
+                      </p>
+                    )}
                   </div>
 
                   {profile === "instructor" && (
                     <div>
                       <Label htmlFor="orgName">Nome da Autoescola (Organização / Tenant)</Label>
                       <div className="mt-1">
-                        <Input
-                          type="text"
-                          id="orgName"
-                          value={orgName}
-                          onChange={(e) => setOrgName(e.target.value)}
-                          placeholder="Ex: Autoescola Volante Certo Pinheiros"
-                          required
-                        />
+                        <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.orgName ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-orange-500'}`}>
+                          <InputGroupAddon align="inline-start">
+                            <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                          </InputGroupAddon>
+                          <InputGroupInput
+                            type="text"
+                            id="orgName"
+                            placeholder="Ex: Autoescola Volante Certo Pinheiros"
+                            {...register("orgName")}
+                          />
+                        </InputGroup>
                       </div>
+                      {errors.orgName && (
+                        <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                          {errors.orgName.message}
+                        </p>
+                      )}
                     </div>
                   )}
                 </>
@@ -293,60 +310,92 @@ export default function LoginPage() {
                   {profile === "instructor" ? "E-mail institucional" : "E-mail de acesso"}
                 </Label>
                 <div className="mt-1">
-                  <Input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={profile === "instructor" ? "instrutor@volantecerto.com" : "aluno@provedor.com"}
-                    required
-                  />
+                  <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.email ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-orange-500'}`}>
+                    <InputGroupAddon align="inline-start">
+                      <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      type="email"
+                      id="email"
+                      placeholder={profile === "instructor" ? "instrutor@volantecerto.com" : "aluno@provedor.com"}
+                      {...register("email")}
+                    />
+                  </InputGroup>
                 </div>
+                {errors.email && (
+                  <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               <div>
                 <Label htmlFor="password">Senha de acesso</Label>
-                <div className="relative mt-1">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="pr-10"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
-                  >
-                    {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+                <div className="mt-1">
+                  <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.password ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-orange-500'}`}>
+                    <InputGroupAddon align="inline-start">
+                      <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      placeholder="••••••••"
+                      {...register("password")}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                      >
+                        {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </InputGroupAddon>
+                  </InputGroup>
                 </div>
+                {errors.password && (
+                  <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               {mode === "signup" && (
                 <div>
                   <Label htmlFor="confirmPassword">Confirmação de senha</Label>
-                  <div className="relative mt-1">
-                    <Input
-                      type={showConfirmPassword ? "text" : "password"}
-                      id="confirmPassword"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="pr-10"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
-                    >
-                      {showConfirmPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                  <div className="mt-1">
+                    <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.confirmPassword ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-orange-500'}`}>
+                      <InputGroupAddon align="inline-start">
+                        <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type={showConfirmPassword ? "text" : "password"}
+                        id="confirmPassword"
+                        placeholder="••••••••"
+                        {...register("confirmPassword")}
+                      />
+                      <InputGroupAddon align="inline-end">
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                        >
+                          {showConfirmPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </InputGroupAddon>
+                    </InputGroup>
                   </div>
+                  {errors.confirmPassword && (
+                    <p className="text-[11px] text-red-500 font-semibold mt-1 pl-1">
+                      {errors.confirmPassword.message}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -364,14 +413,14 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={loginMutation.isPending || signUpMutation.isPending}
                 className={`w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 h-11 ${
                   profile === "instructor"
                     ? "bg-orange-600 hover:bg-orange-700 shadow-orange-600/20"
                     : "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20"
                 }`}
               >
-                {loading ? (
+                {loginMutation.isPending || signUpMutation.isPending ? (
                   <span>Aguarde...</span>
                 ) : mode === "login" ? (
                   <>
@@ -396,7 +445,7 @@ export default function LoginPage() {
                 <>
                   {profile === "instructor" ? "Deseja cadastrar sua Autoescola? " : "Ainda não tem conta de aluno? "}
                   <button 
-                    onClick={() => { setMode("signup"); setError(""); setSuccess(""); setPassword(""); setConfirmPassword(""); }}
+                    onClick={() => { setMode("signup"); setError(""); setSuccess(""); reset(); }}
                     className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
                   >
                     Registre-se agora
@@ -406,7 +455,7 @@ export default function LoginPage() {
                 <>
                   Já possui uma conta ativa?{" "}
                   <button 
-                    onClick={() => { setMode("login"); setError(""); setSuccess(""); setPassword(""); setConfirmPassword(""); }}
+                    onClick={() => { setMode("login"); setError(""); setSuccess(""); reset(); }}
                     className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
                   >
                     Faça login aqui

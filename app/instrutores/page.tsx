@@ -456,7 +456,7 @@ export default function InstructorsPage() {
 
                 {/* Bio */}
                 <p className="text-xs text-slate-650 dark:text-slate-400 leading-relaxed italic border-l-2 border-slate-200 dark:border-slate-850 pl-3">
-                  "{inst.bio}"
+                  &ldquo;{inst.bio}&rdquo;
                 </p>
 
                 {/* Location Grid Details */}

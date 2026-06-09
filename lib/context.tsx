@@ -73,7 +73,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Carrega dados iniciais na montagem do Provider
   useEffect(() => {
-    reloadData();
+    setTimeout(() => {
+      reloadData();
+    }, 0);
   }, []);
 
   const addStudent = async (newS: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => {
