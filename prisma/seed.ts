@@ -56,7 +56,7 @@ async function main() {
   console.log("Instrutor associado como Owner da organização.");
 
   // 5. Criar Configurações do Instrutor para esta organização
-  const settings = await prisma.instructorSettings.create({
+  await prisma.instructorSettings.create({
     data: {
       id: org.id, // ID da configuração é igual ao ID da organização para o relacionamento 1-para-1
       organizationId: org.id,
