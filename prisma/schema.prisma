@@ -7,11 +7,13 @@ generator client {
 }
 
 // ==========================================
-// MODELS DA APLICAÇÃO (VOLANTE CERTO)
+// MODELS DA APLICAÇÃO (VOLANTE CERTO) - MULTI-TENANT
 // ==========================================
 
 model Student {
   id               String         @id
+  organizationId   String
+  organization     Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   name             String
   phone            String
   city             String
@@ -29,7 +31,9 @@ model Student {
 }
 
 model ClassSession {
-  id             String   @id @default(uuid())
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   studentId      String
   studentName    String
   studentPhoto   String
@@ -39,42 +43,46 @@ model ClassSession {
   duration       String
   meetingPoint   String
   instructorName String
-  status         String   @default("Pendente") // "Pendente" | "Confirmada" | "Em andamento" | "Concluída" | "Cancelada"
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  student        Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status         String       @default("Pendente") // "Pendente" | "Confirmada" | "Em andamento" | "Concluída" | "Cancelada"
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  student        Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
 }
 
 model Transaction {
-  id          String   @id @default(uuid())
-  studentName String
-  amount      Float
-  type        String   // "payment" | "expense"
-  date        String
-  status      String   // "Recebido" | "Pendente"
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  studentName    String
+  amount         Float
+  type           String       // "payment" | "expense"
+  date           String
+  status         String       // "Recebido" | "Pendente"
+  description    String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model InstructorSettings {
-  id            String   @id @default("global")
-  workDays      Int[]
-  workStart     String   @default("08:00")
-  workEnd       String   @default("18:00")
-  lunchStart    String   @default("12:00")
-  lunchEnd      String   @default("13:30")
-  city          String   @default("São Paulo")
-  neighborhoods String[]
-  meetingPoints String[]
-  hourlyRate    Float    @default(120)
-  categories    String[]
-  bio           String
-  updatedAt     DateTime @updatedAt
+  id             String       @id // ID da configuração (pode ser o ID da Organização)
+  organizationId String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workDays       Int[]
+  workStart      String       @default("08:00")
+  workEnd        String       @default("18:00")
+  lunchStart     String       @default("12:00")
+  lunchEnd       String       @default("13:30")
+  city           String       @default("São Paulo")
+  neighborhoods  String[]
+  meetingPoints  String[]
+  hourlyRate     Float        @default(120)
+  categories     String[]
+  bio            String
+  updatedAt      DateTime     @updatedAt
 }
 
 // ==========================================
-// MODELS DO BETTER AUTH (AUTENTICAÇÃO)
+// MODELS DO BETTER AUTH (AUTENTICAÇÃO COM MULTI-TENANT)
 // ==========================================
 
 model User {
@@ -87,18 +95,20 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  members       Member[]
 }
 
 model Session {
-  id        String   @id @default(uuid())
-  expiresAt DateTime
-  token     String   @unique
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String   @id @default(uuid())
+  expiresAt            DateTime
+  token                String   @unique
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 model Account {
@@ -125,4 +135,44 @@ model Verification {
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Organization {
+  id                 String               @id @default(uuid())
+  name               String
+  slug               String               @unique
+  logo               String?
+  metadata           String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  members            Member[]
+  invitations        Invitation[]
+  students           Student[]
+  classes            ClassSession[]
+  transactions       Transaction[]
+  instructorSettings InstructorSettings?
+}
+
+model Member {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Invitation {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String
+  status         String
+  expiresAt      DateTime
+  inviterId      String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
