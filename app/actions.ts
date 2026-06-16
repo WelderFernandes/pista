@@ -177,7 +177,7 @@ export async function completeClassAction(classId: string) {
   const { activeOrgId } = await requireTenant();
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  return await tenantPrisma.$transaction(async (tx) => {
+  return await tenantPrisma.$transaction(async (tx: any) => {
     const session = await tx.classSession.update({
       where: { id: classId },
       data: { status: "Concluída" },
@@ -212,7 +212,7 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
   const { activeOrgId } = await requireTenant();
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  return await tenantPrisma.$transaction(async (tx) => {
+  return await tenantPrisma.$transaction(async (tx: any) => {
     const student = await tx.student.findUnique({
       where: { id: studentId },
     });
