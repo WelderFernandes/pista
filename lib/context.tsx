@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useSession } from "@/lib/auth-client";
 import { Student, ClassSession, Transaction, InstructorSettings } from "./store";
 import {
   getAppData,
@@ -71,12 +72,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Carrega dados iniciais na montagem do Provider
+  const { data: session, isPending } = useSession();
+
+  // Carrega dados iniciais na montagem do Provider ou quando a sessão muda
   useEffect(() => {
-    setTimeout(() => {
+    if (isPending) return;
+    
+    if (session) {
       reloadData();
-    }, 0);
-  }, []);
+    } else {
+      setLoading(false);
+    }
+  }, [session, isPending]);
 
   const addStudent = async (newS: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => {
     try {

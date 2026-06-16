@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useApp } from "@/lib/context";
 import { 
   MagnifyingGlass, 
   Funnel, 
@@ -50,7 +49,6 @@ interface Instructor {
 
 export default function InstructorsPage() {
   const queryClient = useQueryClient();
-  const { settings } = useApp();
 
   // Zustand state and filters
   const {
@@ -659,7 +657,7 @@ export default function InstructorsPage() {
                   {(() => {
                     const extraDayConfig = selectedInstructor.extraDays?.find((ed) => ed.date === selectedDate);
                     const dayOfWeek = new Date(selectedDate + "T00:00:00").getDay();
-                    const isNormalWorkDay = settings?.workDays ? settings.workDays.includes(dayOfWeek) : selectedInstructor.workDays.includes(dayOfWeek);
+                    const isNormalWorkDay = selectedInstructor.workDays.includes(dayOfWeek);
                     const isWorking = !!extraDayConfig || isNormalWorkDay;
                     
                     if (!isWorking) {
