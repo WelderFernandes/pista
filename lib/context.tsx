@@ -78,7 +78,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isPending) return;
     
-    if (session) {
+    if (session?.session?.activeOrganizationId) {
       reloadData();
     } else {
       setLoading(false);

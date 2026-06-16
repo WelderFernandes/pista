@@ -62,8 +62,8 @@ export function getTenantPrisma(tenantId: string) {
               ...anyArgs.where,
               organizationId: tenantId,
             };
-            const ctx = Prisma.getExtensionContext(this);
-            return (ctx as any)[model][newOperation](anyArgs);
+            // Usa a instância base do prisma em vez do contexto da extensão que não tem o model delegate aqui
+            return (prisma as any)[model][newOperation](anyArgs);
           } else if (operation === "create") {
             anyArgs.data = {
               ...anyArgs.data,

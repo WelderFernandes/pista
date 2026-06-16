@@ -69,6 +69,16 @@ export function LoginForm() {
       if (authError) {
         throw new Error(authError.message || "E-mail ou senha incorretos.");
       }
+
+      // Busca as organizações do usuário e define a primeira como ativa
+      // Isso garante que activeOrganizationId esteja preenchido na sessão
+      const { data: orgsData } = await authClient.organization.list();
+      if (orgsData && orgsData.length > 0) {
+        await authClient.organization.setActive({
+          organizationId: orgsData[0].id,
+        });
+      }
+
       return authData;
     },
     onSuccess: () => {
