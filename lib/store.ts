@@ -1,6 +1,6 @@
 "use client";
 
-export interface InstructorSettings {
+export interface InstructorSettings  {
   id?: string;
   organizationId?: string;
   workDays: number[];

@@ -69,7 +69,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
     >
       {/* Background fill based on drag position */}
       <div 
-        className="absolute left-1 top-1 bottom-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg transition-all opacity-80"
+        className="absolute left-1 top-1 bottom-1 bg-linear-to-r from-orange-500 to-orange-600 rounded-lg transition-all opacity-80"
         style={{ width: `calc(${sliderPos}% + 44px - (${sliderPos}px * 0.44))` }}
       />
 

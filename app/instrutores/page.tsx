@@ -248,9 +248,9 @@ export default function InstructorsPage() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-6 border-b border-slate-200 dark:border-slate-900 transition-colors">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#020617)] z-0 hidden dark:block" />
+        <div className="absolute inset-0 bg-[radial-linear(ellipse_at_center,transparent_20%,#020617)] z-0 hidden dark:block" />
         {/* Animated grid lines pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0 animate-pulse-slow" />
+        <div className="absolute inset-0 bg-[linear-linear(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-linear(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] dark:bg-[linear-linear(to_right,#0f172a_1px,transparent_1px),linear-linear(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-linear(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0 animate-pulse-slow" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
           <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-650 dark:text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
@@ -258,7 +258,7 @@ export default function InstructorsPage() {
             <span>Nossos Profissionais de Elite</span>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400 animate-fade-in-up">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none bg-clip-text text-transparent bg-linear-to-r from-slate-950 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400 animate-fade-in-up">
             Escolha seu Instrutor
           </h2>
           <p className="text-slate-600 dark:text-slate-400 mt-6 text-sm md:text-lg max-w-2xl leading-relaxed animate-fade-in-up delay-100">
