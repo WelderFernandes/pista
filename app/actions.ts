@@ -5,8 +5,6 @@ import { getTenantPrisma, prisma } from "@/lib/prisma";
 import { Student, ClassSession, Transaction, InstructorSettings } from "@/lib/store";
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
 
-
-
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
  * do usuário logado na requisição atual.
@@ -295,7 +293,7 @@ export async function getPublicInstructors() {
     },
   });
 
-  return settingsList.map((settings) => ({
+  return settingsList.map((settings: any) => ({
     id: settings.organizationId,
     name: settings.organization.name,
     photo: settings.organization.logo || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=120&h=120&fit=crop&q=80",
