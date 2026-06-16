@@ -4,6 +4,7 @@ import { requireTenant } from "@/lib/auth-helpers";
 import { getTenantPrisma, prisma } from "@/lib/prisma";
 import { Student, ClassSession, Transaction, InstructorSettings } from "@/lib/store";
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
+import { Student as PrismaStudent } from "@prisma/client";
 
 
 
@@ -52,7 +53,7 @@ export async function getAppData() {
     });
   }
 
-  const mappedStudents: Student[] = students.map((s) => ({
+  const mappedStudents: Student[] = students.map((s: PrismaStudent) => ({
     ...s,
     category: s.categories[0] || "B (Carro)",
     meetingPoint: s.meetingPoints[0] || "Centro Comercial",
