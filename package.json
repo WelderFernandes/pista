@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "engines": {
+    "node": ">24.0.0" 
+  },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
     "@phosphor-icons/react": "^2.1.10",
