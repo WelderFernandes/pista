@@ -4,6 +4,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/prisma/client"
 }
 
 // ==========================================
@@ -57,9 +58,9 @@ model Transaction {
   studentName    String
   /// Valor da transação financeira armazenado em centavos (Ex: R$ 50,00 = 5000)
   amount         Int          @map("amount_in_cents")
-  type           String       // "payment" | "expense"
+  type           String // "payment" | "expense"
   date           String
-  status         String       // "Recebido" | "Pendente"
+  status         String // "Recebido" | "Pendente"
   description    String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
@@ -141,13 +142,13 @@ model Verification {
 }
 
 model Organization {
-  id                 String               @id @default(uuid())
+  id                 String              @id @default(uuid())
   name               String
-  slug               String               @unique
+  slug               String              @unique
   logo               String?
   metadata           String?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
   members            Member[]
   invitations        Invitation[]
   students           Student[]

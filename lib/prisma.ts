@@ -1,65 +1,77 @@
-import { PrismaClient } from "@prisma/client";
+import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
+import { PrismaClient, Prisma } from "@/generated/prisma/client";
 
-const prismaClientSingleton = () => {
-  const connectionString = process.env.DATABASE_URL;
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaPg(pool);
-  return new PrismaClient({ adapter });
-};
+const connectionString = `${process.env.DATABASE_URL}`;
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
-} & typeof global;
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
-const basePrisma = globalThis.prismaGlobal ?? prismaClientSingleton();
-
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prismaGlobal = basePrisma;
-}
-
-/**
- * Retorna uma instância estendida do Prisma Client que aplica automaticamente
- * filtros de segurança de tenant (isolation) em todas as operações de leitura e escrita.
- */
-export const getTenantPrisma = (organizationId: string) => {
-  return basePrisma.$extends({
+export function getTenantPrisma(tenantId: string) {
+  return prisma.$extends({
     query: {
       $allModels: {
         async $allOperations({ model, operation, args, query }) {
-          // Lista de modelos da aplicação que possuem suporte a isolamento de tenant
           const tenantModels = ["Student", "ClassSession", "Transaction", "InstructorSettings"];
-          
-          if (tenantModels.includes(model) && args && typeof args === "object") {
-            const typedArgs = args as { 
-              where?: Record<string, unknown>; 
-              data?: Record<string, unknown> | Record<string, unknown>[]; 
+          if (!tenantModels.includes(model)) {
+            return query(args);
+          }
+
+          const anyArgs = args as any;
+
+          if (["findFirst", "findMany", "count", "aggregate", "groupBy"].includes(operation)) {
+            anyArgs.where = {
+              ...anyArgs.where,
+              organizationId: tenantId,
             };
-            
-            // Injeta o organizationId no filtro de busca
-            typedArgs.where = typedArgs.where || {};
-            typedArgs.where.organizationId = organizationId;
-            
-            // Injeta o organizationId na criação de novos registros para evitar inserção incorreta
-            if (operation === "create" || operation === "createMany") {
-              if (typedArgs.data) {
-                if (Array.isArray(typedArgs.data)) {
-                  typedArgs.data.forEach((item) => {
-                    item.organizationId = organizationId;
-                  });
-                } else {
-                  typedArgs.data.organizationId = organizationId;
-                }
-              }
+          } else if (operation === "findUnique" || operation === "findUniqueOrThrow") {
+            const newOperation = operation === "findUnique" ? "findFirst" : "findFirstOrThrow";
+            anyArgs.where = {
+              ...anyArgs.where,
+              organizationId: tenantId,
+            };
+            const ctx = Prisma.getExtensionContext(this);
+            return (ctx as any)[model][newOperation](anyArgs);
+          } else if (operation === "create") {
+            anyArgs.data = {
+              ...anyArgs.data,
+              organizationId: tenantId,
+            };
+          } else if (operation === "createMany") {
+            if (Array.isArray(anyArgs.data)) {
+              anyArgs.data = anyArgs.data.map((item: any) => ({
+                ...item,
+                organizationId: tenantId,
+              }));
+            } else if (anyArgs.data) {
+              anyArgs.data = {
+                ...anyArgs.data,
+                organizationId: tenantId,
+              };
+            }
+          } else if (["update", "updateMany", "upsert", "delete", "deleteMany"].includes(operation)) {
+            anyArgs.where = {
+              ...anyArgs.where,
+              organizationId: tenantId,
+            };
+            if (operation === "upsert") {
+              anyArgs.create = {
+                ...anyArgs.create,
+                organizationId: tenantId,
+              };
+              anyArgs.update = {
+                ...anyArgs.update,
+                organizationId: tenantId,
+              };
             }
           }
-          return query(args);
+
+          return query(anyArgs);
         },
       },
     },
   });
-};
+}
 
-export const prisma = basePrisma;
-export type TenantPrismaClient = ReturnType<typeof getTenantPrisma>;
+export { prisma };
+
