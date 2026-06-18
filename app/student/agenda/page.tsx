@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export default function StudentAgenda() {
+import { useSession } from "@/lib/auth-client";
 
-  const { classes, addClass } = useApp();
+export default function StudentAgenda() {
+  const { data: session } = useSession();
+  const { classes, addClass, students } = useApp();
   const [showRequestModal, setShowRequestModal] = useState(false);
 
   // Form state
@@ -17,13 +19,15 @@ export default function StudentAgenda() {
   const [classTime, setClassTime] = useState("14:00");
   const [meetingPoint, setMeetingPoint] = useState("Centro");
 
-  const studentClasses = classes.filter((c) => c.studentId === "mariana-costa");
+  const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
+  const studentClasses = classes.filter((c) => c.studentId === student?.id);
 
   const handleRequestClass = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!student) return;
     addClass({
-      studentId: "mariana-costa",
-      studentName: "Mariana Costa Silva",
+      studentId: student.id,
+      studentName: student.name,
       type: classType,
       date: classDate,
       time: classTime,

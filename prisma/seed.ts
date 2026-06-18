@@ -49,6 +49,21 @@ async function main() {
 
   console.log(`Usuário do Instrutor criado: ${instructorUser.user.name}`);
 
+  // 3.1. Criar Usuário da Aluna Mariana usando o Better Auth API
+  const studentUser = await auth.api.signUpEmail({
+    body: {
+      email: "mariana@volantecerto.com",
+      password: "SenhaSegura123",
+      name: "Mariana Costa Silva",
+    },
+  });
+
+  if (!studentUser) {
+    throw new Error("Falha ao criar o usuário do estudante via Better Auth.");
+  }
+
+  console.log(`Usuário do Estudante criado: ${studentUser.user.name}`);
+
   // 4. Associar o Instrutor à Organização como Owner
   await prisma.member.create({
     data: {
@@ -58,6 +73,16 @@ async function main() {
     },
   });
   console.log("Instrutor associado como Owner da organização.");
+
+  // 4.1. Associar a Aluna Mariana à Organização como Student
+  await prisma.member.create({
+    data: {
+      organizationId: org.id,
+      userId: studentUser.user.id,
+      role: "student",
+    },
+  });
+  console.log("Estudante associada como Student da organização.");
 
   // 5. Criar Configurações do Instrutor para esta organização
   await prisma.instructorSettings.create({
@@ -83,6 +108,7 @@ async function main() {
   const fixedStudentsData = [
     {
       id: "mariana-costa",
+      userId: studentUser.user.id,
       name: "Mariana Costa Silva",
       categories: ["B (Carro)"],
       progress: 60,

@@ -2,10 +2,13 @@
 
 import { useApp } from "@/lib/context";
 
+import { useSession } from "@/lib/auth-client";
+
 export default function StudentProgress() {
+  const { data: session } = useSession();
   const { students } = useApp();
 
-  const student = students.find((s) => s.id === "mariana-costa") || students[0];
+  const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
 
   const requirements = [
     { id: "req-1", title: "Controle de Embreagem", desc: "Arrancada e controle em aclives sem deixar o motor apagar.", status: "concluded" },

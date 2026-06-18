@@ -4,12 +4,15 @@ import { useApp } from "@/lib/context";
 import { useState } from "react";
 import { formatCentsToBRL } from "@/lib/utils";
 
+import { useSession } from "@/lib/auth-client";
+
 export default function StudentProfile() {
+  const { data: session } = useSession();
   const { students, transactions, payPendingPayment } = useApp();
   const [showPixModal, setShowPixModal] = useState(false);
 
-  const student = students.find((s) => s.id === "mariana-costa") || students[0];
-  const studentPayments = transactions.filter((t) => t.studentName.includes("Mariana"));
+  const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
+  const studentPayments = transactions.filter((t) => student && (t.studentName.includes(student.name.split(" ")[0]) || t.studentName === student.name));
 
   const handlePayPix = () => {
     if (student) {

@@ -20,6 +20,7 @@ export interface InstructorSettings  {
 export interface Student {
   id: string;
   organizationId?: string;
+  userId?: string;
   name: string;
   phone: string;
   city?: string;

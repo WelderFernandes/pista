@@ -78,11 +78,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isPending) return;
     
-    if (session?.session?.activeOrganizationId) {
-      reloadData();
-    } else {
-      setLoading(false);
-    }
+    Promise.resolve().then(() => {
+      if (session?.session?.activeOrganizationId) {
+        reloadData();
+      } else {
+        setLoading(false);
+      }
+    });
   }, [session, isPending]);
 
   const addStudent = async (newS: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => {

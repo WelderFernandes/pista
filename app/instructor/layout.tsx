@@ -6,11 +6,35 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "@phosphor-icons/react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { User } from "@/generated";
+import { getCurrentUser } from "@/lib/user";
 
 export default function InstructorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+
+     const { 
+        data: session, 
+        isPending, //loading state
+        // error, //error object
+        // refetch //refetch the session
+    } = authClient.useSession()
+
+    useEffect(() => {
+        if (!isPending && !session?.user.id) {
+            router.push("/login")
+        }
+        if (session?.user.id) {
+            getCurrentUser({id: session.user.id}).then((user) => {
+                setUser(user)
+            })
+        }
+    }, [session, router, isPending])
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,6 +86,20 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
       )
     },
     {
+      label: "Equipe",
+      href: "/instructor/team",
+      icon: (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      activeIcon: (
+        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+      )
+    },
+    {
       label: "Financeiro",
       href: "/instructor/finance",
       icon: (
@@ -106,9 +144,21 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
     }
   ];
 
+  if (isPending) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-orange-600 border-t-transparent" />
+      </div>
+    )
+  }
+
+
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 md:pl-[240px] flex flex-col font-sans transition-colors duration-300">
       {/* Top Selector Bar (Switch Portals) */}
+      <pre>
+        {JSON.stringify(user, null, 2)}
+      </pre>
       <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />

@@ -1,34 +1,73 @@
 "use server";
 
-import { requireTenant } from "@/lib/auth-helpers";
+import { getActiveMember, requireRole, requireTenant } from "@/lib/auth-helpers";
 import { getTenantPrisma, prisma } from "@/lib/prisma";
 import { Student, ClassSession, Transaction, InstructorSettings } from "@/lib/store";
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
- * do usuário logado na requisição atual.
+ * do usuário logado na requisição atual, aplicando regras de controle de acesso (RBAC).
  */
 export async function getAppData() {
-  const { activeOrgId } = await requireTenant();
+  const memberInfo = await getActiveMember();
+  if (!memberInfo) {
+    throw new Error("Não autenticado.");
+  }
+
+  let activeOrgId = memberInfo.activeOrgId;
+
+  // Se o usuário não possui uma organização ativa na sessão, tentamos vinculá-lo à padrão
+  if (!activeOrgId) {
+    const defaultOrg = await prisma.organization.findFirst();
+    if (!defaultOrg) {
+      throw new Error("Nenhuma organização cadastrada no sistema.");
+    }
+    activeOrgId = defaultOrg.id;
+
+    // Cria a associação de membro com a role 'student' por padrão
+    await prisma.member.upsert({
+      where: {
+        id: `${memberInfo.user.id}-${activeOrgId}`,
+      },
+      create: {
+        id: `${memberInfo.user.id}-${activeOrgId}`,
+        organizationId: activeOrgId,
+        userId: memberInfo.user.id,
+        role: "student",
+      },
+      update: {},
+    });
+  }
+
+  // Vincula o usuário logado ao estudante cadastrado pelo instrutor se houver correspondência pelo nome
+  const studentSlug = memberInfo.user.name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
+  
+  const existingStudent = await prisma.student.findFirst({
+    where: {
+      OR: [
+        { userId: memberInfo.user.id },
+        { id: studentSlug }
+      ]
+    }
+  });
+
+  if (existingStudent && !existingStudent.userId) {
+    await prisma.student.update({
+      where: { id: existingStudent.id },
+      data: { userId: memberInfo.user.id }
+    });
+  }
+
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  const [students, classes, transactions, dbSettings] = await Promise.all([
-    tenantPrisma.student.findMany({
-      orderBy: { name: "asc" },
-    }),
-    tenantPrisma.classSession.findMany({
-      orderBy: { date: "desc" },
-    }),
-    tenantPrisma.transaction.findMany({
-      orderBy: { date: "desc" },
-    }),
-    tenantPrisma.instructorSettings.findUnique({
-      where: { organizationId: activeOrgId },
-    }),
-  ]);
+  // Busca configurações do instrutor/autoescola
+  const dbSettings = await tenantPrisma.instructorSettings.findUnique({
+    where: { organizationId: activeOrgId },
+  });
 
-  // Se as configurações do instrutor não existirem para este tenant (como no registro de nova org), criamos a padrão
   let settings = dbSettings;
   if (!settings) {
     settings = await tenantPrisma.instructorSettings.create({
@@ -43,14 +82,58 @@ export async function getAppData() {
         city: "São Paulo",
         neighborhoods: ["Centro"],
         meetingPoints: ["Centro Comercial"],
-        hourlyRate: 12000, // R$ 120,00 em centavos
+        hourlyRate: 12000,
         categories: ["B"],
         bio: "Autoescola cadastrada com sucesso.",
       },
     });
   }
 
-  const mappedStudents: Student[] = students.map((s: any) => ({
+  const userRole = memberInfo.role || "student";
+  let studentsData: any[] = [];
+  let classesData: any[] = [];
+  let transactionsData: any[] = [];
+
+  if (userRole === "student") {
+    // Se o usuário logado é um aluno, ele visualiza apenas os seus próprios dados
+    studentsData = await tenantPrisma.student.findMany({
+      where: {
+        userId: memberInfo.user.id,
+      },
+    });
+
+    if (studentsData.length === 0 && existingStudent) {
+      studentsData = [
+        await tenantPrisma.student.findUnique({
+          where: { id: existingStudent.id },
+        }) as any
+      ];
+    }
+
+    const studentId = studentsData[0]?.id || "";
+    classesData = await tenantPrisma.classSession.findMany({
+      where: {
+        studentId: studentId,
+      },
+      orderBy: { date: "desc" },
+    });
+
+    // Transações financeiras não são visíveis para alunos
+    transactionsData = [];
+  } else {
+    // Instrutores e donos visualizam todos os estudantes, aulas e transações financeiras
+    studentsData = await tenantPrisma.student.findMany({
+      orderBy: { name: "asc" },
+    });
+    classesData = await tenantPrisma.classSession.findMany({
+      orderBy: { date: "desc" },
+    });
+    transactionsData = await tenantPrisma.transaction.findMany({
+      orderBy: { date: "desc" },
+    });
+  }
+
+  const mappedStudents: Student[] = studentsData.filter(Boolean).map((s: any) => ({
     ...s,
     category: s.categories?.[0] || "B (Carro)",
     meetingPoint: s.meetingPoints?.[0] || "Centro Comercial",
@@ -59,8 +142,8 @@ export async function getAppData() {
 
   return {
     students: mappedStudents,
-    classes: classes as unknown as ClassSession[],
-    transactions: transactions as unknown as Transaction[],
+    classes: classesData as unknown as ClassSession[],
+    transactions: transactionsData as unknown as Transaction[],
     settings: {
       ...settings,
       extraDays: [],
@@ -74,7 +157,7 @@ export async function getAppData() {
 export async function addStudentAction(
   data: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">
 ) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   const id = data.name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
@@ -107,7 +190,7 @@ export async function addClassAction(
     instructorName?: string;
   }
 ) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor", "student"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.classSession.create({
@@ -133,7 +216,7 @@ export async function addClassAction(
  * Confirma uma aula no banco de dados.
  */
 export async function confirmClassAction(classId: string) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.classSession.update({
@@ -146,7 +229,7 @@ export async function confirmClassAction(classId: string) {
  * Inicia a aula, alterando seu status para "Em andamento".
  */
 export async function startClassAction(classId: string) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.classSession.update({
@@ -159,7 +242,7 @@ export async function startClassAction(classId: string) {
  * Cancela uma aula.
  */
 export async function cancelClassAction(classId: string) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor", "student"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.classSession.update({
@@ -172,7 +255,7 @@ export async function cancelClassAction(classId: string) {
  * Conclui uma aula prática, incrementando atômica e transacionalmente o progresso do estudante.
  */
 export async function completeClassAction(classId: string) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.$transaction(async (tx: any) => {
@@ -207,7 +290,7 @@ export async function completeClassAction(classId: string) {
  * Deduz o valor do saldo pendente do estudante e cria a transação de entrada correspondente.
  */
 export async function payPendingPaymentAction(studentId: string, amount: number) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor", "student"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.$transaction(async (tx: any) => {
@@ -250,7 +333,7 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
  * Atualiza as configurações administrativas da autoescola no banco de dados.
  */
 export async function updateSettingsAction(data: InstructorSettings) {
-  const { activeOrgId } = await requireTenant();
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.instructorSettings.update({
@@ -369,6 +452,145 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
       status: "Pendente",
     },
   });
+}
+
+/**
+ * Envia um convite de membro com papel definido para a organização ativa do usuário.
+ */
+export async function inviteMemberAction(email: string, role: string) {
+  const { activeOrgId, user } = await requireRole(["owner", "admin"]);
+  
+  return await prisma.invitation.create({
+    data: {
+      organizationId: activeOrgId,
+      email: email.toLowerCase(),
+      role: role,
+      status: "pending",
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 dias
+      inviterId: user.id,
+    },
+  });
+}
+
+/**
+ * Obtém todos os membros (equipe) ativos da organização ativa.
+ */
+export async function getTeamMembersAction() {
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  
+  return await prisma.member.findMany({
+    where: {
+      organizationId: activeOrgId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+    },
+    orderBy: {
+      role: "asc",
+    },
+  });
+}
+
+/**
+ * Obtém todos os convites pendentes da organização ativa.
+ */
+export async function getPendingInvitationsAction() {
+  const { activeOrgId } = await requireRole(["owner", "admin"]);
+  
+  return await prisma.invitation.findMany({
+    where: {
+      organizationId: activeOrgId,
+      status: "pending",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
+
+/**
+ * Obtém os detalhes de um convite a partir de seu ID/token.
+ */
+export async function getInvitationDetailsAction(invitationId: string) {
+  return await prisma.invitation.findUnique({
+    where: {
+      id: invitationId,
+    },
+    include: {
+      organization: {
+        select: {
+          name: true,
+          logo: true,
+        },
+      },
+    },
+  });
+}
+
+/**
+ * Aceita um convite e associa o usuário atual à organização correspondente.
+ */
+export async function acceptInvitationAction(invitationId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    throw new Error("Não autenticado.");
+  }
+
+  const invitation = await prisma.invitation.findUnique({
+    where: {
+      id: invitationId,
+    },
+  });
+
+  if (!invitation || invitation.status !== "pending") {
+    throw new Error("Convite inválido ou expirado.");
+  }
+
+  // Atualiza status do convite
+  await prisma.invitation.update({
+    where: {
+      id: invitationId,
+    },
+    data: {
+      status: "accepted",
+    },
+  });
+
+  // Cria o membro na organização
+  const memberId = `${session.user.id}-${invitation.organizationId}`;
+  const member = await prisma.member.upsert({
+    where: {
+      id: memberId,
+    },
+    create: {
+      id: memberId,
+      organizationId: invitation.organizationId,
+      userId: session.user.id,
+      role: invitation.role,
+    },
+    update: {
+      role: invitation.role,
+    },
+  });
+
+  // Atualiza a sessão definindo a organização ativa
+  await auth.api.setActiveOrganization({
+    headers: await headers(),
+    body: {
+      organizationId: invitation.organizationId,
+    },
+  });
+
+  return member;
 }
 
 

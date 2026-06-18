@@ -5,11 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "@phosphor-icons/react";
+import { useSession } from "@/lib/auth-client";
+import { useApp } from "@/lib/context";
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
+  const { data: session } = useSession();
+  const { students } = useApp();
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
 
   useEffect(() => {
     setTimeout(() => {
@@ -101,11 +107,11 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
           <img
             alt="Foto de perfil do aluno"
             className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY"
+            src={student?.photoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY"}
           />
           <div>
-            <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">Mariana Costa Silva</h1>
-            <p className="text-xs text-blue-600 dark:text-blue-500 font-semibold">Categoria B (Carro)</p>
+            <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">{student?.name || session?.user?.name || "Carregando..."}</h1>
+            <p className="text-xs text-blue-600 dark:text-blue-500 font-semibold">{student ? `Categoria ${student.categories?.[0] || 'B'}` : "Aluno"}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">

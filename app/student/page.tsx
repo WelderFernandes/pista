@@ -5,12 +5,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { formatCentsToBRL } from "@/lib/utils";
 
+import { useSession } from "@/lib/auth-client";
+
 export default function StudentDashboard() {
+  const { data: session } = useSession();
   const { students, classes, payPendingPayment } = useApp();
   const [showPixModal, setShowPixModal] = useState(false);
 
-  // Hardcode Mariana Costa Silva since it's the current logged in student
-  const student = students.find((s) => s.id === "mariana-costa") || students[0];
+  // Busca o estudante associado ao usuário logado, com fallbacks caso ainda não carregado ou sem vínculo
+  const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
   const nextClass = classes.find(
     (c) => c.studentId === student?.id && c.status !== "Concluída" && c.status !== "Cancelada"
   );
