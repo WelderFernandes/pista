@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages: ["@prisma/client", "@prisma/client-runtime-utils"],
 };
 
 export default nextConfig;

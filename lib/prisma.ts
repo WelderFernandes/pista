@@ -1,9 +1,8 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient, Prisma } from "@/generated/prisma/client";
 import { Pool } from "pg";
+import { PrismaClient } from "@/generated";
 
-const connectionString = `${process.env.DATABASE_URL}`;
 const globalForPrisma = global as unknown as {
   prisma: PrismaClient | undefined;
   pgPool: Pool | undefined;
