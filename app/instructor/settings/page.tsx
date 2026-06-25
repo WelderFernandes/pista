@@ -6,7 +6,21 @@ import { centsToBRL, brlToCents } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+import {
+  MapPin,
+  Buildings,
+  MapTrifold,
+  Clock,
+  CalendarBlank,
+  Info,
+} from "@phosphor-icons/react";
 
 const WEEKDAYS = [
   { value: 0, label: "Dom", fullName: "Domingo" },
@@ -29,27 +43,42 @@ export default function InstructorSettingsPage() {
   const { settings, updateSettings } = useApp();
 
   // Local Form states initialized from Context Settings
-  const [workDays, setWorkDays] = useState<number[]>(settings?.workDays || [1, 2, 3, 4, 5, 6]);
-  const [workStart, setWorkStart] = useState<string>(settings?.workStart || "08:00");
-  const [workEnd, setWorkEnd] = useState<string>(settings?.workEnd || "18:00");
-  const [lunchStart, setLunchStart] = useState<string>(settings?.lunchStart || "12:00");
-  const [lunchEnd, setLunchEnd] = useState<string>(settings?.lunchEnd || "13:30");
-  const [extraDays, setExtraDays] = useState<{ date: string; start: string; end: string }[]>(
-    settings?.extraDays || []
+  const [workDays, setWorkDays] = useState<number[]>(
+    settings?.workDays || [1, 2, 3, 4, 5, 6],
   );
+  const [workStart, setWorkStart] = useState<string>(
+    settings?.workStart || "08:00",
+  );
+  const [workEnd, setWorkEnd] = useState<string>(settings?.workEnd || "18:00");
+  const [lunchStart, setLunchStart] = useState<string>(
+    settings?.lunchStart || "12:00",
+  );
+  const [lunchEnd, setLunchEnd] = useState<string>(
+    settings?.lunchEnd || "13:30",
+  );
+  const [extraDays, setExtraDays] = useState<
+    { date: string; start: string; end: string }[]
+  >(settings?.extraDays || []);
 
   // New discovery & search fields
   const [city, setCity] = useState<string>(settings?.city || "São Paulo");
   const [neighborhoodsInput, setNeighborhoodsInput] = useState<string>(
-    settings?.neighborhoods?.join(", ") || "Centro, Pinheiros, Vila Madalena, Jardins"
+    settings?.neighborhoods?.join(", ") ||
+      "Centro, Pinheiros, Vila Madalena, Jardins",
   );
   const [meetingPointsInput, setMeetingPointsInput] = useState<string>(
-    settings?.meetingPoints?.join(", ") || "Centro Comercial, Estação de Metrô Pinheiros, Shopping Boulevard"
+    settings?.meetingPoints?.join(", ") ||
+      "Centro Comercial, Estação de Metrô Pinheiros, Shopping Boulevard",
   );
-  const [hourlyRate, setHourlyRate] = useState<number>(centsToBRL(settings?.hourlyRate ?? 12000));
-  const [categories, setCategories] = useState<string[]>(settings?.categories || ["B"]);
+  const [hourlyRate, setHourlyRate] = useState<number>(
+    centsToBRL(settings?.hourlyRate ?? 12000),
+  );
+  const [categories, setCategories] = useState<string[]>(
+    settings?.categories || ["B"],
+  );
   const [bio, setBio] = useState<string>(
-    settings?.bio || "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos."
+    settings?.bio ||
+      "Instrutor credenciado com mais de 10 anos de experiência, especializado em direção defensiva e preparação para exames práticos.",
   );
 
   // Local state for the "Add Extra Day" form
@@ -116,7 +145,9 @@ export default function InstructorSettingsPage() {
   const handleSaveAll = () => {
     // Basic validation
     if (workStart >= workEnd) {
-      alert("O horário de início do trabalho deve ser anterior ao horário de término.");
+      alert(
+        "O horário de início do trabalho deve ser anterior ao horário de término.",
+      );
       return;
     }
     if (lunchStart >= lunchEnd) {
@@ -124,7 +155,9 @@ export default function InstructorSettingsPage() {
       return;
     }
     if (lunchStart < workStart || lunchEnd > workEnd) {
-      alert("O horário de almoço deve estar contido dentro do período de trabalho.");
+      alert(
+        "O horário de almoço deve estar contido dentro do período de trabalho.",
+      );
       return;
     }
     if (!city.trim()) {
@@ -178,15 +211,30 @@ export default function InstructorSettingsPage() {
       {/* Page Header */}
       <div className="flex justify-between items-center border-b border-slate-100 pb-4">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Configurações do Instrutor</h2>
-          <p className="text-slate-500 text-sm">Defina seus horários de expediente, área de atuação e biografia profissional.</p>
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
+            Configurações do Instrutor
+          </h2>
+          <p className="text-slate-500 text-sm">
+            Defina seus horários de expediente, área de atuação e biografia
+            profissional.
+          </p>
         </div>
         <Button
           onClick={handleSaveAll}
           className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-orange-600/20 transition-all active:scale-95 cursor-pointer flex items-center gap-2 h-10"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 13l4 4L19 7"
+            />
           </svg>
           Salvar Tudo
         </Button>
@@ -195,16 +243,28 @@ export default function InstructorSettingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column (Work time & Location settings) */}
         <div className="lg:col-span-2 flex flex-col gap-6">
-          
           {/* Public Profile Search Settings Card */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
-              <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <svg
+                className="w-5 h-5 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
               </svg>
               Área de Atuação & Perfil Público
             </h3>
-            <p className="text-xs text-slate-400 mb-5">Configure as informações que os alunos usarão para filtrar e encontrar você na busca.</p>
+            <p className="text-xs text-slate-400 mb-5">
+              Configure as informações que os alunos usarão para filtrar e
+              encontrar você na busca.
+            </p>
 
             <div className="flex flex-col gap-4">
               {/* City and Price */}
@@ -212,54 +272,91 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="city">Cidade</Label>
                   <div className="mt-1">
-                    <Input
-                      type="text"
-                      id="city"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      placeholder="Ex: São Paulo"
-                    />
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                      <InputGroupAddon align="inline-start">
+                        <MapPin className="w-4 h-4 text-slate-400" />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type="text"
+                        id="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="Ex: São Paulo"
+                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="hourlyRate">Valor da Hora/Aula (R$)</Label>
                   <div className="mt-1">
-                    <Input
-                      type="number"
-                      id="hourlyRate"
-                      value={hourlyRate}
-                      onChange={(e) => setHourlyRate(Math.max(0, Number(e.target.value)))}
-                      placeholder="Ex: 120"
-                    />
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                      <InputGroupAddon align="inline-start">
+                        <InputGroupText className="font-semibold text-slate-400">
+                          R$
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type="number"
+                        id="hourlyRate"
+                        value={hourlyRate}
+                        onChange={(e) =>
+                          setHourlyRate(Math.max(0, Number(e.target.value)))
+                        }
+                        placeholder="Ex: 120"
+                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                      />
+                      <InputGroupAddon align="inline-end">
+                        <InputGroupText className="font-semibold text-slate-400">
+                          /h
+                        </InputGroupText>
+                      </InputGroupAddon>
+                    </InputGroup>
                   </div>
                 </div>
               </div>
 
               {/* Served Neighborhoods */}
               <div>
-                <Label htmlFor="neighborhoods">Bairros de Atuação (separados por vírgula)</Label>
+                <Label htmlFor="neighborhoods">
+                  Bairros de Atuação (separados por vírgula)
+                </Label>
                 <div className="mt-1">
-                  <Input
-                    type="text"
-                    id="neighborhoods"
-                    value={neighborhoodsInput}
-                    onChange={(e) => setNeighborhoodsInput(e.target.value)}
-                    placeholder="Ex: Centro, Pinheiros, Vila Madalena"
-                  />
+                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroupAddon align="inline-start">
+                      <Buildings className="w-4 h-4 text-slate-400" />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      type="text"
+                      id="neighborhoods"
+                      value={neighborhoodsInput}
+                      onChange={(e) => setNeighborhoodsInput(e.target.value)}
+                      placeholder="Ex: Centro, Pinheiros, Vila Madalena"
+                      className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                    />
+                  </InputGroup>
                 </div>
               </div>
 
               {/* Default Meeting Points */}
               <div>
-                <Label htmlFor="meetingPoints">Pontos de Encontro Padrão (separados por vírgula)</Label>
+                <Label htmlFor="meetingPoints">
+                  Pontos de Encontro Padrão (separados por vírgula)
+                </Label>
                 <div className="mt-1">
-                  <Input
-                    type="text"
-                    id="meetingPoints"
-                    value={meetingPointsInput}
-                    onChange={(e) => setMeetingPointsInput(e.target.value)}
-                    placeholder="Ex: Autoescola Centro, Metrô Pinheiros"
-                  />
+                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroupAddon align="inline-start">
+                      <MapTrifold className="w-4 h-4 text-slate-400" />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      type="text"
+                      id="meetingPoints"
+                      value={meetingPointsInput}
+                      onChange={(e) => setMeetingPointsInput(e.target.value)}
+                      placeholder="Ex: Autoescola Centro, Metrô Pinheiros"
+                      className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                    />
+                  </InputGroup>
                 </div>
               </div>
 
@@ -291,14 +388,19 @@ export default function InstructorSettingsPage() {
               <div>
                 <Label htmlFor="bio">Apresentação / Minibiografia</Label>
                 <div className="mt-1">
-                  <textarea
-                    id="bio"
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    rows={3}
-                    placeholder="Fale brevemente sobre sua experiência e metodologia de ensino..."
-                    className="w-full bg-slate-50 border border-slate-250 dark:border-slate-800 dark:bg-slate-950 rounded-xl px-3.5 py-2 text-xs font-medium text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 resize-none transition-colors duration-200"
-                  />
+                  <InputGroup className="rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500 items-start">
+                    <InputGroupAddon align="inline-start" className="pt-3">
+                      <Info className="w-4 h-4 text-slate-400" />
+                    </InputGroupAddon>
+                    <InputGroupTextarea
+                      id="bio"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      rows={3}
+                      placeholder="Fale brevemente sobre sua experiência e metodologia de ensino..."
+                      className="px-3 text-xs text-slate-800 dark:text-white min-h-[80px]"
+                    />
+                  </InputGroup>
                 </div>
               </div>
             </div>
@@ -307,12 +409,24 @@ export default function InstructorSettingsPage() {
           {/* Days of Work Card */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
-              <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
+              <svg
+                className="w-5 h-5 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z"
+                />
               </svg>
               Dias de Trabalho Semanais
             </h3>
-            <p className="text-xs text-slate-400 mb-5">Marque os dias que você normalmente atende na autoescola.</p>
+            <p className="text-xs text-slate-400 mb-5">
+              Marque os dias que você normalmente atende na autoescola.
+            </p>
 
             <div className="flex flex-wrap gap-2 justify-between">
               {WEEKDAYS.map((day) => {
@@ -338,59 +452,101 @@ export default function InstructorSettingsPage() {
           {/* Work Hours & Lunch Breaks Card */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-5 h-5 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               Horário de Expediente & Intervalos
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Working Hours */}
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3">
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Jornada de Trabalho</span>
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-850 flex flex-col gap-3">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  Jornada de Trabalho
+                </span>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">Entrada</label>
-                    <input
-                      type="time"
-                      value={workStart}
-                      onChange={(e) => setWorkStart(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                    />
+                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
+                      Entrada
+                    </label>
+                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                      <InputGroupAddon align="inline-start">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type="time"
+                        value={workStart}
+                        onChange={(e) => setWorkStart(e.target.value)}
+                        className="h-full px-2 text-xs font-semibold text-slate-900 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                   <div>
-                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">Saída</label>
-                    <input
-                      type="time"
-                      value={workEnd}
-                      onChange={(e) => setWorkEnd(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                    />
+                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
+                      Saída
+                    </label>
+                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                      <InputGroupAddon align="inline-start">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type="time"
+                        value={workEnd}
+                        onChange={(e) => setWorkEnd(e.target.value)}
+                        className="h-full px-2 text-xs font-semibold text-slate-900 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                 </div>
               </div>
 
               {/* Lunch Break */}
-              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-3">
-                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Intervalo de Almoço</span>
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-850 flex flex-col gap-3">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  Intervalo de Almoço
+                </span>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">Início</label>
-                    <input
-                      type="time"
-                      value={lunchStart}
-                      onChange={(e) => setLunchStart(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                    />
+                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
+                      Início
+                    </label>
+                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                      <InputGroupAddon align="inline-start">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type="time"
+                        value={lunchStart}
+                        onChange={(e) => setLunchStart(e.target.value)}
+                        className="h-full px-2 text-xs font-semibold text-slate-900 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                   <div>
-                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">Término</label>
-                    <input
-                      type="time"
-                      value={lunchEnd}
-                      onChange={(e) => setLunchEnd(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-900 focus:outline-none focus:border-orange-500"
-                    />
+                    <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
+                      Término
+                    </label>
+                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                      <InputGroupAddon align="inline-start">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        type="time"
+                        value={lunchEnd}
+                        onChange={(e) => setLunchEnd(e.target.value)}
+                        className="h-full px-2 text-xs font-semibold text-slate-900 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                 </div>
               </div>
@@ -398,10 +554,22 @@ export default function InstructorSettingsPage() {
 
             {/* Practical Shift Info Panel */}
             <div className="mt-6 border-t border-slate-100 pt-4 flex flex-col gap-2">
-              <span className="text-xs font-bold text-slate-500">Resumo da Jornada Diária</span>
+              <span className="text-xs font-bold text-slate-500">
+                Resumo da Jornada Diária
+              </span>
               <div className="flex justify-between text-xs text-slate-600 bg-orange-50/50 p-3 rounded-lg border border-orange-100/30">
-                <span>Horas de Atendimento: <strong className="text-slate-800">{workStart} às {workEnd}</strong></span>
-                <span>Pausa para Almoço: <strong className="text-slate-800">{lunchStart} às {lunchEnd}</strong></span>
+                <span>
+                  Horas de Atendimento:{" "}
+                  <strong className="text-slate-800">
+                    {workStart} às {workEnd}
+                  </strong>
+                </span>
+                <span>
+                  Pausa para Almoço:{" "}
+                  <strong className="text-slate-800">
+                    {lunchStart} às {lunchEnd}
+                  </strong>
+                </span>
               </div>
             </div>
           </div>
@@ -412,25 +580,41 @@ export default function InstructorSettingsPage() {
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-5">
             <div>
               <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
-                <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-5 h-5 text-orange-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
                 Abrir Agenda Extra
               </h3>
-              <p className="text-xs text-slate-400">Abra exceções para trabalhar em dias que você normalmente estaria de folga (ex: feriados ou domingos).</p>
+              <p className="text-xs text-slate-400">
+                Abra exceções para trabalhar em dias que você normalmente
+                estaria de folga (ex: feriados ou domingos).
+              </p>
             </div>
 
             <form onSubmit={handleAddExtraDay} className="flex flex-col gap-3">
               <div>
                 <Label htmlFor="newExtraDate">Data do Dia Extra</Label>
                 <div className="mt-1">
-                  <Input
-                    type="date"
-                    id="newExtraDate"
-                    required
-                    value={newExtraDate}
-                    onChange={(e) => setNewExtraDate(e.target.value)}
-                  />
+                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroupInput
+                      type="date"
+                      id="newExtraDate"
+                      required
+                      value={newExtraDate}
+                      onChange={(e) => setNewExtraDate(e.target.value)}
+                      className="h-full px-3 text-xs text-slate-850 dark:text-white"
+                    />
+                  </InputGroup>
                 </div>
               </div>
 
@@ -438,25 +622,31 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="newExtraStart">Hora Início</Label>
                   <div className="mt-1">
-                    <Input
-                      type="time"
-                      id="newExtraStart"
-                      required
-                      value={newExtraStart}
-                      onChange={(e) => setNewExtraStart(e.target.value)}
-                    />
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                      <InputGroupInput
+                        type="time"
+                        id="newExtraStart"
+                        required
+                        value={newExtraStart}
+                        onChange={(e) => setNewExtraStart(e.target.value)}
+                        className="h-full px-3 text-xs text-slate-850 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="newExtraEnd">Hora Fim</Label>
                   <div className="mt-1">
-                    <Input
-                      type="time"
-                      id="newExtraEnd"
-                      required
-                      value={newExtraEnd}
-                      onChange={(e) => setNewExtraEnd(e.target.value)}
-                    />
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                      <InputGroupInput
+                        type="time"
+                        id="newExtraEnd"
+                        required
+                        value={newExtraEnd}
+                        onChange={(e) => setNewExtraEnd(e.target.value)}
+                        className="h-full px-3 text-xs text-slate-850 dark:text-white"
+                      />
+                    </InputGroup>
                   </div>
                 </div>
               </div>
@@ -471,11 +661,15 @@ export default function InstructorSettingsPage() {
 
             {/* List of active Extra Days exceptions */}
             <div className="border-t border-slate-100 pt-4">
-              <span className="text-xs font-bold text-slate-500 block mb-3">Exceções Ativas ({extraDays.length})</span>
-              
+              <span className="text-xs font-bold text-slate-500 block mb-3">
+                Exceções Ativas ({extraDays.length})
+              </span>
+
               {extraDays.length === 0 ? (
                 <div className="text-center py-6 border border-dashed border-slate-200 rounded-xl">
-                  <span className="text-[11px] text-slate-400 font-medium">Nenhum dia extra cadastrado</span>
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    Nenhum dia extra cadastrado
+                  </span>
                 </div>
               ) : (
                 <div className="flex flex-col gap-2 max-h-[220px] overflow-y-auto pr-1">
@@ -490,7 +684,9 @@ export default function InstructorSettingsPage() {
                         className="flex items-center justify-between bg-orange-50/40 p-2.5 rounded-xl border border-orange-100/50"
                       >
                         <div className="flex flex-col">
-                          <span className="text-xs font-bold text-slate-900">{dateFormatted}</span>
+                          <span className="text-xs font-bold text-slate-900">
+                            {dateFormatted}
+                          </span>
                           <span className="text-[10px] text-orange-600 font-medium">
                             {ed.start} - {ed.end}
                           </span>
@@ -501,8 +697,18 @@ export default function InstructorSettingsPage() {
                           className="p-1 text-slate-400 hover:text-red-500 rounded-lg hover:bg-white transition-all cursor-pointer"
                           title="Remover Exceção"
                         >
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -514,7 +720,7 @@ export default function InstructorSettingsPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Save Button Area (fixed-like button spacer) */}
       <div className="flex justify-center mt-4 md:hidden">
         <Button
