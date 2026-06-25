@@ -5,6 +5,8 @@ import { useState } from "react";
 import { formatCentsToBRL } from "@/lib/utils";
 
 import { useSession } from "@/lib/auth-client";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { User as UserIcon } from "@phosphor-icons/react";
 
 export default function StudentProfile() {
   const { data: session } = useSession();
@@ -23,6 +25,8 @@ export default function StudentProfile() {
 
   if (!student) return null;
 
+  const userImage = session?.user?.image || student.photoUrl;
+
   return (
     <div className="flex flex-col gap-6 animate-fade-in pb-10">
       {/* Header */}
@@ -33,15 +37,16 @@ export default function StudentProfile() {
 
       {/* Profile Info Card */}
       <section className="bg-white rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center md:items-start gap-6">
-        <img
-          alt={student.name}
-          className="w-20 h-20 rounded-full object-cover border-2 border-blue-500/20 shadow-md"
-          src={student.photoUrl}
-        />
+        <Avatar className="w-20 h-20 border-2 border-blue-500/20 shadow-md">
+          {userImage && <AvatarImage src={userImage} alt={student.name} />}
+          <AvatarFallback className="bg-slate-100 text-slate-550 flex items-center justify-center">
+            <UserIcon className="w-8 h-8 text-slate-400" />
+          </AvatarFallback>
+        </Avatar>
         <div className="flex-1 text-center md:text-left">
           <h3 className="text-lg font-bold text-slate-900">{student.name}</h3>
           <span className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mt-1.5">
-            Categoria {student.category}
+            Categoria {student.categories?.[0] || student.category || 'B'}
           </span>
           
           <div className="grid grid-cols-2 gap-3 mt-4 text-left max-w-sm mx-auto md:mx-0">

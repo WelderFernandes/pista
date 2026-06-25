@@ -4,9 +4,18 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "@phosphor-icons/react";
-import { useSession } from "@/lib/auth-client";
+import { Sun, Moon, User as UserIcon } from "@phosphor-icons/react";
+import { useSession, authClient } from "@/lib/auth-client";
 import { useApp } from "@/lib/context";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
@@ -102,23 +111,53 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       </div>
 
       {/* Top Nav Header */}
-      <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
-        <div className="flex items-center gap-3">
-          <img
-            alt="Foto de perfil do aluno"
-            className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
-            src={student?.photoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuDcYC49gnQHyORIvqGwE3WVPlQpEEo_2rcGqxv90gPI0UL-8cHL1jE-hr08ErRhrGyaOCnzIXFAvAu-Y23apkm4mU1oFNL7XGlQDshIjte4e-Lljs0EI4uQuth6rnfe32x5z6CxN42rOxE8KXNzUYFI3snjUmmlRKrmnJcuudKc3zvyQjnucFGgtA4kirUs22QMw7vAxhLORKCV5VXRlncOvbKeBmzvUvv5aDZcE0PC8lm8h24k-G-2zb4RmOgHHpEpaLJaupvS-aY"}
-          />
-          <div>
-            <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">{student?.name || session?.user?.name || "Carregando..."}</h1>
-            <p className="text-xs text-blue-600 dark:text-blue-500 font-semibold">{student ? `Categoria ${student.categories?.[0] || 'B'}` : "Aluno"}</p>
-          </div>
-        </div>
+      <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer focus:outline-hidden text-left">
+              <Avatar size="lg" className="border border-slate-200 dark:border-slate-800">
+                {(session?.user?.image || student?.photoUrl) && (
+                  <AvatarImage
+                    src={session?.user?.image || student?.photoUrl || undefined}
+                    alt="Foto de perfil do aluno"
+                  />
+                )}
+                <AvatarFallback className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center">
+                  <UserIcon className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">{session?.user?.name || student?.name || "Carregando..."}</h1>
+                <p className="text-xs text-blue-600 dark:text-blue-500 font-semibold">{student ? `Categoria ${student.categories?.[0] || 'B'}` : "Aluno"}</p>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-xl p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
+            <DropdownMenuLabel className="px-2 py-1.5 text-xs text-slate-500 dark:text-slate-400">Minha Conta</DropdownMenuLabel>
+            <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
+            <DropdownMenuItem asChild>
+              <Link href="/student/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                Meu Perfil
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
+            <DropdownMenuItem
+              onClick={async () => {
+                await authClient.signOut({
+                  callbackURL: "/login",
+                });
+              }}
+              className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-lg"
+            >
+              Fazer Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <div className="flex items-center gap-3">
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-650 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-655 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
               aria-label="Alternar tema"
             >
               {theme === "dark" ? (

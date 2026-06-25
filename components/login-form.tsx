@@ -405,7 +405,7 @@ export function LoginForm() {
                   <input type="checkbox" className="rounded bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-orange-600 focus:ring-0 focus:ring-offset-0" />
                   Lembrar de mim
                 </label>
-                <Link href="#" className="text-slate-550 hover:underline">
+                <Link href="/recuperar-senha" className="text-slate-550 hover:underline">
                   Esqueceu a senha?
                 </Link>
               </div>

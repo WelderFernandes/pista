@@ -5,11 +5,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "@phosphor-icons/react";
+import { Sun, Moon, User as UserIcon } from "@phosphor-icons/react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { User } from "@/generated";
 import { getCurrentUser } from "@/lib/user";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function InstructorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -156,9 +165,6 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 md:pl-[240px] flex flex-col font-sans transition-colors duration-300">
       {/* Top Selector Bar (Switch Portals) */}
-      <pre>
-        {JSON.stringify(user, null, 2)}
-      </pre>
       <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
@@ -177,25 +183,60 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
 
       {/* Top Nav Header */}
       <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
-        <div className="flex items-center gap-3">
-          <Image
-            alt="Avatar do Instrutor"
-            className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-800"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k"
-            width={40}
-            height={40}
-            unoptimized
-          />
-          <div>
-            <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">Olá, Carlos Eduardo</h1>
-            <p className="text-xs text-orange-600 dark:text-orange-500 font-semibold">Instrutor Chefe</p>
-          </div>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer focus:outline-hidden text-left">
+              <Avatar size="lg" className="border border-slate-200 dark:border-slate-800">
+                {(user?.image || session?.user?.image) && (
+                  <AvatarImage
+                    src={user?.image || session?.user?.image || undefined}
+                    alt="Avatar do Instrutor"
+                  />
+                )}
+                <AvatarFallback className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center">
+                  <UserIcon className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
+                  Olá, {user?.name || session?.user?.name || "Instrutor"}
+                </h1>
+                <p className="text-xs text-orange-600 dark:text-orange-500 font-semibold">Instrutor</p>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-xl p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
+            <DropdownMenuLabel className="px-2 py-1.5 text-xs text-slate-500 dark:text-slate-400">Minha Conta</DropdownMenuLabel>
+            <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
+            <DropdownMenuItem asChild>
+              <Link href="/instructor/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                Meu Perfil
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/instructor/settings" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                Configurações
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
+            <DropdownMenuItem
+              onClick={async () => {
+                await authClient.signOut({
+                  callbackURL: "/login",
+                });
+              }}
+              className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-lg"
+            >
+              Fazer Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <div className="flex items-center gap-3">
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-950 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
               aria-label="Alternar tema"
             >
               {theme === "dark" ? (
@@ -206,7 +247,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
             </button>
           )}
 
-          <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-950/50 dark:hover:bg-slate-950 relative cursor-pointer text-slate-500 hover:text-orange-600 transition-all duration-300">
+          <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-950/50 dark:hover:bg-slate-950 relative cursor-pointer text-slate-500 hover:text-orange-655 transition-all duration-300">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>

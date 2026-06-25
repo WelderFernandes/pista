@@ -1,15 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authClient } from "@/lib/auth-client";
+import { getCurrentUser } from "@/lib/user";
+import { User } from "@/generated";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { User as UserIcon } from "@phosphor-icons/react";
 
 export default function InstructorProfile() {
   const [vehicleName, setVehicleName] = useState("Hyundai HB20 1.0 Manual");
   const [plate, setPlate] = useState("BRA-2E20");
   const [km, setKm] = useState("12.450 km");
   const [fuel, setFuel] = useState("75%");
+  const [user, setUser] = useState<User | null>(null);
+
+  const { data: session } = authClient.useSession();
+
+  useEffect(() => {
+    if (session?.user.id) {
+      getCurrentUser({ id: session.user.id }).then((usr) => {
+        setUser(usr);
+      });
+    }
+  }, [session]);
+
+  const userName = user?.name || session?.user?.name || "Instrutor";
+  const userEmail = user?.email || session?.user?.email || "";
+  const userImage = user?.image || session?.user?.image;
 
   return (
     <div className="flex flex-col gap-6 animate-fade-in pb-10">
@@ -21,22 +40,20 @@ export default function InstructorProfile() {
 
       {/* Instructor Information */}
       <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <Image
-          alt="Carlos Eduardo"
-          className="w-20 h-20 rounded-full object-cover border-2 border-orange-500/20"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYkqb9Ie4QMBVCOXtW103-nVJFRxnfLyYsXAdoW5LjFBVUJ5WvYfPD-WmNFSWCBQ56SHtHrdBMS5JJjbjEOssIm509LQ94Tf1sEyq1AjB6Xs0x7MiU503Y27oCDXn2U3pbzeicE8_NzeD8r9_L12fczcNrM_pDT5JakUXAINc4pvLuhsbRN3QXAjHbq1fAWgcx3wtqF9oPndL948bucCmG-u5xQ6QM6RfqZPlU_yKfVPf4WA9uwowtGrnu8UJs5Asbe3u1jP1DH7k"
-          width={80}
-          height={80}
-          unoptimized
-        />
+        <Avatar className="w-20 h-20 border-2 border-orange-500/20">
+          {userImage && <AvatarImage src={userImage} alt={userName} />}
+          <AvatarFallback className="bg-slate-100 text-slate-550 flex items-center justify-center">
+            <UserIcon className="w-8 h-8 text-slate-400" />
+          </AvatarFallback>
+        </Avatar>
         <div className="flex-1 text-center sm:text-left">
-          <h3 className="text-lg font-bold text-slate-900">Carlos Eduardo de Oliveira</h3>
+          <h3 className="text-lg font-bold text-slate-900">{userName}</h3>
           <p className="text-xs text-orange-600 font-semibold mt-0.5">Instrutor Credenciado Detran • Credencial #94827-C</p>
           
           <div className="grid grid-cols-2 gap-3 mt-4 text-left max-w-md">
             <div>
-              <span className="text-[10px] text-slate-400 font-bold block uppercase">Telefone</span>
-              <span className="text-xs font-bold text-slate-700">(11) 97765-1122</span>
+              <span className="text-[10px] text-slate-400 font-bold block uppercase">E-mail</span>
+              <span className="text-xs font-bold text-slate-700 block truncate">{userEmail}</span>
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-bold block uppercase">Categorias Habilitadas</span>
