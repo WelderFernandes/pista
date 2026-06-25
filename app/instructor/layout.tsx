@@ -221,9 +221,8 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
             <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
             <DropdownMenuItem
               onClick={async () => {
-                await authClient.signOut({
-                  callbackURL: "/login",
-                });
+                await authClient.signOut();
+                window.location.href = "/login";
               }}
               className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-lg"
             >
