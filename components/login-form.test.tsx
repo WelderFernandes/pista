@@ -55,7 +55,7 @@ describe("LoginForm Prefill Flow", () => {
     // Wait for the useEffect and setTimeout to trigger state updates
     await waitFor(() => {
       // The signup header or subtext should be visible, confirming we switched to signup mode
-      expect(screen.getByText(/Siga os passos abaixo para registrar seu perfil profissional./i)).toBeInTheDocument();
+      expect(screen.getByText(/Preencha as informações para registrar sua Autoescola./i)).toBeInTheDocument();
     });
 
     // Check if the inputs are prefilled with the mock parameters
