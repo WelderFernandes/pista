@@ -23,10 +23,10 @@ export default function InstructorFinance() {
       {/* Stats Bento Grid */}
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Total Recebido */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden">
+        <div className="bg-white p-5 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
           <div className="flex items-center justify-between mb-4">
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+            <div className="w-8 h-8 rounded-sm bg-emerald-50 flex items-center justify-center text-emerald-600">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -42,10 +42,10 @@ export default function InstructorFinance() {
         </div>
 
         {/* Faturamento Pendente */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden">
+        <div className="bg-white p-5 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
           <div className="flex items-center justify-between mb-4">
-            <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+            <div className="w-8 h-8 rounded-sm bg-amber-50 flex items-center justify-center text-amber-600">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
@@ -62,7 +62,7 @@ export default function InstructorFinance() {
       </section>
 
       {/* Visual Analytics Box */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <h3 className="text-sm font-bold text-slate-900 mb-4">Distribuição do Fluxo</h3>
         <div className="flex flex-col gap-4">
           <div>
@@ -70,8 +70,8 @@ export default function InstructorFinance() {
               <span className="text-slate-500">Aulas Práticas Avulsas</span>
               <span className="text-slate-800">70%</span>
             </div>
-            <div className="w-full h-2 bg-orange-100 rounded-full overflow-hidden">
-              <div className="h-full bg-orange-600 rounded-full" style={{ width: "70%" }} />
+            <div className="w-full h-2 bg-blue-100 rounded-full overflow-hidden">
+              <div className="h-full bg-blue-600 rounded-full" style={{ width: "70%" }} />
             </div>
           </div>
           <div>
@@ -96,13 +96,13 @@ export default function InstructorFinance() {
       </section>
 
       {/* Transaction History List */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <h3 className="text-sm font-bold text-slate-900 mb-4">Histórico de Transações</h3>
         <div className="flex flex-col gap-3">
           {transactions.map((t) => (
             <div
               key={t.id}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
+              className="flex items-center justify-between p-3.5 rounded-sm bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
             >
               <div>
                 <h4 className="text-xs font-bold text-slate-900">{t.description}</h4>

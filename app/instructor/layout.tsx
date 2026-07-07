@@ -61,7 +61,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path d="M5 3a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2H5zM15 3a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V5a2 2 0 00-2-2h-4zM5 13a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2H5zM15 13a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2h-4z" />
         </svg>
       )
@@ -75,7 +75,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v13a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H8V3a1 1 0 00-1-1zM4 8h16v11H4V8zm2 2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H7a1 1 0 01-1-1v-2z" />
         </svg>
       )
@@ -89,7 +89,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
       )
@@ -103,7 +103,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
         </svg>
       )
@@ -117,7 +117,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm1-15a1 1 0 10-2 0v1.07A2.993 2.993 0 009 11a1 1 0 102 0h1a1 1 0 100-2h-1a1 1 0 010-2v-.93zm-3 8a1 1 0 100-2H9a1 1 0 100 2h1a1 1 0 010 2v.93a1 1 0 102 0V17a2.993 2.993 0 002-2.93 1 1 0 10-2 0h-1a1 1 0 100 2h1a1 1 0 010 2H11v-.93a1 1 0 01-1-1.07z" clipRule="evenodd" />
         </svg>
       )
@@ -131,7 +131,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-650 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M18 10a6 6 0 11-12 0 6 6 0 0112 0zm-6 8a8 8 0 00-8 8h16a8 8 0 00-8-8z" clipRule="evenodd" />
         </svg>
       )
@@ -146,7 +146,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </svg>
       ),
       activeIcon: (
-        <svg className="w-6 h-6 text-orange-655 dark:text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600 dark:text-blue-600" fill="currentColor" viewBox="0 0 24 24">
           <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
         </svg>
       )
@@ -156,7 +156,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
   if (isPending) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
-        <div className="h-16 w-16 animate-spin rounded-full border-4 border-orange-600 border-t-transparent" />
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
       </div>
     )
   }
@@ -167,12 +167,12 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
       {/* Top Selector Bar (Switch Portals) */}
       <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
           <span className="font-bold uppercase tracking-wider text-[10px] text-slate-350">Modo Instrutor Ativo</span>
         </div>
         <Link 
           href="/" 
-          className="text-orange-400 hover:text-orange-355 transition-colors font-semibold flex items-center gap-1 text-[11px]"
+          className="text-blue-500 hover:text-blue-400 transition-colors font-semibold flex items-center gap-1 text-[11px]"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -201,20 +201,20 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
                 <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
                   Olá, {user?.name || session?.user?.name || "Instrutor"}
                 </h1>
-                <p className="text-xs text-orange-600 dark:text-orange-500 font-semibold">Instrutor</p>
+                <p className="text-xs text-blue-600 dark:text-blue-600 font-semibold">Instrutor</p>
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-xl p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
+          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-sm p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
             <DropdownMenuLabel className="px-2 py-1.5 text-xs text-slate-500 dark:text-slate-400">Minha Conta</DropdownMenuLabel>
             <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
             <DropdownMenuItem asChild>
-              <Link href="/instructor/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+              <Link href="/instructor/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-sm">
                 Meu Perfil
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/instructor/settings" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+              <Link href="/instructor/settings" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-sm">
                 Configurações
               </Link>
             </DropdownMenuItem>
@@ -224,7 +224,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
                 await authClient.signOut();
                 window.location.href = "/login";
               }}
-              className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-lg"
+              className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-sm"
             >
               Fazer Logout
             </DropdownMenuItem>
@@ -235,7 +235,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+              className="p-2 rounded-sm border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
               aria-label="Alternar tema"
             >
               {theme === "dark" ? (
@@ -246,11 +246,11 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
             </button>
           )}
 
-          <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-950/50 dark:hover:bg-slate-950 relative cursor-pointer text-slate-500 hover:text-orange-655 transition-all duration-300">
+          <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-950/50 dark:hover:bg-slate-950 relative cursor-pointer text-slate-500 hover:text-blue-600 transition-all duration-300">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-orange-655 rounded-full border border-white dark:border-slate-900" />
+            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-blue-600 rounded-full border border-white dark:border-slate-900" />
           </button>
         </div>
       </header>
@@ -269,7 +269,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
                 href={item.href}
                 className={`flex items-center gap-3 px-6 py-3.5 text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-orange-500/10 text-orange-600 dark:text-orange-500 border-r-4 border-orange-500 font-bold"
+                    ? "bg-blue-600/10 text-blue-600 dark:text-blue-600 border-r-4 border-blue-600 font-bold"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
                 }`}
               >
@@ -281,11 +281,11 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </div>
         <div className="p-6 border-t border-slate-200 dark:border-slate-850">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-orange-650 flex items-center justify-center font-bold text-sm text-white">
+            <div className="w-8 h-8 rounded-sm bg-blue-600 flex items-center justify-center font-bold text-sm text-white">
               V
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-850 dark:text-white">Volante Certo</p>
+              <p className="text-xs font-bold text-slate-850 dark:text-white">Pista</p>
               <p className="text-[9px] text-slate-500 dark:text-slate-400">v2.4.0-premium</p>
             </div>
           </div>
@@ -306,7 +306,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${
-                isActive ? "text-orange-655 dark:text-orange-500 font-bold" : "text-slate-500 dark:text-slate-450 font-medium"
+                isActive ? "text-blue-600 dark:text-blue-600 font-bold" : "text-slate-500 dark:text-slate-450 font-medium"
               }`}
             >
               <div className="mb-1">{isActive ? item.activeIcon : item.icon}</div>

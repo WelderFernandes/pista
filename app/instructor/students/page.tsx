@@ -75,7 +75,7 @@ export default function InstructorStudents() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-4 py-2.5 rounded-full shadow-lg shadow-orange-600/20 flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-4 py-2.5 rounded-full shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -96,14 +96,14 @@ export default function InstructorStudents() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar aluno por nome..."
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+          className="w-full pl-10 pr-4 py-3 rounded-sm border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
         />
       </div>
 
       {/* Students List */}
       <section className="flex flex-col gap-4">
         {filteredStudents.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <div className="text-center py-12 bg-white rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <p className="text-sm text-slate-400 font-medium">Nenhum aluno encontrado para sua busca.</p>
           </div>
         ) : (
@@ -111,7 +111,7 @@ export default function InstructorStudents() {
             <Link
               key={student.id}
               href={`/instructor/students/${student.id}`}
-              className="bg-white p-4 rounded-xl border border-slate-100 hover:border-orange-200 transition-all flex items-center justify-between gap-4 shadow-sm group"
+              className="bg-white p-4 rounded-sm border border-slate-100 hover:border-blue-200 transition-all flex items-center justify-between gap-4 shadow-sm group"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -120,7 +120,7 @@ export default function InstructorStudents() {
                   src={student.photoUrl}
                 />
                 <div>
-                  <h4 className="font-bold text-slate-900 text-sm group-hover:text-orange-600 transition-colors">
+                  <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors">
                     {student.name}
                   </h4>
                   <p className="text-xs text-slate-400 mt-0.5">{student.category} • {student.phone}</p>
@@ -133,7 +133,7 @@ export default function InstructorStudents() {
                   <div className="flex items-center gap-2 mt-1">
                     <div className="w-20 h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-orange-600 rounded-full transition-all"
+                        className="h-full bg-blue-600 rounded-full transition-all"
                         style={{ width: `${student.progress}%` }}
                       />
                     </div>
@@ -158,7 +158,7 @@ export default function InstructorStudents() {
       {/* Add Student Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
+          <div className="bg-white rounded-sm max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
             <button
               onClick={() => setShowAddModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
@@ -193,7 +193,7 @@ export default function InstructorStudents() {
                 <div className="mt-1">
                   <select
                     id="studentCategory"
-                    className={`w-full rounded-xl border p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none transition-colors duration-200 ${errors.category ? "border-red-500 focus:border-red-500" : "border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:border-slate-350 dark:focus:border-slate-700"}`}
+                    className={`w-full rounded-sm border p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none transition-colors duration-200 ${errors.category ? "border-red-500 focus:border-red-500" : "border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:border-slate-350 dark:focus:border-slate-700"}`}
                     {...register("category")}
                   >
                     <option value="B (Carro)">B (Carro)</option>
@@ -266,7 +266,7 @@ export default function InstructorStudents() {
               <Button
                 type="submit"
                 disabled={addStudentMutation.isPending}
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold h-11 text-xs transition-transform active:scale-98 cursor-pointer mt-2"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-11 text-xs transition-transform active:scale-98 cursor-pointer mt-2"
               >
                 {addStudentMutation.isPending ? "Cadastrando..." : "Cadastrar Aluno"}
               </Button>

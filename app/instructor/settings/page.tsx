@@ -202,8 +202,8 @@ export default function InstructorSettingsPage() {
     <div className="flex flex-col gap-6 animate-fade-in relative pb-16">
       {/* Toast Notification */}
       {showToast && (
-        <div className="fixed bottom-24 right-6 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-800 flex items-center gap-2 animate-bounce">
-          <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping" />
+        <div className="fixed bottom-24 right-6 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-sm shadow-xl border border-slate-800 flex items-center gap-2 animate-bounce">
+          <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping" />
           {toastMessage}
         </div>
       )}
@@ -221,7 +221,7 @@ export default function InstructorSettingsPage() {
         </div>
         <Button
           onClick={handleSaveAll}
-          className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-orange-600/20 transition-all active:scale-95 cursor-pointer flex items-center gap-2 h-10"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-blue-600/20 transition-all active:scale-95 cursor-pointer flex items-center gap-2 h-10"
         >
           <svg
             className="w-4 h-4"
@@ -244,10 +244,10 @@ export default function InstructorSettingsPage() {
         {/* Left Column (Work time & Location settings) */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Public Profile Search Settings Card */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <div className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
               <svg
-                className="w-5 h-5 text-orange-600"
+                className="w-5 h-5 text-blue-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -272,7 +272,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="city">Cidade</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <MapPin className="w-4 h-4 text-slate-400" />
                       </InputGroupAddon>
@@ -290,7 +290,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="hourlyRate">Valor da Hora/Aula (R$)</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <InputGroupText className="font-semibold text-slate-400">
                           R$
@@ -322,7 +322,7 @@ export default function InstructorSettingsPage() {
                   Bairros de Atuação (separados por vírgula)
                 </Label>
                 <div className="mt-1">
-                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                  <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                     <InputGroupAddon align="inline-start">
                       <Buildings className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -344,7 +344,7 @@ export default function InstructorSettingsPage() {
                   Pontos de Encontro Padrão (separados por vírgula)
                 </Label>
                 <div className="mt-1">
-                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                  <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                     <InputGroupAddon align="inline-start">
                       <MapTrifold className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -371,9 +371,9 @@ export default function InstructorSettingsPage() {
                         key={cat.value}
                         type="button"
                         onClick={() => handleCategoryToggle(cat.value)}
-                        className={`px-4 py-2.5 rounded-xl border text-xs font-bold transition-all ${
+                        className={`px-4 py-2.5 rounded-sm border text-xs font-bold transition-all ${
                           isSelected
-                            ? "bg-orange-600 border-orange-600 text-white shadow-sm"
+                            ? "bg-blue-600 border-blue-600 text-white shadow-sm"
                             : "bg-slate-50 border-slate-150 text-slate-500 hover:bg-slate-100"
                         }`}
                       >
@@ -388,7 +388,7 @@ export default function InstructorSettingsPage() {
               <div>
                 <Label htmlFor="bio">Apresentação / Minibiografia</Label>
                 <div className="mt-1">
-                  <InputGroup className="rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500 items-start">
+                  <InputGroup className="rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600 items-start">
                     <InputGroupAddon align="inline-start" className="pt-3">
                       <Info className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -407,10 +407,10 @@ export default function InstructorSettingsPage() {
           </div>
 
           {/* Days of Work Card */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <div className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
               <svg
-                className="w-5 h-5 text-orange-600"
+                className="w-5 h-5 text-blue-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -436,9 +436,9 @@ export default function InstructorSettingsPage() {
                     key={day.value}
                     type="button"
                     onClick={() => handleDayToggle(day.value)}
-                    className={`flex-1 min-w-[50px] py-3.5 rounded-xl border text-sm font-bold transition-all text-center ${
+                    className={`flex-1 min-w-[50px] py-3.5 rounded-sm border text-sm font-bold transition-all text-center ${
                       isSelected
-                        ? "bg-orange-600 border-orange-600 text-white shadow-md shadow-orange-600/10"
+                        ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-600/10"
                         : "bg-slate-50 border-slate-100 text-slate-500 hover:bg-slate-100 hover:border-slate-200"
                     }`}
                   >
@@ -450,10 +450,10 @@ export default function InstructorSettingsPage() {
           </div>
 
           {/* Work Hours & Lunch Breaks Card */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <div className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <h3 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
               <svg
-                className="w-5 h-5 text-orange-600"
+                className="w-5 h-5 text-blue-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -470,7 +470,7 @@ export default function InstructorSettingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Working Hours */}
-              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-850 flex flex-col gap-3">
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-sm border border-slate-100 dark:border-slate-850 flex flex-col gap-3">
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Jornada de Trabalho
                 </span>
@@ -479,7 +479,7 @@ export default function InstructorSettingsPage() {
                     <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
                       Entrada
                     </label>
-                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                    <InputGroup className="h-9 rounded-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -495,7 +495,7 @@ export default function InstructorSettingsPage() {
                     <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
                       Saída
                     </label>
-                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                    <InputGroup className="h-9 rounded-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -511,7 +511,7 @@ export default function InstructorSettingsPage() {
               </div>
 
               {/* Lunch Break */}
-              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-850 flex flex-col gap-3">
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-sm border border-slate-100 dark:border-slate-850 flex flex-col gap-3">
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Intervalo de Almoço
                 </span>
@@ -520,7 +520,7 @@ export default function InstructorSettingsPage() {
                     <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
                       Início
                     </label>
-                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                    <InputGroup className="h-9 rounded-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -536,7 +536,7 @@ export default function InstructorSettingsPage() {
                     <label className="text-[10px] text-slate-400 block mb-1 font-semibold">
                       Término
                     </label>
-                    <InputGroup className="h-9 rounded-lg bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+                    <InputGroup className="h-9 rounded-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -557,7 +557,7 @@ export default function InstructorSettingsPage() {
               <span className="text-xs font-bold text-slate-500">
                 Resumo da Jornada Diária
               </span>
-              <div className="flex justify-between text-xs text-slate-600 bg-orange-50/50 p-3 rounded-lg border border-orange-100/30">
+              <div className="flex justify-between text-xs text-slate-600 bg-blue-50/50 p-3 rounded-sm border border-blue-100/30">
                 <span>
                   Horas de Atendimento:{" "}
                   <strong className="text-slate-800">
@@ -577,11 +577,11 @@ export default function InstructorSettingsPage() {
 
         {/* Extra Slots Settings Column (right) */}
         <div className="flex flex-col gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-5">
+          <div className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-5">
             <div>
               <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
                 <svg
-                  className="w-5 h-5 text-orange-600"
+                  className="w-5 h-5 text-blue-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -605,7 +605,7 @@ export default function InstructorSettingsPage() {
               <div>
                 <Label htmlFor="newExtraDate">Data do Dia Extra</Label>
                 <div className="mt-1">
-                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                  <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                     <InputGroupInput
                       type="date"
                       id="newExtraDate"
@@ -622,7 +622,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="newExtraStart">Hora Início</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                       <InputGroupInput
                         type="time"
                         id="newExtraStart"
@@ -637,7 +637,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="newExtraEnd">Hora Fim</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-orange-500">
+                    <InputGroup className="h-10 rounded-sm bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
                       <InputGroupInput
                         type="time"
                         id="newExtraEnd"
@@ -666,7 +666,7 @@ export default function InstructorSettingsPage() {
               </span>
 
               {extraDays.length === 0 ? (
-                <div className="text-center py-6 border border-dashed border-slate-200 rounded-xl">
+                <div className="text-center py-6 border border-dashed border-slate-200 rounded-sm">
                   <span className="text-[11px] text-slate-400 font-medium">
                     Nenhum dia extra cadastrado
                   </span>
@@ -681,20 +681,20 @@ export default function InstructorSettingsPage() {
                     return (
                       <div
                         key={ed.date}
-                        className="flex items-center justify-between bg-orange-50/40 p-2.5 rounded-xl border border-orange-100/50"
+                        className="flex items-center justify-between bg-blue-50/40 p-2.5 rounded-sm border border-blue-100/50"
                       >
                         <div className="flex flex-col">
                           <span className="text-xs font-bold text-slate-900">
                             {dateFormatted}
                           </span>
-                          <span className="text-[10px] text-orange-600 font-medium">
+                          <span className="text-[10px] text-blue-600 font-medium">
                             {ed.start} - {ed.end}
                           </span>
                         </div>
                         <button
                           type="button"
                           onClick={() => handleRemoveExtraDay(ed.date)}
-                          className="p-1 text-slate-400 hover:text-red-500 rounded-lg hover:bg-white transition-all cursor-pointer"
+                          className="p-1 text-slate-400 hover:text-red-500 rounded-sm hover:bg-white transition-all cursor-pointer"
                           title="Remover Exceção"
                         >
                           <svg
@@ -725,7 +725,7 @@ export default function InstructorSettingsPage() {
       <div className="flex justify-center mt-4 md:hidden">
         <Button
           onClick={handleSaveAll}
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm h-12 rounded-xl shadow-lg shadow-orange-600/20 active:scale-95 transition-all"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm h-12 rounded-sm shadow-lg shadow-blue-600/20 active:scale-95 transition-all"
         >
           Salvar Configurações
         </Button>
