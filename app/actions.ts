@@ -19,6 +19,16 @@ export async function getAppData() {
 
   let activeOrgId = memberInfo.activeOrgId;
 
+  // Verifica se a organização ativa realmente existe no banco de dados (evita erros de cookie dessincronizado)
+  if (activeOrgId) {
+    const orgExists = await prisma.organization.findUnique({
+      where: { id: activeOrgId },
+    });
+    if (!orgExists) {
+      activeOrgId = null;
+    }
+  }
+
   // Se o usuário não possui uma organização ativa na sessão, tentamos vinculá-lo via e-mail do estudante
   if (!activeOrgId) {
     const matchedStudent = await prisma.student.findFirst({
