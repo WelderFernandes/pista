@@ -110,6 +110,7 @@ async function main() {
       id: "mariana-costa",
       userId: studentUser.user.id,
       name: "Mariana Costa Silva",
+      email: "mariana@volantecerto.com",
       categories: ["B (Carro)"],
       progress: 60,
       completedClasses: 12,
@@ -124,6 +125,7 @@ async function main() {
     {
       id: "rafael-souza",
       name: "Rafael Souza",
+      email: "rafael@volantecerto.com",
       categories: ["B (Carro)"],
       progress: 40,
       completedClasses: 8,
@@ -138,6 +140,7 @@ async function main() {
     {
       id: "beatriz-lima",
       name: "Beatriz Lima",
+      email: "beatriz@volantecerto.com",
       categories: ["A (Moto)"],
       progress: 80,
       completedClasses: 16,
@@ -191,6 +194,7 @@ async function main() {
         organizationId: org.id,
         name,
         phone: `(11) 9${faker.string.numeric(4)}-${faker.string.numeric(4)}`,
+        email: `${id}@volantecerto.com`,
         city: "São Paulo",
         neighborhoods: [faker.helpers.arrayElement(neighborhoodsList)],
         meetingPoints: [faker.helpers.arrayElement(meetingPointsList)],

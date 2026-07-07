@@ -16,7 +16,7 @@ function ResetPasswordForm() {
   const searchParams = useSearchParams();
 
   const [step, setStep] = useState<"otp" | "password">("otp");
-  const [email, setEmail] = useState("");
+  const email = searchParams.get("email") || "";
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -29,14 +29,7 @@ function ResetPasswordForm() {
 
   // Timer para o reenvio de OTP
   const [timer, setTimer] = useState(60);
-  const [canResend, setCanResend] = useState(false);
-
-  useEffect(() => {
-    const emailParam = searchParams.get("email");
-    if (emailParam) {
-      setEmail(emailParam);
-    }
-  }, [searchParams]);
+  const canResend = timer === 0;
 
   useEffect(() => {
     if (timer > 0) {
@@ -44,8 +37,6 @@ function ResetPasswordForm() {
         setTimer((prev) => prev - 1);
       }, 1000);
       return () => clearInterval(interval);
-    } else {
-      setCanResend(true);
     }
   }, [timer]);
 
@@ -129,7 +120,6 @@ function ResetPasswordForm() {
       setSuccess("Um novo código OTP foi enviado ao seu e-mail.");
       setError("");
       setTimer(60);
-      setCanResend(false);
     },
     onError: (err: Error) => {
       setError(err.message);

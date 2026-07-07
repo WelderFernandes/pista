@@ -19,37 +19,41 @@ export async function getAppData() {
 
   let activeOrgId = memberInfo.activeOrgId;
 
-  // Se o usuário não possui uma organização ativa na sessão, tentamos vinculá-lo à padrão
+  // Se o usuário não possui uma organização ativa na sessão, tentamos vinculá-lo via e-mail do estudante
   if (!activeOrgId) {
-    const defaultOrg = await prisma.organization.findFirst();
-    if (!defaultOrg) {
-      throw new Error("Nenhuma organização cadastrada no sistema.");
-    }
-    activeOrgId = defaultOrg.id;
-
-    // Cria a associação de membro com a role 'student' por padrão
-    await prisma.member.upsert({
+    const matchedStudent = await prisma.student.findFirst({
       where: {
-        id: `${memberInfo.user.id}-${activeOrgId}`,
+        email: memberInfo.user.email,
       },
-      create: {
-        id: `${memberInfo.user.id}-${activeOrgId}`,
-        organizationId: activeOrgId,
-        userId: memberInfo.user.id,
-        role: "student",
-      },
-      update: {},
     });
+
+    if (matchedStudent) {
+      activeOrgId = matchedStudent.organizationId;
+
+      // Cria a associação de membro com a role 'student'
+      await prisma.member.upsert({
+        where: {
+          id: `${memberInfo.user.id}-${activeOrgId}`,
+        },
+        create: {
+          id: `${memberInfo.user.id}-${activeOrgId}`,
+          organizationId: activeOrgId,
+          userId: memberInfo.user.id,
+          role: "student",
+        },
+        update: {},
+      });
+    } else {
+      throw new Error("Nenhuma organização vinculada a este usuário. Cadastre-se utilizando um convite ou e-mail registrado pelo instrutor.");
+    }
   }
 
-  // Vincula o usuário logado ao estudante cadastrado pelo instrutor se houver correspondência pelo nome
-  const studentSlug = memberInfo.user.name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
-  
+  // Vincula o usuário logado ao estudante cadastrado pelo instrutor se houver correspondência pelo e-mail ou userId
   const existingStudent = await prisma.student.findFirst({
     where: {
       OR: [
         { userId: memberInfo.user.id },
-        { id: studentSlug }
+        { email: memberInfo.user.email }
       ]
     }
   });
@@ -168,6 +172,7 @@ export async function addStudentAction(
       organizationId: activeOrgId,
       name: data.name,
       phone: data.phone,
+      email: data.email,
       city: data.city || "São Paulo",
       neighborhoods: data.neighborhoods || [data.meetingPoint],
       meetingPoints: data.meetingPoints || [data.meetingPoint],
@@ -190,13 +195,23 @@ export async function addClassAction(
     instructorName?: string;
   }
 ) {
-  const { activeOrgId } = await requireRole(["owner", "admin", "instructor", "student"]);
-  const tenantPrisma = getTenantPrisma(activeOrgId);
+  const memberInfo = await requireRole(["owner", "admin", "instructor", "student"]);
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  // Se for estudante, garante que ele só pode agendar aula para si mesmo
+  if (memberInfo.role === "student") {
+    const student = await tenantPrisma.student.findFirst({
+      where: { userId: memberInfo.user.id },
+    });
+    if (!student || data.studentId !== student.id) {
+      throw new Error("Não autorizado.");
+    }
+  }
 
   return await tenantPrisma.classSession.create({
     data: {
       studentId: data.studentId,
-      organizationId: activeOrgId,
+      organizationId: memberInfo.activeOrgId,
       studentName: data.studentName,
       studentPhoto:
         data.studentPhoto ||
@@ -242,8 +257,21 @@ export async function startClassAction(classId: string) {
  * Cancela uma aula.
  */
 export async function cancelClassAction(classId: string) {
-  const { activeOrgId } = await requireRole(["owner", "admin", "instructor", "student"]);
-  const tenantPrisma = getTenantPrisma(activeOrgId);
+  const memberInfo = await requireRole(["owner", "admin", "instructor", "student"]);
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  // Se for estudante, garante que ele só pode cancelar suas próprias aulas
+  if (memberInfo.role === "student") {
+    const classSession = await tenantPrisma.classSession.findUnique({
+      where: { id: classId },
+    });
+    const student = await tenantPrisma.student.findFirst({
+      where: { userId: memberInfo.user.id },
+    });
+    if (!classSession || !student || classSession.studentId !== student.id) {
+      throw new Error("Não autorizado.");
+    }
+  }
 
   return await tenantPrisma.classSession.update({
     where: { id: classId },
@@ -290,8 +318,22 @@ export async function completeClassAction(classId: string) {
  * Deduz o valor do saldo pendente do estudante e cria a transação de entrada correspondente.
  */
 export async function payPendingPaymentAction(studentId: string, amount: number) {
-  const { activeOrgId } = await requireRole(["owner", "admin", "instructor", "student"]);
-  const tenantPrisma = getTenantPrisma(activeOrgId);
+  const memberInfo = await requireRole(["owner", "admin", "instructor", "student"]);
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  if (amount <= 0) {
+    throw new Error("O valor do pagamento deve ser maior que zero.");
+  }
+
+  // Se for estudante, garante que ele só pode pagar sua própria fatura
+  if (memberInfo.role === "student") {
+    const student = await tenantPrisma.student.findUnique({
+      where: { id: studentId },
+    });
+    if (!student || student.userId !== memberInfo.user.id) {
+      throw new Error("Não autorizado.");
+    }
+  }
 
   return await tenantPrisma.$transaction(async (tx: any) => {
     const student = await tx.student.findUnique({
@@ -306,7 +348,7 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
     const transaction = await tx.transaction.create({
       data: {
         studentName: student.name,
-        organizationId: activeOrgId,
+        organizationId: memberInfo.activeOrgId,
         amount,
         type: "payment",
         date: new Date().toISOString().split("T")[0],

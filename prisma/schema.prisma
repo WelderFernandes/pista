@@ -19,6 +19,7 @@ model Student {
   user             User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
   name             String
   phone            String
+  email            String?
   city             String
   neighborhoods    String[]
   meetingPoints    String[]
