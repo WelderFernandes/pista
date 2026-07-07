@@ -33,6 +33,7 @@ model Student {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   classes          ClassSession[]
+  vehicles         Vehicle[]
 }
 
 model ClassSession {
@@ -159,6 +160,7 @@ model Organization {
   classes            ClassSession[]
   transactions       Transaction[]
   instructorSettings InstructorSettings?
+  vehicles           Vehicle[]
 }
 
 model Member {
@@ -181,6 +183,21 @@ model Invitation {
   status         String
   expiresAt      DateTime
   inviterId      String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Vehicle {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  studentId      String?
+  student        Student?     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  name           String       // Ex: "Chevrolet Onix"
+  plate          String?      // Ex: "ABC-1234"
+  category       String       // Ex: "B" (Carro), "A" (Moto)
+  brand          String?
+  color          String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }

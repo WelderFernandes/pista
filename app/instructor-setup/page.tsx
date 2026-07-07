@@ -14,9 +14,10 @@ import {
   Buildings,
   Car,
   Notebook,
-  Info
+  Plus,
+  Trash
 } from "@phosphor-icons/react";
-import { updateSettingsAction } from "@/app/actions";
+import { updateSettingsAction, addVehicleAction } from "@/app/actions";
 
 export default function InstructorSetupPage() {
   const { settings } = useApp();
@@ -42,6 +43,43 @@ export default function InstructorSetupPage() {
     settings?.bio || "Instrutor credenciado com ampla experiência no ensino de novos motoristas com paciência e didática."
   );
 
+  // Dynamic Vehicle onboarding states
+  const [vehiclesToCreate, setVehiclesToCreate] = useState<{
+    name: string;
+    plate: string;
+    category: string;
+    brand: string;
+    color: string;
+  }[]>([]);
+
+  const [newVehName, setNewVehName] = useState("");
+  const [newVehPlate, setNewVehPlate] = useState("");
+  const [newVehCategory, setNewVehCategory] = useState("B");
+  const [newVehBrand, setNewVehBrand] = useState("");
+  const [newVehColor, setNewVehColor] = useState("");
+
+  const handleAddVehicle = () => {
+    if (!newVehName.trim()) return;
+    setVehiclesToCreate([
+      ...vehiclesToCreate,
+      {
+        name: newVehName,
+        plate: newVehPlate,
+        category: newVehCategory,
+        brand: newVehBrand,
+        color: newVehColor
+      }
+    ]);
+    setNewVehName("");
+    setNewVehPlate("");
+    setNewVehBrand("");
+    setNewVehColor("");
+  };
+
+  const handleRemoveVehicle = (index: number) => {
+    setVehiclesToCreate(vehiclesToCreate.filter((_, i) => i !== index));
+  };
+
   const handleCategoryToggle = (category: string) => {
     setCategoriesSelected(prev => 
       prev.includes(category) 
@@ -55,6 +93,8 @@ export default function InstructorSetupPage() {
       setSignupStep(2);
     } else if (signupStep === 2 && categoriesSelected.length > 0 && Number(hourlyRateInput) > 0) {
       setSignupStep(3);
+    } else if (signupStep === 3) {
+      setSignupStep(4);
     }
   };
 
@@ -79,6 +119,17 @@ export default function InstructorSetupPage() {
         .split(",")
         .map(m => m.trim())
         .filter(m => m.length > 0);
+
+      // Save vehicles sequentially
+      for (const v of vehiclesToCreate) {
+        await addVehicleAction({
+          name: v.name,
+          plate: v.plate,
+          category: v.category,
+          brand: v.brand,
+          color: v.color
+        });
+      }
 
       // Save using Server Action
       await updateSettingsAction({
@@ -106,7 +157,7 @@ export default function InstructorSetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-955 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden">
       {/* Background glow effects */}
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/5 dark:bg-blue-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[120px] pointer-events-none" />
@@ -128,23 +179,30 @@ export default function InstructorSetupPage() {
             <h2 className="text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">
               Complete seu Perfil
             </h2>
-            <p className="text-xs text-slate-555 dark:text-slate-400 mt-1.5 font-medium">
-              Parabéns pela conta! Agora vamos deixar seu perfil público atraente para os alunos.
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 font-medium">
+              Parabéns pela conta! Agora vamos configurar o seu ambiente de aulas práticas.
             </p>
           </div>
 
           {/* Onboarding step indicator */}
           <div className="mb-8">
             <div className="flex justify-between items-center text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-3">
-              <span className="text-blue-600 dark:text-blue-400">Passo {signupStep} de 3</span>
+              <span className="text-blue-600 dark:text-blue-400">Passo {signupStep} de 4</span>
               <span className="text-slate-700 dark:text-slate-300">
-                {signupStep === 1 ? "Área de Atuação" : signupStep === 2 ? "Ensino & Preço" : "Sua Apresentação"}
+                {signupStep === 1 
+                  ? "Área de Atuação" 
+                  : signupStep === 2 
+                  ? "Ensino & Preço" 
+                  : signupStep === 3
+                  ? "Seus Veículos"
+                  : "Sua Apresentação"}
               </span>
             </div>
             <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex gap-1">
               <div className={`h-full flex-1 transition-all duration-500 ${signupStep >= 1 ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"}`} />
               <div className={`h-full flex-1 transition-all duration-500 ${signupStep >= 2 ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"}`} />
               <div className={`h-full flex-1 transition-all duration-500 ${signupStep >= 3 ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"}`} />
+              <div className={`h-full flex-1 transition-all duration-500 ${signupStep >= 4 ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-800"}`} />
             </div>
             
             <div className="flex justify-between items-center mt-4 px-2">
@@ -156,7 +214,11 @@ export default function InstructorSetupPage() {
                 <Car className="w-4 h-4" />
               </div>
               <div className="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800 mx-1" />
-              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 3 ? "border-blue-600 bg-blue-600/10 text-blue-600" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
+              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 3 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 3 ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
+                <Car className="w-4 h-4" />
+              </div>
+              <div className="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800 mx-1" />
+              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 4 ? "border-blue-600 bg-blue-600/10 text-blue-600" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
                 <Notebook className="w-4 h-4" />
               </div>
             </div>
@@ -165,7 +227,7 @@ export default function InstructorSetupPage() {
           <form onSubmit={handleFinishSetup} className="flex flex-col gap-5">
             
             {/* STEP 1: WORK AREA */}
-            <div className={signupStep === 1 ? "flex flex-col gap-4 animate-fade-in" : "hidden"}>
+            <div className={signupStep === 1 ? "flex flex-col gap-4" : "hidden"}>
               <div>
                 <Label htmlFor="city">Cidade de Atuação</Label>
                 <div className="mt-1">
@@ -201,7 +263,7 @@ export default function InstructorSetupPage() {
             </div>
 
             {/* STEP 2: CATEGORIES & PRICE */}
-            <div className={signupStep === 2 ? "flex flex-col gap-4 animate-fade-in" : "hidden"}>
+            <div className={signupStep === 2 ? "flex flex-col gap-4" : "hidden"}>
               <div>
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-2">Categorias CNH ministradas</span>
                 <div className="grid grid-cols-4 gap-2">
@@ -215,7 +277,7 @@ export default function InstructorSetupPage() {
                         className={`py-3 rounded-xl font-bold text-xs border text-center transition-all ${
                           isSelected 
                             ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-500/20" 
-                            : "border-slate-200 bg-slate-50 dark:border-slate-850 dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
+                            : "border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
                         }`}
                       >
                         Cat. {cat}
@@ -246,15 +308,114 @@ export default function InstructorSetupPage() {
                     </InputGroupAddon>
                   </InputGroup>
                 </div>
-                <div className="flex gap-1.5 items-start mt-2 text-[10px] text-slate-500 dark:text-slate-400">
-                  <Info className="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" />
-                  <span>Esse valor será exibido no seu perfil público e na página de busca `/instrutores`.</span>
+              </div>
+            </div>
+
+            {/* STEP 3: FLEET / VEHICLES */}
+            <div className={signupStep === 3 ? "flex flex-col gap-4" : "hidden"}>
+              <div>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Seus Veículos de Instrução</span>
+                <p className="text-[10px] text-slate-400 font-medium mb-3">Adicione os carros ou motos que você ou a autoescola utilizam nas aulas práticas.</p>
+
+                {vehiclesToCreate.length > 0 && (
+                  <div className="flex flex-col gap-2 mb-4 bg-slate-50 dark:bg-slate-950 p-3 rounded-2xl border border-slate-100 dark:border-slate-850">
+                    {vehiclesToCreate.map((v, i) => (
+                      <div key={i} className="flex justify-between items-center bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs">
+                        <div>
+                          <p className="font-bold text-slate-805 dark:text-white">{v.name} {v.brand ? `(${v.brand})` : ""}</p>
+                          <p className="text-[10px] text-slate-500 font-medium">Categoria: {v.category} • Placa: {v.plate || "N/D"} {v.color ? `• Cor: ${v.color}` : ""}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveVehicle(i)}
+                          className="p-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg cursor-pointer transition-colors"
+                        >
+                          <Trash className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 p-4 rounded-2xl flex flex-col gap-3.5">
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <Label htmlFor="vehName" className="text-[10px]">Nome do Veículo</Label>
+                      <input
+                        type="text"
+                        id="vehName"
+                        value={newVehName}
+                        onChange={(e) => setNewVehName(e.target.value)}
+                        placeholder="Ex: Onix 1.0"
+                        className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="vehCategory" className="text-[10px]">Categoria CNH</Label>
+                      <select
+                        id="vehCategory"
+                        value={newVehCategory}
+                        onChange={(e) => setNewVehCategory(e.target.value)}
+                        className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                      >
+                        <option value="B">Cat. B (Carro)</option>
+                        <option value="A">Cat. A (Moto)</option>
+                        <option value="C">Cat. C (Caminhão)</option>
+                        <option value="D">Cat. D (Ônibus)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <div>
+                      <Label htmlFor="vehBrand" className="text-[10px] block truncate">Marca (opcional)</Label>
+                      <input
+                        type="text"
+                        id="vehBrand"
+                        value={newVehBrand}
+                        onChange={(e) => setNewVehBrand(e.target.value)}
+                        placeholder="Chevrolet"
+                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="vehPlate" className="text-[10px] block truncate">Placa (opcional)</Label>
+                      <input
+                        type="text"
+                        id="vehPlate"
+                        value={newVehPlate}
+                        onChange={(e) => setNewVehPlate(e.target.value)}
+                        placeholder="ABC1D23"
+                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="vehColor" className="text-[10px] block truncate">Cor (opcional)</Label>
+                      <input
+                        type="text"
+                        id="vehColor"
+                        value={newVehColor}
+                        onChange={(e) => setNewVehColor(e.target.value)}
+                        placeholder="Prata"
+                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleAddVehicle}
+                    className="w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-350 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer border border-slate-200/50 dark:border-slate-800/80 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Adicionar Veículo à Lista
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* STEP 3: BIO & MEETING POINTS */}
-            <div className={signupStep === 3 ? "flex flex-col gap-4 animate-fade-in" : "hidden"}>
+            {/* STEP 4: BIO & MEETING POINTS */}
+            <div className={signupStep === 4 ? "flex flex-col gap-4" : "hidden"}>
               <div>
                 <Label htmlFor="bio">Biografia Profissional</Label>
                 <div className="mt-1">
@@ -298,7 +459,7 @@ export default function InstructorSetupPage() {
                 </Button>
               )}
 
-              {signupStep < 3 ? (
+              {signupStep < 4 ? (
                 <Button
                   type="button"
                   onClick={handleNextStep}

@@ -2,7 +2,7 @@
 
 import { getActiveMember, requireRole, requireTenant } from "@/lib/auth-helpers";
 import { getTenantPrisma, prisma } from "@/lib/prisma";
-import { Student, ClassSession, Transaction, InstructorSettings } from "@/lib/store";
+import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from "@/lib/store";
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -154,14 +154,16 @@ export async function getAppData() {
     email: `${s.id}@volantecerto.com`,
   }));
 
+  const vehiclesData = await tenantPrisma.vehicle.findMany({
+    orderBy: { name: "asc" },
+  });
+
   return {
     students: mappedStudents,
     classes: classesData as unknown as ClassSession[],
     transactions: transactionsData as unknown as Transaction[],
-    settings: {
-      ...settings,
-      extraDays: [],
-    } as unknown as InstructorSettings,
+    settings: settings as unknown as InstructorSettings,
+    vehicles: vehiclesData as unknown as Vehicle[],
   };
 }
 
@@ -720,6 +722,38 @@ export async function createInstructorSettingsAction(orgId: string, data: {
       categories: data.categories,
       bio: data.bio || "",
     },
+  });
+}
+
+/**
+ * Adiciona um veículo ao banco de dados associado ao tenant logado.
+ */
+export async function addVehicleAction(data: Omit<Vehicle, "id">) {
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  const tenantPrisma = getTenantPrisma(activeOrgId);
+
+  return await tenantPrisma.vehicle.create({
+    data: {
+      organizationId: activeOrgId,
+      studentId: data.studentId || null,
+      name: data.name,
+      plate: data.plate || null,
+      category: data.category,
+      brand: data.brand || null,
+      color: data.color || null,
+    },
+  });
+}
+
+/**
+ * Remove um veículo do banco de dados.
+ */
+export async function deleteVehicleAction(id: string) {
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  const tenantPrisma = getTenantPrisma(activeOrgId);
+
+  return await tenantPrisma.vehicle.delete({
+    where: { id },
   });
 }
 

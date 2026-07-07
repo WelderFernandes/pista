@@ -9,7 +9,7 @@ import { formatCentsToBRL } from "@/lib/utils";
 export default function StudentDetails({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const router = useRouter();
-  const { students, classes, confirmClass, completeClass } = useApp();
+  const { students, classes, confirmClass, completeClass, vehicles, addVehicle, deleteVehicle } = useApp();
 
   const student = students.find((s) => s.id === resolvedParams.id);
   const studentClasses = classes.filter((c) => c.studentId === resolvedParams.id);
@@ -23,6 +23,41 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
   );
 
   const [isEditingNotes, setIsEditingNotes] = useState(false);
+
+  // Vehicle states
+  const [newVehName, setNewVehName] = useState("");
+  const [newVehPlate, setNewVehPlate] = useState("");
+  const [newVehCategory, setNewVehCategory] = useState("B");
+  const [newVehBrand, setNewVehBrand] = useState("");
+  const [newVehColor, setNewVehColor] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddVehicle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!student || !newVehName.trim()) return;
+    setIsAdding(true);
+    try {
+      await addVehicle({
+        studentId: student.id,
+        name: newVehName,
+        plate: newVehPlate || undefined,
+        category: newVehCategory,
+        brand: newVehBrand || undefined,
+        color: newVehColor || undefined,
+      });
+      setNewVehName("");
+      setNewVehPlate("");
+      setNewVehBrand("");
+      setNewVehColor("");
+      setNewVehCategory("B");
+      setShowAddForm(false);
+    } catch (err) {
+      console.error("Erro ao adicionar veículo:", err);
+    } finally {
+      setIsAdding(false);
+    }
+  };
 
   if (!student) {
     return (
@@ -166,6 +201,115 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
           )}
         </div>
       </div>
+
+      {/* Veículos do Aluno */}
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h4 className="font-bold text-slate-900 text-sm">Veículo(s) Próprio(s) do Aluno</h4>
+            <p className="text-[10px] text-slate-400 font-medium mt-0.5">Veículos trazidos pelo próprio aluno para as aulas práticas.</p>
+          </div>
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="text-xs text-blue-600 font-bold hover:underline cursor-pointer"
+          >
+            {showAddForm ? "Cancelar" : "+ Adicionar Veículo"}
+          </button>
+        </div>
+
+        {showAddForm && (
+          <form onSubmit={handleAddVehicle} className="mb-4 bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 flex flex-col gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Nome do Veículo</label>
+                <input
+                  type="text"
+                  required
+                  value={newVehName}
+                  onChange={(e) => setNewVehName(e.target.value)}
+                  placeholder="Ex: Fiat Uno 1.0"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Categoria</label>
+                <select
+                  value={newVehCategory}
+                  onChange={(e) => setNewVehCategory(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-600"
+                >
+                  <option value="B">Cat. B (Carro)</option>
+                  <option value="A">Cat. A (Moto)</option>
+                  <option value="C">Cat. C (Caminhão)</option>
+                  <option value="D">Cat. D (Ônibus)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Marca</label>
+                <input
+                  type="text"
+                  value={newVehBrand}
+                  onChange={(e) => setNewVehBrand(e.target.value)}
+                  placeholder="Fiat"
+                  className="w-full px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Placa</label>
+                <input
+                  type="text"
+                  value={newVehPlate}
+                  onChange={(e) => setNewVehPlate(e.target.value)}
+                  placeholder="XYZ9W87"
+                  className="w-full px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Cor</label>
+                <input
+                  type="text"
+                  value={newVehColor}
+                  onChange={(e) => setNewVehColor(e.target.value)}
+                  placeholder="Vermelho"
+                  className="w-full px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-600"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isAdding}
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs cursor-pointer shadow-md shadow-blue-500/10 transition-colors disabled:opacity-50"
+            >
+              {isAdding ? "Adicionando..." : "Salvar Veículo"}
+            </button>
+          </form>
+        )}
+
+        {vehicles.filter(v => v.studentId === student.id).length === 0 ? (
+          <p className="text-xs text-slate-400 font-medium py-2">Nenhum veículo próprio registrado para este aluno. Ele utilizará a frota da autoescola.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {vehicles.filter(v => v.studentId === student.id).map(v => (
+              <div key={v.id} className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 text-xs">
+                <div>
+                  <p className="font-bold text-slate-800 dark:text-white">{v.name} {v.brand ? `(${v.brand})` : ""}</p>
+                  <p className="text-[10px] text-slate-400 font-semibold">Categoria: {v.category} • Placa: {v.plate || "N/D"} {v.color ? `• Cor: ${v.color}` : ""}</p>
+                </div>
+                <button
+                  onClick={() => deleteVehicle(v.id)}
+                  className="text-xs text-red-500 hover:underline font-bold cursor-pointer"
+                >
+                  Remover
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Instructor Notes */}
       <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">

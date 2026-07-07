@@ -40,7 +40,39 @@ const AVAILABLE_CATEGORIES = [
 ];
 
 export default function InstructorSettingsPage() {
-  const { settings, updateSettings } = useApp();
+  const { settings, updateSettings, vehicles, addVehicle, deleteVehicle } = useApp();
+
+  // Fleet management states
+  const [newVehName, setNewVehName] = useState("");
+  const [newVehPlate, setNewVehPlate] = useState("");
+  const [newVehCategory, setNewVehCategory] = useState("B");
+  const [newVehBrand, setNewVehBrand] = useState("");
+  const [newVehColor, setNewVehColor] = useState("");
+  const [isAddingVeh, setIsAddingVeh] = useState(false);
+
+  const handleAddInstructorVehicle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newVehName.trim()) return;
+    setIsAddingVeh(true);
+    try {
+      await addVehicle({
+        name: newVehName,
+        plate: newVehPlate || undefined,
+        category: newVehCategory,
+        brand: newVehBrand || undefined,
+        color: newVehColor || undefined,
+      });
+      setNewVehName("");
+      setNewVehPlate("");
+      setNewVehBrand("");
+      setNewVehColor("");
+      setNewVehCategory("B");
+    } catch (err) {
+      console.error("Erro ao adicionar veículo de instrução:", err);
+    } finally {
+      setIsAddingVeh(false);
+    }
+  };
 
   // Local Form states initialized from Context Settings
   const [workDays, setWorkDays] = useState<number[]>(
@@ -714,6 +746,170 @@ export default function InstructorSettingsPage() {
                       </div>
                     );
                   })}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Frota de Veículos Card */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-5">
+            <div>
+              <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+                <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M13 16h6a1 1 0 001-1v-4a1 1 0 00-1-1h-6m0 6v-4" />
+                </svg>
+                Frota de Veículos
+              </h3>
+              <p className="text-xs text-slate-400">
+                Gerencie os carros e motos utilizados nas aulas práticas da autoescola.
+              </p>
+            </div>
+
+            <form onSubmit={handleAddInstructorVehicle} className="flex flex-col gap-3">
+              <div>
+                <Label htmlFor="vehName">Nome do Veículo</Label>
+                <div className="mt-1">
+                  <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
+                    <InputGroupInput
+                      type="text"
+                      id="vehName"
+                      required
+                      value={newVehName}
+                      onChange={(e) => setNewVehName(e.target.value)}
+                      placeholder="Ex: Chevrolet Onix 1.0"
+                      className="h-full px-3 text-xs text-slate-850 dark:text-white bg-white dark:bg-slate-900"
+                    />
+                  </InputGroup>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="vehCategory">Categoria</Label>
+                  <div className="mt-1">
+                    <select
+                      id="vehCategory"
+                      value={newVehCategory}
+                      onChange={(e) => setNewVehCategory(e.target.value)}
+                      className="w-full px-3 py-2 h-10 rounded-xl border border-slate-200 dark:border-slate-800 text-xs text-slate-850 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-600"
+                    >
+                      <option value="B">Cat. B (Carro)</option>
+                      <option value="A">Cat. A (Moto)</option>
+                      <option value="C">Cat. C (Caminhão)</option>
+                      <option value="D">Cat. D (Ônibus)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="vehPlate">Placa</Label>
+                  <div className="mt-1">
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
+                      <InputGroupInput
+                        type="text"
+                        id="vehPlate"
+                        value={newVehPlate}
+                        onChange={(e) => setNewVehPlate(e.target.value)}
+                        placeholder="ABC1D23"
+                        className="h-full px-3 text-xs text-slate-850 dark:text-white bg-white dark:bg-slate-900"
+                      />
+                    </InputGroup>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="vehBrand">Marca (opcional)</Label>
+                  <div className="mt-1">
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
+                      <InputGroupInput
+                        type="text"
+                        id="vehBrand"
+                        value={newVehBrand}
+                        onChange={(e) => setNewVehBrand(e.target.value)}
+                        placeholder="Chevrolet"
+                        className="h-full px-3 text-xs text-slate-850 dark:text-white bg-white dark:bg-slate-900"
+                      />
+                    </InputGroup>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="vehColor">Cor (opcional)</Label>
+                  <div className="mt-1">
+                    <InputGroup className="h-10 rounded-xl bg-slate-50 border-slate-200 dark:border-slate-800 dark:bg-slate-950 focus-within:border-blue-600">
+                      <InputGroupInput
+                        type="text"
+                        id="vehColor"
+                        value={newVehColor}
+                        onChange={(e) => setNewVehColor(e.target.value)}
+                        placeholder="Prata"
+                        className="h-full px-3 text-xs text-slate-850 dark:text-white bg-white dark:bg-slate-900"
+                      />
+                    </InputGroup>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isAddingVeh}
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs h-10 transition-all active:scale-95 cursor-pointer mt-1"
+              >
+                {isAddingVeh ? "Adicionando..." : "+ Cadastrar Veículo"}
+              </Button>
+            </form>
+
+            <div className="border-t border-slate-100 pt-4">
+              <span className="text-xs font-bold text-slate-500 block mb-3">
+                Frota Registrada ({vehicles.filter(v => !v.studentId).length})
+              </span>
+
+              {vehicles.filter(v => !v.studentId).length === 0 ? (
+                <div className="text-center py-6 border border-dashed border-slate-200 rounded-xl">
+                  <span className="text-[11px] text-slate-400 font-medium">
+                    Nenhum veículo na frota
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2 max-h-[220px] overflow-y-auto pr-1">
+                  {vehicles.filter(v => !v.studentId).map((v) => (
+                    <div
+                      key={v.id}
+                      className="flex items-center justify-between bg-blue-50/40 p-2.5 rounded-xl border border-blue-100/50"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-xs font-bold text-slate-900">
+                          {v.name}
+                        </span>
+                        <span className="text-[10px] text-blue-600 font-medium">
+                          Cat. {v.category} • Placa: {v.plate || "N/D"}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => deleteVehicle(v.id)}
+                        className="p-1 text-slate-400 hover:text-red-500 rounded-xl hover:bg-white transition-all cursor-pointer"
+                        title="Remover Veículo"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

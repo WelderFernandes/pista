@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useSession } from "@/lib/auth-client";
-import { Student, ClassSession, Transaction, InstructorSettings } from "./store";
+import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from "./store";
 import {
   getAppData,
   addStudentAction,
@@ -13,6 +13,8 @@ import {
   completeClassAction,
   payPendingPaymentAction,
   updateSettingsAction,
+  addVehicleAction,
+  deleteVehicleAction,
 } from "@/app/actions";
 
 interface AppContextType {
@@ -20,6 +22,7 @@ interface AppContextType {
   classes: ClassSession[];
   transactions: Transaction[];
   settings: InstructorSettings;
+  vehicles: Vehicle[];
   addStudent: (student: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">) => void;
   addClass: (session: Omit<ClassSession, "id" | "status" | "studentPhoto" | "instructorName"> & { studentPhoto?: string; instructorName?: string }) => void;
   confirmClass: (classId: string) => void;
@@ -28,6 +31,8 @@ interface AppContextType {
   startClass: (classId: string) => void;
   updateSettings: (settings: InstructorSettings) => void;
   payPendingPayment: (studentId: string, amount: number) => void;
+  addVehicle: (vehicle: Omit<Vehicle, "id">) => Promise<void>;
+  deleteVehicle: (id: string) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -38,6 +43,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     classes: ClassSession[];
     transactions: Transaction[];
     settings: InstructorSettings;
+    vehicles: Vehicle[];
   }>({
     students: [],
     classes: [],
@@ -56,6 +62,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       categories: ["B"],
       bio: "",
     },
+    vehicles: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -159,6 +166,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const addVehicle = async (newV: Omit<Vehicle, "id">) => {
+    try {
+      await addVehicleAction(newV);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao adicionar veículo no banco:", err);
+    }
+  };
+
+  const deleteVehicle = async (id: string) => {
+    try {
+      await deleteVehicleAction(id);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao remover veículo no banco:", err);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -166,6 +191,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         classes: data.classes,
         transactions: data.transactions,
         settings: data.settings,
+        vehicles: data.vehicles,
         addStudent,
         addClass,
         confirmClass,
@@ -174,6 +200,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         startClass,
         updateSettings,
         payPendingPayment,
+        addVehicle,
+        deleteVehicle,
       }}
     >
       {children}

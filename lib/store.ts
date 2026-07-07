@@ -63,3 +63,14 @@ export interface Transaction {
   status: "Recebido" | "Pendente" | "Atrasado";
   description: string;
 }
+
+export interface Vehicle {
+  id: string;
+  organizationId?: string;
+  studentId?: string;
+  name: string;
+  plate?: string;
+  category: string;
+  brand?: string;
+  color?: string;
+}
