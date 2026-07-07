@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useApp } from "@/lib/context";
 import { brlToCents } from "@/lib/utils";
 import { Label } from "@/components/ui/label";

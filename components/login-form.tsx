@@ -138,13 +138,19 @@ export function LoginForm() {
       }
 
       if (profile === "instructor" && data.orgName) {
-        const { error: orgError } = await authClient.organization.create({
+        const { data: orgData, error: orgError } = await authClient.organization.create({
           name: data.orgName,
           slug: slugify(data.orgName),
         });
 
         if (orgError) {
           throw new Error(`Conta criada, mas falhou ao registrar a Autoescola: ${orgError.message}`);
+        }
+
+        if (orgData) {
+          await authClient.organization.setActive({
+            organizationId: orgData.id,
+          });
         }
       }
 

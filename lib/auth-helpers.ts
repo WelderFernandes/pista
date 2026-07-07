@@ -66,19 +66,30 @@ export async function requireRole(allowedRoles: string[]) {
     redirect("/login");
   }
 
-  if (!memberInfo.activeOrgId) {
-    redirect("/login?error=no_org");
+  let activeOrgId = memberInfo.activeOrgId;
+  let role = memberInfo.role;
+
+  if (!activeOrgId) {
+    const firstMember = await prisma.member.findFirst({
+      where: { userId: memberInfo.user.id },
+    });
+    if (firstMember) {
+      activeOrgId = firstMember.organizationId;
+      role = firstMember.role;
+    } else {
+      redirect("/login?error=no_org");
+    }
   }
 
-  if (!memberInfo.role || !allowedRoles.includes(memberInfo.role)) {
+  if (!role || !allowedRoles.includes(role)) {
     redirect("/login?error=unauthorized");
   }
 
   return {
     user: memberInfo.user,
     session: memberInfo.session,
-    activeOrgId: memberInfo.activeOrgId,
-    role: memberInfo.role,
+    activeOrgId,
+    role,
   };
 }
 
@@ -92,13 +103,22 @@ export async function requireTenant() {
     redirect("/login");
   }
   
-  if (!data.activeOrgId) {
-    redirect("/login?error=no_org");
+  let activeOrgId = data.activeOrgId;
+  
+  if (!activeOrgId) {
+    const firstMember = await prisma.member.findFirst({
+      where: { userId: data.user.id },
+    });
+    if (firstMember) {
+      activeOrgId = firstMember.organizationId;
+    } else {
+      redirect("/login?error=no_org");
+    }
   }
   
   return {
     user: data.user,
     session: data.session,
-    activeOrgId: data.activeOrgId,
+    activeOrgId,
   };
 }
