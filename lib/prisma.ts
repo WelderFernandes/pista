@@ -35,6 +35,7 @@ export function getTenantPrisma(tenantId: string) {
             "ClassSession",
             "Transaction",
             "InstructorSettings",
+            "Vehicle",
           ];
           if (!tenantModels.includes(model)) {
             return query(args);
