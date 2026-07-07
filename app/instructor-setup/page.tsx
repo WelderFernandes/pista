@@ -104,6 +104,14 @@ export default function InstructorSetupPage() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter") {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "TEXTAREA") return;
+      e.preventDefault();
+    }
+  };
+
   const handleFinishSetup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -224,7 +232,7 @@ export default function InstructorSetupPage() {
             </div>
           </div>
 
-          <form onSubmit={handleFinishSetup} className="flex flex-col gap-5">
+          <form onSubmit={handleFinishSetup} onKeyDown={handleKeyDown} className="flex flex-col gap-5">
             
             {/* STEP 1: WORK AREA */}
             <div className={signupStep === 1 ? "flex flex-col gap-4" : "hidden"}>
@@ -461,6 +469,7 @@ export default function InstructorSetupPage() {
 
               {signupStep < 4 ? (
                 <Button
+                  key="next-step-button"
                   type="button"
                   onClick={handleNextStep}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-xl shadow-lg shadow-blue-500/20 text-xs transition-transform active:scale-98 flex items-center justify-center gap-1.5 h-11 cursor-pointer"
@@ -470,6 +479,7 @@ export default function InstructorSetupPage() {
                 </Button>
               ) : (
                 <Button
+                  key="finish-setup-button"
                   type="submit"
                   disabled={isSubmitting}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-xl shadow-lg shadow-blue-500/20 text-xs transition-transform active:scale-98 flex items-center justify-center gap-1.5 h-11 cursor-pointer disabled:opacity-50"
