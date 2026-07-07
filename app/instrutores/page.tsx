@@ -251,7 +251,7 @@ export default function InstructorsPage() {
         <div className="absolute inset-0 bg-[linear-linear(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-linear(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] dark:bg-[linear-linear(to_right,#0f172a_1px,transparent_1px),linear-linear(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-linear(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0 animate-pulse-slow" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-blue-600/10 text-blue-600 dark:text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-blue-600/10 text-blue-600 dark:text-orange-400 border border-orange-500/20 text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
             <Sparkle className="w-3.5 h-3.5" />
             <span>Nossos Profissionais de Elite</span>
           </div>
@@ -270,7 +270,7 @@ export default function InstructorsPage() {
         
         {/* Bento Box Search Filters */}
         <section className="mb-10 animate-fade-in-up delay-200">
-          <div className="bg-slate-50 border border-slate-200 p-6 rounded-sm dark:bg-slate-900/30 dark:border-slate-800 backdrop-blur-md shadow-sm">
+          <div className="bg-slate-50 border border-slate-200 p-6 rounded-2xl dark:bg-slate-900/30 dark:border-slate-800 backdrop-blur-md shadow-sm">
             <div className="flex items-center gap-2.5 mb-6">
               <Funnel className="w-5 h-5 text-blue-500" />
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">Refinar Pesquisa</h3>
@@ -286,7 +286,7 @@ export default function InstructorsPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Ex: Amanda, Pinheiros, São Paulo..."
-                    className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950/60 dark:border-slate-800/80 dark:text-slate-200 rounded-sm pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-blue-600/60 transition-all duration-300 shadow-xs"
+                    className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950/60 dark:border-slate-800/80 dark:text-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-blue-600/60 transition-all duration-300 shadow-xs"
                   />
                   <MagnifyingGlass className="w-4 h-4 text-slate-450 dark:text-slate-500 absolute left-3.5 top-3.5" />
                 </div>
@@ -298,7 +298,7 @@ export default function InstructorsPage() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950/60 dark:border-slate-800/80 dark:text-slate-200 rounded-sm px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600/60 transition-all duration-300 shadow-xs"
+                  className="w-full bg-white border border-slate-200 text-slate-850 dark:bg-slate-950/60 dark:border-slate-800/80 dark:text-slate-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:border-blue-600/60 transition-all duration-300 shadow-xs"
                 >
                   <option value="TODAS">Todas as Categorias</option>
                   <option value="A">Moto (Cat. A)</option>
@@ -316,7 +316,7 @@ export default function InstructorsPage() {
                   setMaxPrice(150);
                   setMaxRadius(25);
                 }}
-                className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 dark:bg-slate-950/45 dark:hover:bg-slate-950 dark:text-slate-400 dark:hover:text-white dark:border-slate-800/80 rounded-sm font-bold text-xs py-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer h-10 flex items-center justify-center shadow-xs"
+                className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 dark:bg-slate-950/45 dark:hover:bg-slate-950 dark:text-slate-400 dark:hover:text-white dark:border-slate-800/80 rounded-xl font-bold text-xs py-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer h-10 flex items-center justify-center shadow-xs"
               >
                 Limpar Filtros
               </button>
@@ -334,7 +334,7 @@ export default function InstructorsPage() {
                   step="5"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-sm appearance-none cursor-pointer accent-blue-600"
+                  className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-xl appearance-none cursor-pointer accent-blue-600"
                 />
               </div>
 
@@ -351,7 +351,7 @@ export default function InstructorsPage() {
                   step="1"
                   value={maxRadius}
                   onChange={(e) => setMaxRadius(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-sm appearance-none cursor-pointer accent-blue-600"
+                  className="w-full h-1.5 bg-slate-100 dark:bg-slate-950 rounded-xl appearance-none cursor-pointer accent-blue-600"
                 />
               </div>
             </div>
@@ -376,10 +376,10 @@ export default function InstructorsPage() {
             {[1, 2].map((idx) => (
               <div 
                 key={idx}
-                className="bg-slate-50/50 border border-slate-200 dark:bg-slate-900/10 dark:border-slate-800/80 rounded-sm p-6 h-[290px] flex flex-col justify-between animate-pulse"
+                className="bg-slate-50/50 border border-slate-200 dark:bg-slate-900/10 dark:border-slate-800/80 rounded-2xl p-6 h-[290px] flex flex-col justify-between animate-pulse"
               >
                 <div className="flex gap-5 items-start">
-                  <div className="w-16 h-16 rounded-sm bg-slate-200 dark:bg-slate-800" />
+                  <div className="w-16 h-16 rounded-xl bg-slate-200 dark:bg-slate-800" />
                   <div className="flex-1 space-y-2 py-1">
                     <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-3/4" />
                     <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-1/2" />
@@ -395,7 +395,7 @@ export default function InstructorsPage() {
             ))}
           </div>
         ) : currentInstructors.length === 0 ? (
-          <div className="text-center py-20 bg-slate-50 border border-dashed border-slate-200 dark:bg-slate-900/10 dark:border-slate-900 rounded-sm animate-fade-in-up delay-300">
+          <div className="text-center py-20 bg-slate-50 border border-dashed border-slate-200 dark:bg-slate-900/10 dark:border-slate-900 rounded-xl animate-fade-in-up delay-300">
             <svg className="w-12 h-12 text-slate-400 dark:text-slate-700 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -407,10 +407,10 @@ export default function InstructorsPage() {
             {currentInstructors.map((inst) => (
               <div 
                 key={inst.id}
-                className="bg-white border border-slate-200 dark:bg-slate-900/20 dark:border-slate-800/80 rounded-sm p-6 hover:border-blue-600/30 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6 relative overflow-hidden group hover:bg-slate-50/5 dark:hover:bg-slate-900/30 shadow-sm"
+                className="bg-white border border-slate-200 dark:bg-slate-900/20 dark:border-slate-800/80 rounded-2xl p-6 hover:border-blue-600/30 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6 relative overflow-hidden group hover:bg-slate-50/5 dark:hover:bg-slate-900/30 shadow-sm"
               >
                 {/* Distance Badge */}
-                <div className="absolute top-5 right-5 flex items-center gap-1 text-[9px] font-bold bg-slate-50 border border-slate-200 text-slate-600 dark:bg-slate-950/80 dark:border-slate-850 dark:text-slate-400 px-2.5 py-1 rounded-sm backdrop-blur-sm shadow-xs">
+                <div className="absolute top-5 right-5 flex items-center gap-1 text-[9px] font-bold bg-slate-50 border border-slate-200 text-slate-600 dark:bg-slate-950/80 dark:border-slate-850 dark:text-slate-400 px-2.5 py-1 rounded-xl backdrop-blur-sm shadow-xs">
                   <MapPin className="w-3 h-3 text-blue-500 animate-pulse" />
                   <span>{inst.distance} km de distância</span>
                 </div>
@@ -422,7 +422,7 @@ export default function InstructorsPage() {
                     src={inst.photo}
                     width={100}
                     height={100}
-                    className="w-16 h-16 rounded-sm object-cover border border-slate-200 dark:border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-300"
+                    className="w-16 h-16 rounded-xl object-cover border border-slate-200 dark:border-slate-800 shadow-md group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="flex-1 min-w-0">
                     <h4 className="font-extrabold text-lg text-slate-900 dark:text-white truncate leading-snug group-hover:text-blue-600 dark:group-hover:text-orange-400 transition-colors duration-300">{inst.name}</h4>
@@ -447,7 +447,7 @@ export default function InstructorsPage() {
                       {inst.categories.map((cat) => (
                         <span
                           key={cat}
-                          className="text-[9px] font-black px-2.5 py-0.5 rounded-sm bg-orange-500/10 border border-orange-500/20 text-blue-600 dark:text-blue-450 uppercase tracking-wider"
+                          className="text-[9px] font-black px-2.5 py-0.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-blue-600 dark:text-blue-450 uppercase tracking-wider"
                         >
                           Cat. {cat}
                         </span>
@@ -462,7 +462,7 @@ export default function InstructorsPage() {
                 </p>
 
                 {/* Location Grid Details */}
-                <div className="grid grid-cols-2 gap-4 text-[11px] bg-slate-50 border border-slate-200 dark:bg-slate-950/40 dark:border-slate-900/60 p-4 rounded-sm shadow-xs">
+                <div className="grid grid-cols-2 gap-4 text-[11px] bg-slate-50 border border-slate-200 dark:bg-slate-950/40 dark:border-slate-900/60 p-4 rounded-2xl shadow-xs">
                   <div className="flex flex-col gap-1.5 border-r border-slate-200 dark:border-slate-900/80 pr-2">
                     <span className="text-[9px] text-slate-500 dark:text-slate-500 uppercase tracking-wider font-extrabold">Cidade / Bairros</span>
                     <p className="text-slate-800 dark:text-slate-300 font-semibold truncate" title={inst.neighborhoods.join(", ")}>
@@ -487,7 +487,7 @@ export default function InstructorsPage() {
                   </div>
                   <button
                     onClick={() => handleOpenBooking(inst)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-3 rounded-sm shadow-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer flex items-center gap-2"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer flex items-center gap-2"
                   >
                     <CalendarBlank className="w-4 h-4 animate-float" />
                     Reservar Horário
@@ -504,7 +504,7 @@ export default function InstructorsPage() {
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-              className="p-2.5 rounded-sm border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
+              className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
             >
               <CaretLeft className="w-4 h-4" />
             </button>
@@ -516,7 +516,7 @@ export default function InstructorsPage() {
                 <button
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`w-10 h-10 rounded-sm font-bold text-xs transition-all cursor-pointer shadow-xs ${
+                  className={`w-10 h-10 rounded-xl font-bold text-xs transition-all cursor-pointer shadow-xs ${
                     isSelected 
                       ? "bg-blue-600 text-white shadow-md shadow-blue-500/20" 
                       : "border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white"
@@ -530,7 +530,7 @@ export default function InstructorsPage() {
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
-              className="p-2.5 rounded-sm border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
+              className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-400 dark:hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs"
             >
               <CaretRight className="w-4 h-4" />
             </button>
@@ -541,7 +541,7 @@ export default function InstructorsPage() {
       {/* Booking Calendar Dialog Modal */}
       {selectedInstructor && (
         <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in-up overflow-y-auto">
-          <div className="bg-white dark:bg-slate-900 border border-slate-250 dark:border-slate-800 rounded-sm max-w-lg w-full p-6 shadow-2xl relative my-8 text-slate-900 dark:text-white transition-colors duration-300">
+          <div className="bg-white dark:bg-slate-900 border border-slate-250 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8 text-slate-900 dark:text-white transition-colors duration-300">
             <button
               onClick={() => setSelectedInstructor(null)}
               className="absolute top-4 right-4 text-slate-550 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 hover:bg-slate-100 dark:hover:bg-slate-850 rounded-full cursor-pointer z-10 transition-colors"
@@ -553,11 +553,11 @@ export default function InstructorsPage() {
 
             {bookingSuccess ? (
               <div className="text-center py-8 flex flex-col items-center gap-4">
-                <div className="w-14 h-14 rounded-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold animate-bounce">
+                <div className="w-14 h-14 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold animate-bounce">
                   ✓
                 </div>
                 <h4 className="font-extrabold text-slate-900 dark:text-white text-lg">Solicitação Enviada com Sucesso!</h4>
-                <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-sm border border-slate-200 dark:border-slate-850 text-left w-full text-xs flex flex-col gap-2 shadow-xs">
+                <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-xl border border-slate-200 dark:border-slate-850 text-left w-full text-xs flex flex-col gap-2 shadow-xs">
                   <p><span className="text-slate-500 font-bold">Instrutor:</span> <span className="text-slate-800 dark:text-slate-300 font-semibold">{selectedInstructor.name}</span></p>
                   <p><span className="text-slate-500 font-bold">Horário Solicitado:</span> <span className="text-blue-600 dark:text-blue-500 font-extrabold">{selectedDate.split("-").reverse().join("/")} às {selectedSlot}</span></p>
                   <p><span className="text-slate-500 font-bold">Ponto de Encontro:</span> <span className="text-slate-800 dark:text-slate-300 font-semibold">{bookingMeetingPoint}</span></p>
@@ -593,7 +593,7 @@ export default function InstructorsPage() {
                             setSelectedDate(d.dateStr);
                             setSelectedSlot(null);
                           }}
-                          className={`py-2 px-3 min-w-[54px] rounded-sm flex flex-col items-center justify-center gap-0.5 transition-all duration-300 active:scale-95 cursor-pointer snap-center shadow-xs ${
+                          className={`py-2 px-3 min-w-[54px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all duration-300 active:scale-95 cursor-pointer snap-center shadow-xs ${
                             isSelected
                               ? "bg-blue-600 text-white font-bold shadow-md shadow-blue-500/20"
                               : "bg-slate-50 border border-slate-200 text-slate-650 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-950 dark:text-slate-400 dark:border-slate-850 dark:hover:bg-slate-850 dark:hover:text-white"
@@ -643,7 +643,7 @@ export default function InstructorsPage() {
                           type="button"
                           disabled={isLocked}
                           onClick={() => setSelectedSlot(slot)}
-                          className={`py-2.5 rounded-sm text-center text-xs font-bold transition-all duration-300 ${
+                          className={`py-2.5 rounded-xl text-center text-xs font-bold transition-all duration-300 ${
                             !isLocked ? "active:scale-95 hover:scale-[1.02] cursor-pointer" : ""
                           } ${btnStyle}`}
                         >
@@ -662,7 +662,7 @@ export default function InstructorsPage() {
                     
                     if (!isWorking) {
                       return (
-                        <div className="text-center py-6 border border-dashed border-slate-200 dark:border-slate-800 rounded-sm bg-slate-50 dark:bg-slate-950/30">
+                        <div className="text-center py-6 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-950/30">
                           <span className="text-[11px] text-slate-500 dark:text-slate-500 font-semibold block">Dia de folga do instrutor</span>
                           <span className="text-[9px] text-slate-400 dark:text-slate-650 block mt-0.5">Selecione outro dia da semana.</span>
                         </div>
@@ -717,7 +717,7 @@ export default function InstructorsPage() {
                             id="bookingCategory"
                             value={bookingCategory}
                             onChange={(e) => setBookingCategory(e.target.value)}
-                            className="flex h-10 w-full rounded-sm border border-slate-250 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
+                            className="flex h-10 w-full rounded-xl border border-slate-250 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
                           >
                             {selectedInstructor.categories.map((c) => (
                               <option key={c} value={c}>
@@ -735,7 +735,7 @@ export default function InstructorsPage() {
                             id="bookingMeetingPoint"
                             value={bookingMeetingPoint}
                             onChange={(e) => setBookingMeetingPoint(e.target.value)}
-                            className="flex h-10 w-full rounded-sm border border-slate-250 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
+                            className="flex h-10 w-full rounded-xl border border-slate-250 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 px-3.5 py-2 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
                           >
                             {selectedInstructor.meetingPoints.map((mp) => (
                               <option key={mp} value={mp}>

@@ -76,10 +76,10 @@ export default function InstructorDashboard() {
       {/* Stats Cards (Bento Grid Style) */}
       <section className="grid grid-cols-2 gap-4">
         {/* Faturamento Card */}
-        <div className="bg-white p-5 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 rounded-full blur-2xl pointer-events-none" />
           <div className="flex items-center justify-between mb-6">
-            <div className="w-9 h-9 rounded-sm bg-blue-50 flex items-center justify-center text-blue-600">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -95,10 +95,10 @@ export default function InstructorDashboard() {
         </div>
 
         {/* Aulas Realizadas Card */}
-        <div className="bg-white p-5 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden group">
+        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
           <div className="flex items-center justify-between mb-6">
-            <div className="w-9 h-9 rounded-sm bg-blue-50 flex items-center justify-center text-blue-600">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -115,7 +115,7 @@ export default function InstructorDashboard() {
       </section>
 
       {/* Próximas Aulas Section */}
-      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-slate-900">Próximas Aulas do Dia</h3>
           <Link
@@ -130,7 +130,7 @@ export default function InstructorDashboard() {
         </div>
 
         {upcomingClasses.length === 0 ? (
-          <div className="text-center py-12 border-2 border-dashed border-slate-100 rounded-sm">
+          <div className="text-center py-12 border border-dashed border-slate-100 rounded-xl">
             <svg className="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -141,7 +141,7 @@ export default function InstructorDashboard() {
             {upcomingClasses.map((item) => (
               <div
                 key={item.id}
-                className="group relative bg-white p-4 rounded-sm border border-slate-100 hover:border-blue-200 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
+                className="group relative bg-white p-4 rounded-xl border border-slate-100 hover:border-blue-200 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
               >
                 {/* Visual Highlight for Pending or Confirmed */}
                 <div
@@ -191,7 +191,7 @@ export default function InstructorDashboard() {
                     {item.status === "Pendente" && (
                       <button
                         onClick={() => confirmClass(item.id)}
-                        className="px-3 py-1.5 rounded-sm bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all cursor-pointer"
                       >
                         Confirmar
                       </button>
@@ -199,7 +199,7 @@ export default function InstructorDashboard() {
                     {item.status === "Confirmada" && (
                       <button
                         onClick={() => completeClass(item.id)}
-                        className="px-3 py-1.5 rounded-sm bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all cursor-pointer"
                       >
                         Concluir
                       </button>
@@ -227,7 +227,7 @@ export default function InstructorDashboard() {
       {/* Add Appointment Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-sm max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
             <button
               onClick={() => setShowAddModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
@@ -246,7 +246,7 @@ export default function InstructorDashboard() {
                     id="selectedStudent"
                     value={selectedStudent}
                     onChange={(e) => setSelectedStudent(e.target.value)}
-                    className="w-full rounded-sm border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200"
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200"
                   >
                     {students.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -264,7 +264,7 @@ export default function InstructorDashboard() {
                     id="classType"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full rounded-sm border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200"
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200"
                   >
                     <option value="Aula de Baliza">Aula de Baliza</option>
                     <option value="Prática de Direção">Prática de Direção</option>

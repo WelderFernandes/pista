@@ -300,13 +300,13 @@ export default function Home() {
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
           {/* Dual Mode Switcher Button - Dynamic sliding toggle */}
-          <div className="flex p-1 bg-slate-200/80 dark:bg-slate-900 border border-slate-350/20 dark:border-slate-800 rounded-sm mb-10 relative max-w-md w-full mx-auto shadow-inner">
+          <div className="flex p-1 bg-slate-200/80 dark:bg-slate-900 border border-slate-350/20 dark:border-slate-800 rounded-2xl mb-10 relative max-w-md w-full mx-auto shadow-inner">
             <button
               onClick={() => {
                 setActiveMode("student");
                 setOpenFaqIndex(null);
               }}
-              className={`flex-1 py-3 text-[10px] font-black uppercase tracking-wider rounded-sm transition-all duration-300 cursor-pointer ${
+              className={`flex-1 py-3 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all duration-300 cursor-pointer ${
                 activeMode === "student"
                   ? "bg-blue-600 text-white shadow-md"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -319,7 +319,7 @@ export default function Home() {
                 setActiveMode("instructor");
                 setOpenFaqIndex(null);
               }}
-              className={`flex-1 py-3 text-[10px] font-black uppercase tracking-wider rounded-sm transition-all duration-300 cursor-pointer ${
+              className={`flex-1 py-3 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all duration-300 cursor-pointer ${
                 activeMode === "instructor"
                   ? "bg-rose-500 text-white shadow-md"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
@@ -331,12 +331,12 @@ export default function Home() {
 
           {/* Eyebrow - Conditional rendering */}
           {activeMode === "student" ? (
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-[10px] font-black uppercase tracking-widest mb-6 animate-float">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-[10px] font-black uppercase tracking-widest mb-6 animate-float">
               <Sparkle className="w-4 h-4" />
               <span>Sua CNH com muito mais tranquilidade</span>
             </span>
           ) : (
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-rose-500/10 text-rose-500 dark:text-rose-455 border border-rose-500/20 text-[10px] font-black uppercase tracking-widest mb-6 animate-float">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-rose-500/10 text-rose-500 dark:text-rose-455 border border-rose-500/20 text-[10px] font-black uppercase tracking-widest mb-6 animate-float">
               <Sparkle className="w-4 h-4" />
               <span>TESTE GRÁTIS POR 7 DIAS — SEM CARTÃO</span>
             </span>
@@ -370,7 +370,7 @@ export default function Home() {
             /* Student Search and Filter Widget */
             <form 
               onSubmit={handleSearch} 
-              className="mt-10 w-full max-w-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-4 md:p-6 rounded-sm shadow-xl flex flex-col md:flex-row gap-4 text-left relative z-20 animate-fade-in-up delay-200"
+              className="mt-10 w-full max-w-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 md:p-6 rounded-2xl shadow-xl flex flex-col md:flex-row gap-4 text-left relative z-20 animate-fade-in-up delay-200"
             >
               <div className="flex-1 flex flex-col gap-1.5">
                 <label htmlFor="search-city" className="text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-450 flex items-center gap-1">
@@ -383,7 +383,7 @@ export default function Home() {
                   placeholder="Ex: Tucuruvi, São Paulo"
                   value={searchQueryLocal}
                   onChange={(e) => setSearchQueryLocal(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-sm text-slate-900 dark:text-white placeholder-slate-405"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl text-slate-900 dark:text-white placeholder-slate-405"
                 />
               </div>
 
@@ -396,7 +396,7 @@ export default function Home() {
                   id="search-cat"
                   value={selectedCategoryLocal}
                   onChange={(e) => setSelectedCategoryLocal(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-sm text-slate-900 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl text-slate-900 dark:text-white"
                 >
                   <option value="TODAS">Todas as Categorias</option>
                   <option value="A">Moto (Categoria A)</option>
@@ -408,7 +408,7 @@ export default function Home() {
               <div className="flex items-end mt-4 md:mt-0">
                 <button
                   type="submit"
-                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-8 py-3.5 rounded-sm flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer shadow-md shadow-blue-500/10"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer shadow-md shadow-blue-500/10"
                 >
                   <MagnifyingGlass className="w-4 h-4" />
                   Buscar Instrutor
@@ -420,14 +420,14 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full justify-center animate-fade-in-up delay-200 relative z-20">
               <button 
                 onClick={() => openLeadModal("Starter")} 
-                className="bg-rose-500 hover:bg-rose-600 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-sm shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                className="bg-rose-500 hover:bg-rose-600 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
               >
                 Começar Teste Grátis
                 <ArrowRight className="w-4 h-4" />
               </button>
               <a 
                 href="#planos" 
-                className="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-sm flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+                className="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
               >
                 Conhecer Planos
               </a>
@@ -439,7 +439,7 @@ export default function Home() {
         {/* Dashboard Preview - Rendered only in Instructor mode for B2B SaaS */}
         {activeMode === "instructor" && (
           <div className="max-w-5xl w-full mx-auto mt-16 md:mt-24 relative z-20 animate-fade-in-up delay-300 px-2 md:px-0">
-            <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-sm shadow-2xl p-3 md:p-6 overflow-hidden relative">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3 md:p-6 overflow-hidden relative">
               <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 via-blue-500 to-rose-500" />
               
               {/* Mock Header */}
@@ -450,22 +450,22 @@ export default function Home() {
                   <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
                   <span className="text-[10px] text-slate-400 font-mono ml-2 uppercase font-bold tracking-wider">PISTA // INSTRUTOR_DASHBOARD</span>
                 </div>
-                <div className="h-5 w-32 bg-slate-100 dark:bg-slate-850 rounded-sm" />
+                <div className="h-5 w-32 bg-slate-100 dark:bg-slate-850 rounded-xl" />
               </div>
 
               {/* Mock Stats */}
               <div className="grid grid-cols-3 gap-2 md:gap-4 my-4 md:my-6 text-left">
-                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-sm">
+                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl">
                   <span className="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Faturamento Semanal</span>
                   <span className="text-sm md:text-xl font-black text-slate-900 dark:text-white font-mono">R$ 1.840,00</span>
                   <span className="text-[9px] text-emerald-500 font-bold flex items-center gap-0.5 mt-0.5"><TrendUp className="w-3 h-3" /> +15.2% vs ontem</span>
                 </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-sm">
+                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl">
                   <span className="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Aulas Confirmadas</span>
                   <span className="text-sm md:text-xl font-black text-slate-900 dark:text-white font-mono">24 Aulas</span>
                   <span className="text-[9px] text-blue-500 font-bold mt-0.5 block">100% de ocupação</span>
                 </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-sm">
+                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl">
                   <span className="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Novos Alunos</span>
                   <span className="text-sm md:text-xl font-black text-slate-900 dark:text-white font-mono">+6 Alunos</span>
                   <span className="text-[9px] text-rose-500 font-bold mt-0.5 block">2 aguardando ficha</span>
@@ -476,40 +476,40 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
                 
                 {/* Active Agenda */}
-                <div className="md:col-span-2 p-4 border border-slate-200 dark:border-slate-800 rounded-sm">
+                <div className="md:col-span-2 p-4 border border-slate-200 dark:border-slate-800 rounded-2xl">
                   <h4 className="text-xs font-black uppercase text-slate-800 dark:text-slate-250 mb-3 tracking-wider flex items-center gap-1.5">
                     <span className="w-1.5 h-3 bg-blue-600 inline-block" />
                     Agenda de Hoje (Segunda-Feira)
                   </h4>
                   <div className="flex flex-col gap-2">
-                    <div className="p-2.5 bg-blue-500/5 border-l-4 border-blue-600 rounded-sm flex items-center justify-between text-xs">
+                    <div className="p-2.5 bg-blue-500/5 border-l-4 border-blue-600 rounded-xl flex items-center justify-between text-xs">
                       <div>
                         <p className="font-bold text-slate-800 dark:text-slate-200">08:00 - Mariana Souza (Cat. B)</p>
                         <p className="text-[10px] text-slate-555 dark:text-slate-440">Ponto: Estação Metrô Tucuruvi</p>
                       </div>
-                      <span className="px-2 py-0.5 bg-blue-600/10 text-blue-600 dark:text-blue-400 font-bold text-[9px] uppercase tracking-wider rounded-sm">Confirmada</span>
+                      <span className="px-2 py-0.5 bg-blue-600/10 text-blue-600 dark:text-blue-400 font-bold text-[9px] uppercase tracking-wider rounded-xl">Confirmada</span>
                     </div>
                     
-                    <div className="p-2.5 bg-rose-500/5 border-l-4 border-rose-500 rounded-sm flex items-center justify-between text-xs">
+                    <div className="p-2.5 bg-rose-500/5 border-l-4 border-rose-500 rounded-xl flex items-center justify-between text-xs">
                       <div>
                         <p className="font-bold text-slate-800 dark:text-slate-200">10:00 - Thiago Ramos (Cat. A)</p>
                         <p className="text-[10px] text-slate-555 dark:text-slate-440">Ponto: Praça Central de Campinas</p>
                       </div>
-                      <span className="px-2 py-0.5 bg-rose-500/10 text-rose-500 dark:text-rose-455 font-bold text-[9px] uppercase tracking-wider rounded-sm">Confirmar WhatsApp?</span>
+                      <span className="px-2 py-0.5 bg-rose-500/10 text-rose-500 dark:text-rose-455 font-bold text-[9px] uppercase tracking-wider rounded-xl">Confirmar WhatsApp?</span>
                     </div>
 
-                    <div className="p-2.5 bg-slate-500/5 border-l-4 border-slate-400 rounded-sm flex items-center justify-between text-xs">
+                    <div className="p-2.5 bg-slate-500/5 border-l-4 border-slate-400 rounded-xl flex items-center justify-between text-xs">
                       <div>
                         <p className="font-bold text-slate-500 dark:text-slate-400">14:00 - Renato Silveira (Cat. D)</p>
                         <p className="text-[10px] text-slate-555 dark:text-slate-500">Ponto: Centro de Treinamento</p>
                       </div>
-                      <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-555 dark:text-slate-400 font-bold text-[9px] uppercase tracking-wider rounded-sm">Finalizada</span>
+                      <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-555 dark:text-slate-400 font-bold text-[9px] uppercase tracking-wider rounded-xl">Finalizada</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Student progress tracker */}
-                <div className="p-4 border border-slate-200 dark:border-slate-800 rounded-sm flex flex-col justify-between">
+                <div className="p-4 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col justify-between">
                   <div>
                     <h4 className="text-xs font-black uppercase text-slate-800 dark:text-slate-250 mb-3 tracking-wider flex items-center gap-1.5">
                       <span className="w-1.5 h-3 bg-rose-500 inline-block" />
@@ -529,7 +529,7 @@ export default function Home() {
                         <span>Aulas Concluídas</span>
                         <span>14 de 20 (70%)</span>
                       </div>
-                      <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-sm overflow-hidden">
+                      <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-xl overflow-hidden">
                         <div className="bg-blue-600 h-full w-[70%]" />
                       </div>
                     </div>
@@ -553,7 +553,7 @@ export default function Home() {
             {(activeMode === "student" ? statsStudent : statsInstructor).map((stat, idx) => (
               <div 
                 key={idx} 
-                className={`bg-slate-50 dark:bg-slate-900/30 border-2 border-slate-100 dark:border-slate-900 p-6 rounded-sm flex flex-col gap-2 hover:-translate-y-1 transition-all duration-300 group ${
+                className={`bg-slate-50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:-translate-y-1 transition-all duration-300 group ${
                   activeMode === "student" ? "hover:border-blue-600/30" : "hover:border-rose-500/30"
                 }`}
               >
@@ -587,9 +587,9 @@ export default function Home() {
             {stepsStudent.map((step, idx) => (
               <div 
                 key={idx} 
-                className="bg-white border-2 border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-8 rounded-sm relative z-10 flex flex-col gap-4 group hover:border-blue-600/35 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-blue-600/35 hover:-translate-y-1 transition-all duration-300 shadow-sm"
               >
-                <div className="w-12 h-12 rounded-sm bg-blue-100 border-2 border-blue-200/50 dark:bg-blue-600/10 dark:border-blue-500/20 flex items-center justify-center font-black text-blue-600 dark:text-blue-500 text-lg group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-350">
+                <div className="w-12 h-12 rounded-xl bg-blue-100 border border-blue-200/50 dark:bg-blue-600/10 dark:border-blue-500/20 flex items-center justify-center font-black text-blue-600 dark:text-blue-500 text-lg group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-350">
                   {step.num}
                 </div>
                 <h4 className="font-black text-lg text-slate-900 dark:text-white uppercase leading-tight mt-2">{step.title}</h4>
@@ -611,10 +611,10 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 bg-slate-900 text-white p-8 border-2 border-blue-600 rounded-sm flex flex-col justify-between gap-8 relative overflow-hidden group shadow-lg">
+            <div className="md:col-span-2 bg-slate-900 text-white p-8 border border-blue-600 rounded-2xl flex flex-col justify-between gap-8 relative overflow-hidden group shadow-lg">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 rounded-full blur-[40px] pointer-events-none" />
               <div>
-                <div className="w-12 h-12 rounded-sm bg-blue-600 flex items-center justify-center text-white border-2 border-blue-500 mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white border border-blue-500 mb-6 group-hover:scale-110 transition-transform">
                   <CalendarCheck className="w-6 h-6" />
                 </div>
                 <h4 className="font-black text-xl md:text-2xl uppercase tracking-tight text-white mb-3">Link de Agendamento Autônomo</h4>
@@ -633,9 +633,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-8 rounded-sm flex flex-col justify-between gap-6 hover:border-rose-500/40 transition-all">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-6 hover:border-rose-500/40 transition-all">
               <div>
-                <div className="w-12 h-12 rounded-sm bg-rose-500/10 dark:bg-rose-500/5 flex items-center justify-center text-rose-500 border border-rose-500/20 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-rose-500/10 dark:bg-rose-500/5 flex items-center justify-center text-rose-500 border border-rose-500/20 mb-6">
                   <WhatsappLogo className="w-6 h-6" />
                 </div>
                 <h4 className="font-black text-lg uppercase tracking-tight text-slate-900 dark:text-white mb-2 leading-tight">Cobrança e Lembretes Automáticos</h4>
@@ -646,9 +646,9 @@ export default function Home() {
               <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">Reduza até 85% de faltas</span>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-8 rounded-sm flex flex-col justify-between gap-6 hover:border-blue-600/40 transition-all">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-6 hover:border-blue-600/40 transition-all">
               <div>
-                <div className="w-12 h-12 rounded-sm bg-blue-500/10 dark:bg-blue-500/5 flex items-center justify-center text-blue-500 border border-blue-500/20 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 dark:bg-blue-500/5 flex items-center justify-center text-blue-500 border border-blue-500/20 mb-6">
                   <Coins className="w-6 h-6" />
                 </div>
                 <h4 className="font-black text-lg uppercase tracking-tight text-slate-900 dark:text-white mb-2 leading-tight">Gestão de Ganhos Sem Complicação</h4>
@@ -659,9 +659,9 @@ export default function Home() {
               <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">Visão financeira em tempo real</span>
             </div>
 
-            <div className="md:col-span-2 bg-slate-50 dark:bg-slate-900/40 border-2 border-slate-200 dark:border-slate-800 p-8 rounded-sm flex flex-col justify-between gap-8 group">
+            <div className="md:col-span-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-8 group">
               <div>
-                <div className="w-12 h-12 rounded-sm bg-amber-500/10 dark:bg-amber-500/5 flex items-center justify-center text-amber-505 border border-amber-500/20 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/5 flex items-center justify-center text-amber-505 border border-amber-500/20 mb-6">
                   <User className="w-6 h-6" />
                 </div>
                 <h4 className="font-black text-xl uppercase tracking-tight text-slate-900 dark:text-white mb-3">Fichas Digitais de Evolução do Aluno</h4>
@@ -670,7 +670,7 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <span className="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-505 font-bold font-mono text-[9px] uppercase tracking-wider rounded-sm border border-amber-500/20">
+                <span className="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-505 font-bold font-mono text-[9px] uppercase tracking-wider rounded-xl border border-amber-500/20">
                   Padrão DETRAN de Acompanhamento
                 </span>
               </div>
@@ -707,9 +707,9 @@ export default function Home() {
               {featuresStudent.map((feat, idx) => (
                 <div 
                   key={idx} 
-                  className="bg-white border-2 border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-6 rounded-sm flex flex-col gap-3 hover:border-blue-600/30 hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-6 rounded-2xl flex flex-col gap-3 hover:border-blue-600/30 hover:-translate-y-1 transition-all duration-300 group"
                 >
-                  <div className="w-12 h-12 rounded-sm bg-slate-50 dark:bg-slate-955 flex items-center justify-center border border-slate-200 dark:border-slate-850 group-hover:scale-105 group-hover:border-blue-600/30 transition-all">
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-955 flex items-center justify-center border border-slate-200 dark:border-slate-850 group-hover:scale-105 group-hover:border-blue-600/30 transition-all">
                     {feat.icon}
                   </div>
                   <h4 className="font-black text-xs uppercase tracking-wider text-slate-850 dark:text-slate-200 mt-1">{feat.title}</h4>
@@ -736,14 +736,14 @@ export default function Home() {
               {plans.map((plan, idx) => (
                 <div 
                   key={idx} 
-                  className={`bg-slate-50 dark:bg-slate-900/30 p-8 rounded-sm flex flex-col justify-between transition-all duration-300 relative ${
+                  className={`bg-slate-50 dark:bg-slate-900/30 p-8 rounded-2xl flex flex-col justify-between transition-all duration-300 relative ${
                     plan.popular 
-                      ? "border-2 border-rose-500 shadow-xl md:-translate-y-2 scale-[1.01]" 
-                      : "border-2 border-slate-200 dark:border-slate-800"
+                      ? "border border-rose-500 shadow-xl md:-translate-y-2 scale-[1.01]" 
+                      : "border border-slate-200 dark:border-slate-800"
                   }`}
                 >
                   {plan.popular && (
-                    <span className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-rose-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-sm shadow-md">
+                    <span className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-rose-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-xl shadow-md">
                       RECOMENDADO
                     </span>
                   )}
@@ -758,7 +758,7 @@ export default function Home() {
                       <span className="text-xs text-slate-550 font-bold">/{plan.period}</span>
                     </div>
                     
-                    <div className="mb-6 p-2 rounded-sm bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/10 text-[10px] font-bold text-center tracking-wider uppercase">
+                    <div className="mb-6 p-2 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/10 text-[10px] font-bold text-center tracking-wider uppercase">
                       🎁 Experimente Grátis por 7 Dias
                     </div>
 
@@ -775,7 +775,7 @@ export default function Home() {
                   <div className="mt-8">
                     <button 
                       onClick={() => openLeadModal(plan.name)}
-                      className={`w-full py-4 text-center text-xs font-black uppercase tracking-wider rounded-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
+                      className={`w-full py-4 text-center text-xs font-black uppercase tracking-wider rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                         plan.popular 
                           ? "bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/20" 
                           : "bg-slate-900 hover:bg-black text-white dark:bg-slate-850 dark:hover:bg-slate-800 border border-transparent dark:border-slate-800"
@@ -804,7 +804,7 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-8 rounded-sm max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+            <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-left">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-500 block mb-1">Aulas práticas de Carro, Moto ou Pesados</span>
                 <h4 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">ENCONTRE O PROFISSIONAL MAIS PRÓXIMO</h4>
@@ -814,7 +814,7 @@ export default function Home() {
               </div>
               <Link 
                 href="/instrutores" 
-                className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-sm transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] shrink-0 text-center shadow-lg shadow-blue-500/10 cursor-pointer flex items-center justify-center gap-1.5"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] shrink-0 text-center shadow-lg shadow-blue-500/10 cursor-pointer flex items-center justify-center gap-1.5"
               >
                 Ver Todos os Instrutores
                 <ArrowRight className="w-4 h-4" />
@@ -842,7 +842,7 @@ export default function Home() {
           {(activeMode === "student" ? testimonialsStudent : testimonialsInstructor).map((test, idx) => (
             <div 
               key={idx} 
-              className={`bg-white dark:bg-slate-905 border-2 border-slate-200 dark:border-slate-900 p-6 rounded-sm flex flex-col justify-between gap-6 hover:-translate-y-1 transition-all duration-300 shadow-sm ${
+              className={`bg-white dark:bg-slate-905 border border-slate-200 dark:border-slate-900 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:-translate-y-1 transition-all duration-300 shadow-sm ${
                 activeMode === "student" ? "hover:border-blue-600/30" : "hover:border-rose-500/30"
               }`}
             >
@@ -856,7 +856,7 @@ export default function Home() {
                   src={test.photo}
                   width={36}
                   height={36}
-                  className={`w-9 h-9 rounded-sm object-cover border-2 ${
+                  className={`w-9 h-9 rounded-xl object-cover border ${
                     activeMode === "student" ? "border-blue-500/20" : "border-rose-500/20"
                   }`}
                 />
@@ -889,7 +889,7 @@ export default function Home() {
             return (
               <div 
                 key={idx} 
-                className="bg-white border-2 border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 rounded-sm overflow-hidden transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
+                className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
               >
                 <button
                   onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
@@ -914,7 +914,7 @@ export default function Home() {
       <section className="py-16 px-6 max-w-7xl mx-auto w-full z-10 mb-10">
         {activeMode === "student" ? (
           /* Student final CTA */
-          <div className="bg-slate-900 border-2 border-blue-600 rounded-sm p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-xl">
+          <div className="bg-slate-900 border border-blue-600 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-xl">
             <div className="absolute inset-0 bg-linear-to-br from-blue-600/20 to-transparent pointer-events-none animate-pulse-slow" />
             <div className="absolute -top-32 -left-32 w-64 h-64 bg-blue-600/30 rounded-full blur-[80px]" />
             <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-rose-500/10 rounded-full blur-[80px]" />
@@ -928,7 +928,7 @@ export default function Home() {
             <div className="mt-8 relative z-10">
               <Link 
                 href="/instrutores" 
-                className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-sm shadow-lg shadow-blue-500/25 inline-flex items-center gap-2 transition-all duration-300 hover:scale-[1.03] hover:shadow-blue-500/35 active:scale-[0.97] cursor-pointer"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl shadow-lg shadow-blue-500/25 inline-flex items-center gap-2 transition-all duration-300 hover:scale-[1.03] hover:shadow-blue-500/35 active:scale-[0.97] cursor-pointer"
               >
                 Encontrar Meu Instrutor
                 <ArrowRight className="w-4 h-4" />
@@ -937,7 +937,7 @@ export default function Home() {
           </div>
         ) : (
           /* Instructor final CTA */
-          <div className="bg-slate-900 border-2 border-rose-500 rounded-sm p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-xl animate-fade-in">
+          <div className="bg-slate-900 border border-rose-500 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden flex flex-col items-center shadow-xl animate-fade-in">
             <div className="absolute inset-0 bg-linear-to-br from-rose-500/20 to-blue-600/10 pointer-events-none animate-pulse-slow" />
             <div className="absolute -top-32 -left-32 w-64 h-64 bg-rose-500/30 rounded-full blur-[80px]" />
             <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-blue-600/20 rounded-full blur-[80px]" />
@@ -951,7 +951,7 @@ export default function Home() {
             <div className="mt-8 relative z-10">
               <button 
                 onClick={() => openLeadModal("Starter")} 
-                className="bg-rose-500 hover:bg-rose-600 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-sm shadow-lg shadow-rose-500/35 inline-flex items-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                className="bg-rose-500 hover:bg-rose-600 text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl shadow-lg shadow-rose-500/35 inline-flex items-center gap-2 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
               >
                 Começar Teste Grátis Agora
                 <ArrowRight className="w-4 h-4" />
@@ -964,7 +964,7 @@ export default function Home() {
       {/* Lead Capture Modal Component (Instructors) */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 animate-fade-in">
-          <div className="bg-white dark:bg-slate-900 border-2 border-blue-600 rounded-sm w-full max-w-md p-6 relative shadow-2xl overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 border border-blue-600 rounded-2xl w-full max-w-md p-6 relative shadow-2xl overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 to-rose-500" />
             
             <button 
@@ -977,7 +977,7 @@ export default function Home() {
             {!isSuccess ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="text-left mb-6">
-                  <span className="text-[9px] bg-blue-600/10 text-blue-600 dark:text-blue-400 px-2 py-0.5 font-black uppercase tracking-wider rounded-sm border border-blue-500/10">
+                  <span className="text-[9px] bg-blue-600/10 text-blue-600 dark:text-blue-400 px-2 py-0.5 font-black uppercase tracking-wider rounded-xl border border-blue-500/10">
                     Plano Selecionado: {selectedPlan}
                   </span>
                   <h4 className="text-lg font-black uppercase tracking-tight text-slate-900 dark:text-white mt-3">
@@ -1002,7 +1002,7 @@ export default function Home() {
                         placeholder="Ex: Carlos Silva"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-sm"
+                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
                       />
                     </div>
                   </div>
@@ -1020,7 +1020,7 @@ export default function Home() {
                         placeholder="carlos@exemplo.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-sm"
+                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
                       />
                     </div>
                   </div>
@@ -1038,7 +1038,7 @@ export default function Home() {
                         placeholder="(11) 99999-9999"
                         value={formData.phone}
                         onChange={handlePhoneChange}
-                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-sm"
+                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
                       />
                     </div>
                   </div>
@@ -1048,11 +1048,11 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 bg-rose-500 hover:bg-rose-600 disabled:bg-rose-650 text-white font-black text-xs uppercase tracking-wider rounded-sm transition-all duration-300 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-rose-500 hover:bg-rose-600 disabled:bg-rose-650 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all duration-300 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin" />
                         Criando sua conta...
                       </>
                     ) : (
@@ -1069,7 +1069,7 @@ export default function Home() {
               </form>
             ) : (
               <div className="text-center py-8 flex flex-col items-center justify-center space-y-4">
-                <div className="w-16 h-16 rounded-sm bg-emerald-500/10 border-2 border-emerald-500 flex items-center justify-center text-emerald-500 animate-bounce">
+                <div className="w-16 h-16 rounded-xl bg-emerald-500/10 border border-emerald-500 flex items-center justify-center text-emerald-500 animate-bounce">
                   <Check className="w-10 h-10" />
                 </div>
                 <h4 className="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
@@ -1079,7 +1079,7 @@ export default function Home() {
                   Parabéns, <strong>{formData.name}</strong>! <br />
                   Seu ambiente Pista de teste gratuito foi configurado. Redirecionando você para o painel...
                 </p>
-                <div className="w-24 h-1 bg-slate-100 dark:bg-slate-800 rounded-sm overflow-hidden mt-2 relative">
+                <div className="w-24 h-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden mt-2 relative">
                   <div className="absolute top-0 bottom-0 left-0 bg-emerald-500 w-full animate-pulse-slow origin-left" />
                 </div>
               </div>

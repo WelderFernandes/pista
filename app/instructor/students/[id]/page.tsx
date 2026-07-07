@@ -54,10 +54,10 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       </div>
 
       {/* Profile Info Card */}
-      <section className="bg-white rounded-sm p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center md:items-start gap-6">
+      <section className="bg-white rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center md:items-start gap-6">
         <img
           alt={student.name}
-          className="w-24 h-24 rounded-full object-cover border-2 border-blue-600/20 shadow-md"
+          className="w-24 h-24 rounded-full object-cover border border-blue-600/20 shadow-md"
           src={student.photoUrl}
         />
         <div className="flex-1 text-center md:text-left">
@@ -112,7 +112,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       {/* Grid: Progress & Financial */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Progress Card */}
-        <div className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between">
           <div>
             <h4 className="font-bold text-slate-900 text-sm mb-3">Progresso de Aulas Práticas</h4>
             <div className="flex items-baseline justify-between mb-2">
@@ -135,7 +135,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
         </div>
 
         {/* Financial Card */}
-        <div className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between items-center text-center">
+        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between items-center text-center">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
             student.pendingPayment > 0 ? "bg-amber-50 text-amber-600" : "bg-emerald-50 text-emerald-600"
           }`}>
@@ -168,7 +168,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       </div>
 
       {/* Instructor Notes */}
-      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-4">
           <h4 className="font-bold text-slate-900 text-sm">Observações do Instrutor</h4>
           <button
@@ -183,17 +183,17 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full h-24 p-3 rounded-sm border border-slate-200 text-sm text-slate-900 bg-slate-50 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+            className="w-full h-24 p-3 rounded-xl border border-slate-200 text-sm text-slate-900 bg-slate-50 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
           />
         ) : (
-          <p className="text-sm text-slate-600 bg-slate-50 p-4 rounded-sm border border-slate-100 leading-relaxed font-medium">
+          <p className="text-sm text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-100 leading-relaxed font-medium">
             {notes}
           </p>
         )}
       </section>
 
       {/* Student Class History */}
-      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <h4 className="font-bold text-slate-900 text-sm mb-4">Histórico de Aulas</h4>
         {studentClasses.length === 0 ? (
           <p className="text-xs text-slate-400 font-medium py-4">Nenhuma aula registrada para este aluno.</p>
@@ -202,7 +202,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
             {studentClasses.map((c) => (
               <div
                 key={c.id}
-                className="flex items-center justify-between p-3 rounded-sm bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors"
+                className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors"
               >
                 <div>
                   <h5 className="text-xs font-bold text-slate-900">{c.type}</h5>
@@ -223,7 +223,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
                   {c.status === "Pendente" && (
                     <button
                       onClick={() => confirmClass(c.id)}
-                      className="px-2 py-1 bg-blue-600 text-white rounded-sm text-[10px] font-bold cursor-pointer"
+                      className="px-2 py-1 bg-blue-600 text-white rounded-xl text-[10px] font-bold cursor-pointer"
                     >
                       Confirmar
                     </button>
@@ -231,7 +231,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
                   {c.status === "Confirmada" && (
                     <button
                       onClick={() => completeClass(c.id)}
-                      className="px-2 py-1 bg-emerald-600 text-white rounded-sm text-[10px] font-bold cursor-pointer"
+                      className="px-2 py-1 bg-emerald-600 text-white rounded-xl text-[10px] font-bold cursor-pointer"
                     >
                       Concluir
                     </button>

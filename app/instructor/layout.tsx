@@ -205,16 +205,16 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-sm p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
+          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-2xl p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
             <DropdownMenuLabel className="px-2 py-1.5 text-xs text-slate-500 dark:text-slate-400">Minha Conta</DropdownMenuLabel>
             <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
             <DropdownMenuItem asChild>
-              <Link href="/instructor/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-sm">
+              <Link href="/instructor/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">
                 Meu Perfil
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/instructor/settings" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-sm">
+              <Link href="/instructor/settings" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">
                 Configurações
               </Link>
             </DropdownMenuItem>
@@ -224,7 +224,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
                 await authClient.signOut();
                 window.location.href = "/login";
               }}
-              className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-sm"
+              className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 dark:text-red-400 rounded-xl"
             >
               Fazer Logout
             </DropdownMenuItem>
@@ -235,7 +235,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-sm border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
               aria-label="Alternar tema"
             >
               {theme === "dark" ? (
@@ -281,7 +281,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
         </div>
         <div className="p-6 border-t border-slate-200 dark:border-slate-850">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-sm bg-blue-600 flex items-center justify-center font-bold text-sm text-white">
+            <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-sm text-white">
               V
             </div>
             <div>

@@ -19,10 +19,10 @@ export function LoginForm() {
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [profile, setProfile] = useState<"instructor" | "student">("instructor");
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -55,7 +55,7 @@ export function LoginForm() {
           const defaultName = queryName || "";
           const defaultEmail = queryEmail || "";
           const defaultOrgName = queryProfile === "instructor" && defaultName ? `Aulas de ${defaultName}` : "";
-          
+
           reset({
             name: defaultName,
             email: defaultEmail,
@@ -185,14 +185,14 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden">
+    <div className="">
       {/* Decorative glows */}
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/5 dark:bg-blue-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[120px] pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 text-center">
         <Link href="/" className="inline-flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-sm bg-linear-to-tr from-blue-600 to-rose-500 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/20 text-white group-hover:scale-105 transition-transform duration-300">
+          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-blue-600 to-rose-500 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/20 text-white group-hover:scale-105 transition-transform duration-300">
             P
           </div>
           <span className="font-black text-2xl uppercase tracking-tighter text-slate-900 dark:text-white">
@@ -202,54 +202,52 @@ export function LoginForm() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
-        <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 py-8 px-6 shadow-2xl rounded-sm sm:px-10 transition-colors duration-300 backdrop-blur-md">
+        <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10 transition-colors duration-300 backdrop-blur-md">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">
               {mode === "login" ? "Bem-vindo de volta" : "Crie sua conta"}
             </h2>
             <p className="text-xs text-slate-555 dark:text-slate-400 mt-1.5 font-medium">
-              {mode === "login" 
-                ? "Digite suas credenciais de acesso abaixo." 
-                : (profile === "instructor" 
-                    ? "Preencha as informações para registrar sua Autoescola." 
-                    : "Preencha os campos para iniciar sua jornada de aprendizado.")}
+              {mode === "login"
+                ? "Digite suas credenciais de acesso abaixo."
+                : (profile === "instructor"
+                  ? "Preencha as informações para registrar sua Autoescola."
+                  : "Preencha os campos para iniciar sua jornada de aprendizado.")}
             </p>
           </div>
 
           {/* Profile Tabs Selector */}
-          <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-sm mb-6">
+          <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl mb-6">
             <button
               type="button"
               onClick={() => setProfile("instructor")}
-              className={`py-2 text-xs font-bold rounded-sm transition-all cursor-pointer ${
-                profile === "instructor"
+              className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${profile === "instructor"
                   ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
                   : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-              }`}
+                }`}
             >
               Sou Instrutor
             </button>
             <button
               type="button"
               onClick={() => setProfile("student")}
-              className={`py-2 text-xs font-bold rounded-sm transition-all cursor-pointer ${
-                profile === "student"
+              className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${profile === "student"
                   ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
                   : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-              }`}
+                }`}
             >
               Sou Aluno
             </button>
           </div>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-sm mb-4 font-semibold">
+            <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs p-3 rounded-xl mb-4 font-semibold">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs p-3 rounded-sm mb-4 font-semibold">
+            <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs p-3 rounded-xl mb-4 font-semibold">
               {success}
             </div>
           )}
@@ -260,7 +258,7 @@ export function LoginForm() {
                 <div>
                   <Label htmlFor="name">Nome completo</Label>
                   <div className="mt-1">
-                    <InputGroup className={`rounded-sm border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.name ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                    <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.name ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
                       <InputGroupAddon align="inline-start">
                         <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -285,7 +283,7 @@ export function LoginForm() {
                   <div>
                     <Label htmlFor="orgName">Nome da Autoescola (Organização / Tenant)</Label>
                     <div className="mt-1">
-                      <InputGroup className={`rounded-sm border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.orgName ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                      <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.orgName ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
                         <InputGroupAddon align="inline-start">
                           <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -314,7 +312,7 @@ export function LoginForm() {
                 {profile === "instructor" ? "E-mail institucional" : "E-mail de acesso"}
               </Label>
               <div className="mt-1">
-                <InputGroup className={`rounded-sm border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.email ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.email ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
                   <InputGroupAddon align="inline-start">
                     <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -338,7 +336,7 @@ export function LoginForm() {
             <div>
               <Label htmlFor="password">Senha de acesso</Label>
               <div className="mt-1">
-                <InputGroup className={`rounded-sm border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.password ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.password ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
                   <InputGroupAddon align="inline-start">
                     <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -372,7 +370,7 @@ export function LoginForm() {
               <div>
                 <Label htmlFor="confirmPassword">Confirmação de senha</Label>
                 <div className="mt-1">
-                  <InputGroup className={`rounded-sm border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.confirmPassword ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                  <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.confirmPassword ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
                     <InputGroupAddon align="inline-start">
                       <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -418,7 +416,7 @@ export function LoginForm() {
             <Button
               type="submit"
               disabled={loginMutation.isPending || signUpMutation.isPending}
-              className="w-full font-bold p-3.5 rounded-sm shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 h-11 bg-blue-600 hover:bg-blue-700 shadow-blue-500/20"
+              className="w-full font-bold p-3.5 rounded-xl shadow-lg mt-4 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5 text-white disabled:opacity-50 h-11 bg-blue-600 hover:bg-blue-700 shadow-blue-500/20"
             >
               {loginMutation.isPending || signUpMutation.isPending ? (
                 <span>Aguarde...</span>
@@ -440,7 +438,7 @@ export function LoginForm() {
             {mode === "login" ? (
               <>
                 {profile === "instructor" ? "Deseja cadastrar sua Autoescola? " : "Ainda não tem conta de aluno? "}
-                <button 
+                <button
                   onClick={() => { setMode("signup"); setError(""); setSuccess(""); reset(); }}
                   className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
                 >
@@ -450,7 +448,7 @@ export function LoginForm() {
             ) : (
               <>
                 Já possui uma conta ativa?{" "}
-                <button 
+                <button
                   onClick={() => { setMode("login"); setError(""); setSuccess(""); reset(); }}
                   className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
                 >

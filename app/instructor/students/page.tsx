@@ -96,14 +96,14 @@ export default function InstructorStudents() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar aluno por nome..."
-          className="w-full pl-10 pr-4 py-3 rounded-sm border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
         />
       </div>
 
       {/* Students List */}
       <section className="flex flex-col gap-4">
         {filteredStudents.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <div className="text-center py-12 bg-white rounded-xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
             <p className="text-sm text-slate-400 font-medium">Nenhum aluno encontrado para sua busca.</p>
           </div>
         ) : (
@@ -111,7 +111,7 @@ export default function InstructorStudents() {
             <Link
               key={student.id}
               href={`/instructor/students/${student.id}`}
-              className="bg-white p-4 rounded-sm border border-slate-100 hover:border-blue-200 transition-all flex items-center justify-between gap-4 shadow-sm group"
+              className="bg-white p-4 rounded-xl border border-slate-100 hover:border-blue-200 transition-all flex items-center justify-between gap-4 shadow-sm group"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -158,7 +158,7 @@ export default function InstructorStudents() {
       {/* Add Student Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-sm max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
             <button
               onClick={() => setShowAddModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
@@ -193,7 +193,7 @@ export default function InstructorStudents() {
                 <div className="mt-1">
                   <select
                     id="studentCategory"
-                    className={`w-full rounded-sm border p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none transition-colors duration-200 ${errors.category ? "border-red-500 focus:border-red-500" : "border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:border-slate-350 dark:focus:border-slate-700"}`}
+                    className={`w-full rounded-xl border p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none transition-colors duration-200 ${errors.category ? "border-red-500 focus:border-red-500" : "border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:border-slate-350 dark:focus:border-slate-700"}`}
                     {...register("category")}
                   >
                     <option value="B (Carro)">B (Carro)</option>

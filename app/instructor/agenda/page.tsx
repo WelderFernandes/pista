@@ -65,11 +65,11 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
   return (
     <div
       ref={containerRef}
-      className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-14 rounded-sm relative flex items-center justify-center select-none overflow-hidden w-full shadow-inner"
+      className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-14 rounded-xl relative flex items-center justify-center select-none overflow-hidden w-full shadow-inner"
     >
       {/* Background fill based on drag position */}
       <div 
-        className="absolute left-1 top-1 bottom-1 bg-linear-to-r from-blue-600 to-blue-600 rounded-sm transition-all opacity-80"
+        className="absolute left-1 top-1 bottom-1 bg-linear-to-r from-blue-600 to-blue-600 rounded-xl transition-all opacity-80"
         style={{ width: `calc(${sliderPos}% + 44px - (${sliderPos}px * 0.44))` }}
       />
 
@@ -81,7 +81,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
       <div
         onMouseDown={startDrag}
         onTouchStart={startDrag}
-        className="absolute top-1 w-12 bottom-1 bg-white rounded-sm flex items-center justify-center shadow-md cursor-grab active:cursor-grabbing z-20"
+        className="absolute top-1 w-12 bottom-1 bg-white rounded-xl flex items-center justify-center shadow-md cursor-grab active:cursor-grabbing z-20"
         style={{ 
           left: `calc(${sliderPos}% - ${(sliderPos * 40) / 100}px + 4px)` 
         }}
@@ -220,13 +220,13 @@ export default function InstructorAgenda() {
       </div>
 
       {/* Week Selector Grid */}
-      <section className="bg-white p-4 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-4 rounded-xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-3">
           <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Junho de 2026</span>
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrevDay}
-              className="p-1 rounded-sm hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+              className="p-1 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
               disabled={selectedDate === "2026-06-01"}
             >
               <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -236,7 +236,7 @@ export default function InstructorAgenda() {
             <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Navegar</span>
             <button
               onClick={handleNextDay}
-              className="p-1 rounded-sm hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+              className="p-1 rounded-xl hover:bg-slate-100 text-slate-600 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
               disabled={selectedDate === "2026-06-30"}
             >
               <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -256,7 +256,7 @@ export default function InstructorAgenda() {
                 key={d.dateStr}
                 id={`date-btn-${d.dateStr}`}
                 onClick={() => setSelectedDate(d.dateStr)}
-                className={`py-3 px-4 min-w-[62px] rounded-sm flex flex-col items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer snap-center ${
+                className={`py-3 px-4 min-w-[62px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer snap-center ${
                   isSelected
                     ? "bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20"
                     : "bg-slate-50 text-slate-600 hover:bg-slate-100"
@@ -271,14 +271,14 @@ export default function InstructorAgenda() {
       </section>
 
       {/* Schedule List */}
-      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-6">
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-6">
         <h3 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">
           Horários para {new Date(selectedDate + "T00:00:00").toLocaleDateString("pt-BR", { weekday: 'long', day: 'numeric', month: 'long' })}
         </h3>
 
         <div className="flex flex-col gap-4">
           {!isWorking ? (
-            <div className="text-center py-12 px-6 border-2 border-dashed border-slate-100 rounded-sm flex flex-col items-center gap-3">
+            <div className="text-center py-12 px-6 border border-dashed border-slate-100 rounded-xl flex flex-col items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
@@ -294,7 +294,7 @@ export default function InstructorAgenda() {
               </p>
               <a
                 href="/instructor/settings"
-                className="mt-2 text-xs bg-slate-900 hover:bg-slate-800 text-white font-bold px-4.5 py-2.5 rounded-sm transition-all active:scale-95 shadow-sm"
+                className="mt-2 text-xs bg-slate-900 hover:bg-slate-800 text-white font-bold px-4.5 py-2.5 rounded-xl transition-all active:scale-95 shadow-sm"
               >
                 Configurar Agenda Extra
               </a>
@@ -323,7 +323,7 @@ export default function InstructorAgenda() {
                     {/* Student Class details (Clickable card to open modal) */}
                     <div 
                       onClick={() => setSelectedClassId(session.id)}
-                      className="flex-1 bg-white p-4 rounded-sm border border-slate-100 hover:border-blue-200 transition-all flex items-center justify-between gap-4 shadow-sm cursor-pointer hover:bg-slate-50/50"
+                      className="flex-1 bg-white p-4 rounded-xl border border-slate-100 hover:border-blue-200 transition-all flex items-center justify-between gap-4 shadow-sm cursor-pointer hover:bg-slate-50/50"
                     >
                       <div className="flex items-center gap-3">
                         <img
@@ -371,7 +371,7 @@ export default function InstructorAgenda() {
                     <div className="w-px h-10 bg-slate-100 relative">
                       <div className="absolute top-4 -left-1 w-2.5 h-2.5 rounded-full bg-slate-100 border border-white" />
                     </div>
-                    <div className="flex-1 py-3 px-4 bg-slate-50/50 rounded-sm text-left text-xs text-slate-400 font-semibold flex items-center justify-between border border-slate-100 select-none">
+                    <div className="flex-1 py-3 px-4 bg-slate-50/50 rounded-xl text-left text-xs text-slate-400 font-semibold flex items-center justify-between border border-slate-100 select-none">
                       <span>Fora do Expediente ({workStart} - {workEnd})</span>
                       <svg className="w-4.5 h-4.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -391,7 +391,7 @@ export default function InstructorAgenda() {
                     <div className="w-px h-10 bg-blue-100 relative">
                       <div className="absolute top-4 -left-1 w-2.5 h-2.5 rounded-full bg-blue-300 border border-white" />
                     </div>
-                    <div className="flex-1 py-3 px-4 bg-blue-50/30 border border-dashed border-blue-100 rounded-sm text-left text-xs text-blue-700 font-semibold flex items-center justify-between select-none">
+                    <div className="flex-1 py-3 px-4 bg-blue-50/30 border border-dashed border-blue-100 rounded-xl text-left text-xs text-blue-700 font-semibold flex items-center justify-between select-none">
                       <span className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
@@ -424,7 +424,7 @@ export default function InstructorAgenda() {
                       setClassTime(slot);
                       setShowAddModal(true);
                     }}
-                    className="flex-1 py-3 px-4 border border-dashed border-slate-100 rounded-sm hover:border-blue-200 hover:bg-blue-50/10 text-left text-xs text-slate-400 font-medium transition-all active:scale-99 flex items-center justify-between cursor-pointer"
+                    className="flex-1 py-3 px-4 border border-dashed border-slate-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/10 text-left text-xs text-slate-400 font-medium transition-all active:scale-99 flex items-center justify-between cursor-pointer"
                   >
                     <span>Horário Disponível para Agendamento</span>
                     <span className="text-blue-600 font-bold hover:underline flex items-center gap-0.5">
@@ -444,7 +444,7 @@ export default function InstructorAgenda() {
       {/* Add Appointment Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-sm max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
             <button
               onClick={() => setShowAddModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
@@ -463,7 +463,7 @@ export default function InstructorAgenda() {
                     id="selectedStudent"
                     value={selectedStudent}
                     onChange={(e) => setSelectedStudent(e.target.value)}
-                    className="w-full rounded-sm border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
                   >
                     {students.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -481,7 +481,7 @@ export default function InstructorAgenda() {
                     id="classType"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full rounded-sm border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
+                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-slate-350 dark:focus:border-slate-700 transition-colors duration-200"
                   >
                     <option value="Aula de Baliza">Aula de Baliza</option>
                     <option value="Prática de Direção">Prática de Direção</option>
@@ -517,7 +517,7 @@ export default function InstructorAgenda() {
       {/* Appointment Detail Bottom-Drawer Modal */}
       {selectedClass && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-end md:items-center justify-center z-50 p-0 md:p-4">
-          <div className="bg-white rounded-t-3xl md:rounded-sm max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in flex flex-col gap-5 max-h-[90vh] md:max-h-none overflow-y-auto">
+          <div className="bg-white rounded-t-3xl md:rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in flex flex-col gap-5 max-h-[90vh] md:max-h-none overflow-y-auto">
             {/* Close Button */}
             <button
               onClick={() => setSelectedClassId(null)}
@@ -535,10 +535,10 @@ export default function InstructorAgenda() {
             </div>
 
             {/* Student card info */}
-            <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-4 rounded-sm">
+            <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-4 rounded-xl">
               <img
                 alt={selectedClass.studentName}
-                className="w-14 h-14 rounded-full object-cover border-2 border-blue-600/20"
+                className="w-14 h-14 rounded-full object-cover border border-blue-600/20"
                 src={selectedClass.studentPhoto}
               />
               <div>
@@ -555,9 +555,9 @@ export default function InstructorAgenda() {
             {/* Bento Grid Lesson Parameters */}
             <div className="grid grid-cols-2 gap-3">
               {/* Date & Time */}
-              <div className="col-span-2 bg-slate-50 p-4 rounded-sm border border-slate-100 flex justify-between items-center">
+              <div className="col-span-2 bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-sm bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                     <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" />
                     </svg>
@@ -576,7 +576,7 @@ export default function InstructorAgenda() {
               </div>
 
               {/* Class Type */}
-              <div className="bg-slate-50 p-4 rounded-sm border border-slate-100 flex flex-col gap-2">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-2">
                 <div className="flex items-center gap-1.5 text-slate-400">
                   <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -587,7 +587,7 @@ export default function InstructorAgenda() {
               </div>
 
               {/* Meeting Point */}
-              <div className="bg-slate-50 p-4 rounded-sm border border-slate-100 flex flex-col gap-2">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col gap-2">
                 <div className="flex items-center gap-1.5 text-slate-400">
                   <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -599,7 +599,7 @@ export default function InstructorAgenda() {
             </div>
 
             {/* Notes Section */}
-            <div className="bg-slate-50 p-4 rounded-sm border border-slate-100">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
               <span className="text-[9px] text-slate-400 font-bold block uppercase mb-1.5">Anotações do Instrutor</span>
               <p className="text-xs text-slate-600 leading-relaxed font-semibold">
                 Focar em controle de embreagem e alinhamento na vaga de baliza.
@@ -613,7 +613,7 @@ export default function InstructorAgenda() {
                   onClick={() => {
                     confirmClass(selectedClass.id);
                   }}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-sm shadow-lg shadow-blue-600/20 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-xl shadow-lg shadow-blue-600/20 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -637,7 +637,7 @@ export default function InstructorAgenda() {
                     completeClass(selectedClass.id);
                     setSelectedClassId(null);
                   }}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-3.5 rounded-sm shadow-lg shadow-emerald-600/20 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-3.5 rounded-xl shadow-lg shadow-emerald-600/20 text-xs transition-transform active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -647,7 +647,7 @@ export default function InstructorAgenda() {
               )}
 
               {selectedClass.status === "Concluída" && (
-                <div className="text-center p-3.5 bg-emerald-50 border border-emerald-100 rounded-sm">
+                <div className="text-center p-3.5 bg-emerald-50 border border-emerald-100 rounded-xl">
                   <p className="text-xs font-bold text-emerald-800 flex items-center justify-center gap-1">
                     <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -664,7 +664,7 @@ export default function InstructorAgenda() {
                       cancelClass(selectedClass.id);
                       setSelectedClassId(null);
                     }}
-                    className="font-bold text-xs text-red-600 hover:text-red-700 py-2 px-4 rounded-sm hover:bg-red-50 transition-all cursor-pointer"
+                    className="font-bold text-xs text-red-600 hover:text-red-700 py-2 px-4 rounded-xl hover:bg-red-50 transition-all cursor-pointer"
                   >
                     Cancelar Aula
                   </button>

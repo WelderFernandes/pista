@@ -39,8 +39,8 @@ export default function InstructorProfile() {
       </div>
 
       {/* Instructor Information */}
-      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <Avatar className="w-20 h-20 border-2 border-blue-600/20">
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <Avatar className="w-20 h-20 border border-blue-600/20">
           {userImage && <AvatarImage src={userImage} alt={userName} />}
           <AvatarFallback className="bg-slate-100 text-slate-550 flex items-center justify-center">
             <UserIcon className="w-8 h-8 text-slate-400" />
@@ -64,7 +64,7 @@ export default function InstructorProfile() {
       </section>
 
       {/* Vehicle details */}
-      <section className="bg-white p-6 rounded-sm border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-4 border-b border-slate-50 pb-3">
           <h3 className="text-sm font-bold text-slate-900">Veículo de Instrução</h3>
           <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">

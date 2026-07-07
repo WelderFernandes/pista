@@ -91,7 +91,7 @@ export default function TeamPage() {
         {/* Left column: Invite Form & Pending Invites */}
         <div className="lg:col-span-1 flex flex-col gap-6">
           {/* Send Invitation Card */}
-          <section className="bg-white dark:bg-slate-900 p-6 rounded-sm border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
+          <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Convidar Membro</h3>
             <p className="text-xs text-slate-400">O convidado receberá o link para se cadastrar e ingressar automaticamente na sua autoescola com o papel escolhido.</p>
             
@@ -104,7 +104,7 @@ export default function TeamPage() {
                   placeholder="exemplo@email.com"
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
-                  className="w-full text-sm p-3 rounded-sm border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-hidden focus:border-blue-600 transition-colors text-slate-900 dark:text-white"
+                  className="w-full text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-hidden focus:border-blue-600 transition-colors text-slate-900 dark:text-white"
                   required
                 />
               </div>
@@ -115,7 +115,7 @@ export default function TeamPage() {
                   id="invite-role"
                   value={roleInput}
                   onChange={(e) => setRoleInput(e.target.value)}
-                  className="w-full text-sm p-3 rounded-sm border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-hidden focus:border-blue-600 transition-colors text-slate-900 dark:text-white"
+                  className="w-full text-sm p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 focus:outline-hidden focus:border-blue-600 transition-colors text-slate-900 dark:text-white"
                 >
                   <option value="instructor">Instrutor</option>
                   <option value="admin">Admin</option>
@@ -132,7 +132,7 @@ export default function TeamPage() {
               <Button
                 type="submit"
                 disabled={inviteMutation.isPending}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-sm text-xs transition-all cursor-pointer h-11"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-xl text-xs transition-all cursor-pointer h-11"
               >
                 {inviteMutation.isPending ? "Criando..." : "Gerar Convite"}
               </Button>
@@ -140,19 +140,19 @@ export default function TeamPage() {
           </section>
 
           {/* Pending Invitations Card */}
-          <section className="bg-white dark:bg-slate-900 p-6 rounded-sm border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
+          <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Convites Pendentes</h3>
             
             {invitesLoading ? (
               <div className="flex justify-center p-4">
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                <div className="h-5 w-5 animate-spin rounded-full border border-blue-600 border-t-transparent" />
               </div>
             ) : invitations.length === 0 ? (
               <p className="text-xs text-slate-400 text-center py-4">Nenhum convite pendente.</p>
             ) : (
               <div className="flex flex-col gap-3 max-h-[250px] overflow-y-auto pr-1">
                 {invitations.map((invite: any) => (
-                  <div key={invite.id} className="flex flex-col gap-1 p-3 rounded-sm bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850">
+                  <div key={invite.id} className="flex flex-col gap-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850">
                     <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{invite.email}</span>
                     <div className="flex justify-between items-center mt-1 text-[10px]">
                       <span className="text-slate-400">Cargo: {invite.role}</span>
@@ -176,7 +176,7 @@ export default function TeamPage() {
 
         {/* Right column: Active Members list */}
         <div className="lg:col-span-2 flex flex-col gap-6">
-          <section className="bg-white dark:bg-slate-900 p-6 rounded-sm border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
+          <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white">Membros Ativos ({members.length})</h3>
             </div>
@@ -192,7 +192,7 @@ export default function TeamPage() {
                 {members.map((member: any) => (
                   <div
                     key={member.id}
-                    className="flex items-center justify-between p-4 rounded-sm border border-slate-100 dark:border-slate-850 bg-slate-50/50 dark:bg-slate-950/40 hover:bg-slate-100/40 dark:hover:bg-slate-955/80 transition-all"
+                    className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-850 bg-slate-50/50 dark:bg-slate-950/40 hover:bg-slate-100/40 dark:hover:bg-slate-955/80 transition-all"
                   >
                     <div className="flex items-center gap-3">
                       <img
