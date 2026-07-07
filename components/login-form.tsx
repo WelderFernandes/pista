@@ -40,13 +40,33 @@ export function LoginForm() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const queryProfile = params.get("profile");
+      const queryName = params.get("name");
+      const queryEmail = params.get("email");
+
       if (queryProfile === "instructor" || queryProfile === "student") {
         setTimeout(() => {
           setProfile(queryProfile);
         }, 0);
       }
+
+      if (queryName || queryEmail) {
+        setTimeout(() => {
+          setMode("signup");
+          const defaultName = queryName || "";
+          const defaultEmail = queryEmail || "";
+          const defaultOrgName = queryProfile === "instructor" && defaultName ? `Aulas de ${defaultName}` : "";
+          
+          reset({
+            name: defaultName,
+            email: defaultEmail,
+            password: "",
+            confirmPassword: "",
+            orgName: defaultOrgName
+          });
+        }, 0);
+      }
     }
-  }, []);
+  }, [reset]);
 
   const slugify = (text: string) => {
     return text
