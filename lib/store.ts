@@ -15,6 +15,19 @@ export interface InstructorSettings  {
   hourlyRate: number;
   categories: string[];
   bio?: string;
+  address?: Address;
+}
+
+export interface Address {
+  id?: string;
+  cep: string;
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  number: string;
+  complement?: string;
+  instructorSettingsId?: string;
 }
 
 export interface Student {

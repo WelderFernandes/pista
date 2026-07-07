@@ -18,6 +18,7 @@ import {
   Trash
 } from "@phosphor-icons/react";
 import { updateSettingsAction, addVehicleAction } from "@/app/actions";
+import { useCep } from "@/lib/hooks/useCep";
 
 export default function InstructorSetupPage() {
   const { settings } = useApp();
@@ -25,8 +26,36 @@ export default function InstructorSetupPage() {
   const [signupStep, setSignupStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Address states
+  const [cep, setCep] = useState(settings?.address?.cep || "");
+  const [street, setStreet] = useState(settings?.address?.street || "");
+  const [number, setNumber] = useState(settings?.address?.number || "");
+  const [complement, setComplement] = useState(settings?.address?.complement || "");
+  const [neighborhood, setNeighborhood] = useState(settings?.address?.neighborhood || "");
+  const [state, setState] = useState(settings?.address?.state || "");
+  const [city, setCity] = useState(settings?.address?.city || settings?.city || "São Paulo");
+
+  const { lookupCep, loading: loadingCep, error: errorCep } = useCep();
+
+  const handleCepSearch = async (cepValue: string) => {
+    const data = await lookupCep(cepValue);
+    if (data) {
+      setStreet(data.street || "");
+      setNeighborhood(data.neighborhood || "");
+      setCity(data.city || "");
+      setState(data.state || "");
+    }
+  };
+
+  const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/\D/g, "").slice(0, 8);
+    setCep(val);
+    if (val.length === 8) {
+      handleCepSearch(val);
+    }
+  };
+
   // Form states initialized with generic defaults, falling back to db defaults if loaded
-  const [city, setCity] = useState(settings?.city || "São Paulo");
   const [neighborhoodsInput, setNeighborhoodsInput] = useState(
     settings?.neighborhoods?.join(", ") || "Centro, Pinheiros, Jardins"
   );
@@ -89,8 +118,18 @@ export default function InstructorSetupPage() {
   };
 
   const handleNextStep = () => {
-    if (signupStep === 1 && city.trim().length > 0 && neighborhoodsInput.trim().length > 0) {
-      setSignupStep(2);
+    if (signupStep === 1) {
+      if (
+        cep.length === 8 &&
+        street.trim().length > 0 &&
+        city.trim().length > 0 &&
+        state.trim().length > 0 &&
+        neighborhood.trim().length > 0 &&
+        number.trim().length > 0 &&
+        neighborhoodsInput.trim().length > 0
+      ) {
+        setSignupStep(2);
+      }
     } else if (signupStep === 2 && categoriesSelected.length > 0 && Number(hourlyRateInput) > 0) {
       setSignupStep(3);
     } else if (signupStep === 3) {
@@ -154,6 +193,15 @@ export default function InstructorSetupPage() {
         workEnd: settings?.workEnd || "18:00",
         lunchStart: settings?.lunchStart || "12:00",
         lunchEnd: settings?.lunchEnd || "13:30",
+        address: {
+          cep,
+          state,
+          city,
+          neighborhood,
+          street,
+          number,
+          complement: complement || undefined,
+        },
       } as any);
 
       // Force a full reload to /instructor to ensure all context data is fully re-fetched
@@ -233,37 +281,131 @@ export default function InstructorSetupPage() {
           </div>
 
           <form onSubmit={handleFinishSetup} onKeyDown={handleKeyDown} className="flex flex-col gap-5">
-            
             {/* STEP 1: WORK AREA */}
             <div className={signupStep === 1 ? "flex flex-col gap-4" : "hidden"}>
               <div>
-                <Label htmlFor="city">Cidade de Atuação</Label>
-                <div className="mt-1">
-                  <InputGroup className="rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
+                <Label htmlFor="cep">CEP de Atuação</Label>
+                <div className="mt-1 flex gap-2">
+                  <InputGroup className="flex-1 rounded-xl border bg-slate-50 dark:bg-slate-955 p-1 h-11 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
                     <InputGroupAddon align="inline-start">
                       <MapPin className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
                     <InputGroupInput
                       type="text"
-                      id="city"
+                      id="cep"
                       required
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      placeholder="Ex: São Paulo"
+                      maxLength={9}
+                      value={cep}
+                      onChange={handleCepChange}
+                      placeholder="Ex: 01310-100"
                     />
                   </InputGroup>
+                  <Button
+                    type="button"
+                    disabled={loadingCep || cep.replace(/\D/g, "").length !== 8}
+                    onClick={() => handleCepSearch(cep)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-xl text-xs font-bold transition-all h-11 flex items-center justify-center cursor-pointer"
+                  >
+                    {loadingCep ? "Buscando..." : "Buscar CEP"}
+                  </Button>
+                </div>
+                {errorCep && (
+                  <p className="text-[10px] text-rose-500 font-bold mt-1.5 ml-1">
+                    ⚠️ {errorCep} (Preencha os campos abaixo manualmente se necessário)
+                  </p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <div className="col-span-2">
+                  <Label htmlFor="street" className="text-[10px]">Logradouro / Rua</Label>
+                  <input
+                    type="text"
+                    id="street"
+                    required
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                    placeholder="Av. Paulista"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="number" className="text-[10px]">Número</Label>
+                  <input
+                    type="text"
+                    id="number"
+                    required
+                    value={number}
+                    onChange={(e) => setNumber(e.target.value)}
+                    placeholder="1000"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="neighborhood" className="text-[10px]">Bairro</Label>
+                  <input
+                    type="text"
+                    id="neighborhood"
+                    required
+                    value={neighborhood}
+                    onChange={(e) => setNeighborhood(e.target.value)}
+                    placeholder="Bela Vista"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="complement" className="text-[10px]">Complemento</Label>
+                  <input
+                    type="text"
+                    id="complement"
+                    value={complement}
+                    onChange={(e) => setComplement(e.target.value)}
+                    placeholder="Apto 42"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="city" className="text-[10px]">Cidade</Label>
+                  <input
+                    type="text"
+                    id="city"
+                    required
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="São Paulo"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="state" className="text-[10px]">Estado</Label>
+                  <input
+                    type="text"
+                    id="state"
+                    required
+                    maxLength={2}
+                    value={state}
+                    onChange={(e) => setState(e.target.value.toUpperCase())}
+                    placeholder="SP"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                  />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="neighborhoods">Bairros Atendidos (Separados por vírgula)</Label>
+                <Label htmlFor="neighborhoods">Bairros de Atuação Prática (Separados por vírgula)</Label>
                 <div className="mt-1">
                   <textarea
                     id="neighborhoods"
                     required
                     value={neighborhoodsInput}
                     onChange={(e) => setNeighborhoodsInput(e.target.value)}
-                    className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs text-slate-900 dark:text-white focus:outline-hidden focus:border-blue-600 h-20 transition-colors"
+                    className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 p-3 text-xs text-slate-900 dark:text-white focus:outline-hidden focus:border-blue-600 h-20 transition-colors"
                     placeholder="Ex: Pinheiros, Vila Madalena, Butantã"
                   />
                 </div>

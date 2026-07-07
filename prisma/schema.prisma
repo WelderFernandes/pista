@@ -86,7 +86,23 @@ model InstructorSettings {
   hourlyRate     Int          @default(12000) @map("hourly_rate_in_cents")
   categories     String[]
   bio            String
+  address        Address?
   updatedAt      DateTime     @updatedAt
+}
+
+model Address {
+  id                   String             @id @default(uuid())
+  cep                  String
+  state                String
+  city                 String
+  neighborhood         String             // Bairro
+  street               String
+  number               String             // Informado pelo usuário
+  complement           String?            // Informado pelo usuário
+  instructorSettingsId String             @unique
+  instructorSettings   InstructorSettings @relation(fields: [instructorSettingsId], references: [id], onDelete: Cascade)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
 }
 
 // ==========================================
@@ -193,9 +209,9 @@ model Vehicle {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   studentId      String?
   student        Student?     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  name           String       // Ex: "Chevrolet Onix"
-  plate          String?      // Ex: "ABC-1234"
-  category       String       // Ex: "B" (Carro), "A" (Moto)
+  name           String // Ex: "Chevrolet Onix"
+  plate          String? // Ex: "ABC-1234"
+  category       String // Ex: "B" (Carro), "A" (Moto)
   brand          String?
   color          String?
   createdAt      DateTime     @default(now())

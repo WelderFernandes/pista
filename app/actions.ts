@@ -80,6 +80,7 @@ export async function getAppData() {
   // Busca configurações do instrutor/autoescola
   const dbSettings = await tenantPrisma.instructorSettings.findUnique({
     where: { organizationId: activeOrgId },
+    include: { address: true },
   });
 
   let settings = dbSettings;
@@ -100,6 +101,7 @@ export async function getAppData() {
         categories: ["B"],
         bio: "Autoescola cadastrada com sucesso.",
       },
+      include: { address: true },
     });
   }
 
@@ -390,7 +392,7 @@ export async function updateSettingsAction(data: InstructorSettings) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  return await tenantPrisma.instructorSettings.upsert({
+  await tenantPrisma.instructorSettings.upsert({
     where: { organizationId: activeOrgId },
     create: {
       id: activeOrgId,
@@ -421,6 +423,36 @@ export async function updateSettingsAction(data: InstructorSettings) {
       bio: data.bio || "",
     },
   });
+
+  if (data.address) {
+    await tenantPrisma.address.upsert({
+      where: { instructorSettingsId: activeOrgId },
+      create: {
+        cep: data.address.cep,
+        state: data.address.state,
+        city: data.address.city,
+        neighborhood: data.address.neighborhood,
+        street: data.address.street,
+        number: data.address.number,
+        complement: data.address.complement || null,
+        instructorSettingsId: activeOrgId,
+      },
+      update: {
+        cep: data.address.cep,
+        state: data.address.state,
+        city: data.address.city,
+        neighborhood: data.address.neighborhood,
+        street: data.address.street,
+        number: data.address.number,
+        complement: data.address.complement || null,
+      },
+    });
+  }
+
+  return await tenantPrisma.instructorSettings.findUnique({
+    where: { organizationId: activeOrgId },
+    include: { address: true },
+  }) as any;
 }
 
 export async function getPublicInstructors() {
@@ -677,6 +709,15 @@ export async function createInstructorSettingsAction(orgId: string, data: {
   hourlyRate: number;
   categories: string[];
   bio: string;
+  address?: {
+    cep: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+    number: string;
+    complement?: string;
+  };
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -697,7 +738,7 @@ export async function createInstructorSettingsAction(orgId: string, data: {
   }
 
   const tenantPrisma = getTenantPrisma(orgId);
-  return await tenantPrisma.instructorSettings.upsert({
+  const settingsResult = await tenantPrisma.instructorSettings.upsert({
     where: { organizationId: orgId },
     create: {
       id: orgId,
@@ -723,6 +764,33 @@ export async function createInstructorSettingsAction(orgId: string, data: {
       bio: data.bio || "",
     },
   });
+
+  if (data.address) {
+    await tenantPrisma.address.upsert({
+      where: { instructorSettingsId: orgId },
+      create: {
+        cep: data.address.cep,
+        state: data.address.state,
+        city: data.address.city,
+        neighborhood: data.address.neighborhood,
+        street: data.address.street,
+        number: data.address.number,
+        complement: data.address.complement || null,
+        instructorSettingsId: orgId,
+      },
+      update: {
+        cep: data.address.cep,
+        state: data.address.state,
+        city: data.address.city,
+        neighborhood: data.address.neighborhood,
+        street: data.address.street,
+        number: data.address.number,
+        complement: data.address.complement || null,
+      },
+    });
+  }
+
+  return settingsResult;
 }
 
 /**
@@ -755,6 +823,34 @@ export async function deleteVehicleAction(id: string) {
   return await tenantPrisma.vehicle.delete({
     where: { id },
   });
+}
+
+/**
+ * Busca o endereço a partir do CEP usando a BrasilAPI no lado do servidor.
+ */
+export async function fetchAddressByCepAction(cep: string) {
+  const cleanCep = cep.replace(/\D/g, "");
+  if (cleanCep.length !== 8) {
+    throw new Error("CEP inválido. Deve possuir 8 dígitos.");
+  }
+
+  try {
+    const res = await fetch(`https://brasilapi.com.br/api/cep/v2/${cleanCep}`);
+    if (!res.ok) {
+      throw new Error("CEP não encontrado ou erro na BrasilAPI.");
+    }
+    const data = await res.json();
+    return {
+      cep: data.cep as string,
+      state: data.state as string,
+      city: data.city as string,
+      neighborhood: data.neighborhood as string,
+      street: data.street as string,
+    };
+  } catch (error) {
+    console.error("Erro ao buscar CEP no servidor:", error);
+    throw error;
+  }
 }
 
 
