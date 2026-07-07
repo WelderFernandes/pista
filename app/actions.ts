@@ -378,9 +378,24 @@ export async function updateSettingsAction(data: InstructorSettings) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  return await tenantPrisma.instructorSettings.update({
+  return await tenantPrisma.instructorSettings.upsert({
     where: { organizationId: activeOrgId },
-    data: {
+    create: {
+      id: activeOrgId,
+      organizationId: activeOrgId,
+      workDays: data.workDays || [1, 2, 3, 4, 5, 6],
+      workStart: data.workStart || "08:00",
+      workEnd: data.workEnd || "18:00",
+      lunchStart: data.lunchStart || "12:00",
+      lunchEnd: data.lunchEnd || "13:30",
+      city: data.city,
+      neighborhoods: data.neighborhoods,
+      meetingPoints: data.meetingPoints,
+      hourlyRate: data.hourlyRate,
+      categories: data.categories,
+      bio: data.bio || "",
+    },
+    update: {
       workDays: data.workDays,
       workStart: data.workStart,
       workEnd: data.workEnd,
@@ -634,5 +649,69 @@ export async function acceptInvitationAction(invitationId: string) {
 
   return member;
 }
+
+/**
+ * Cria ou atualiza as configurações detalhadas do instrutor/autoescola no momento do cadastro.
+ */
+export async function createInstructorSettingsAction(orgId: string, data: {
+  workDays?: number[];
+  workStart?: string;
+  workEnd?: string;
+  lunchStart?: string;
+  lunchEnd?: string;
+  city: string;
+  neighborhoods: string[];
+  meetingPoints: string[];
+  hourlyRate: number;
+  categories: string[];
+  bio: string;
+}) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    throw new Error("Não autenticado.");
+  }
+
+  // Verifica se o usuário é membro da organização
+  const member = await prisma.member.findFirst({
+    where: {
+      userId: session.user.id,
+      organizationId: orgId,
+    },
+  });
+  if (!member) {
+    throw new Error("Não autorizado.");
+  }
+
+  const tenantPrisma = getTenantPrisma(orgId);
+  return await tenantPrisma.instructorSettings.upsert({
+    where: { organizationId: orgId },
+    create: {
+      id: orgId,
+      organizationId: orgId,
+      workDays: data.workDays || [1, 2, 3, 4, 5, 6],
+      workStart: data.workStart || "08:00",
+      workEnd: data.workEnd || "18:00",
+      lunchStart: data.lunchStart || "12:00",
+      lunchEnd: data.lunchEnd || "13:30",
+      city: data.city,
+      neighborhoods: data.neighborhoods,
+      meetingPoints: data.meetingPoints,
+      hourlyRate: data.hourlyRate,
+      categories: data.categories,
+      bio: data.bio || "",
+    },
+    update: {
+      city: data.city,
+      neighborhoods: data.neighborhoods,
+      meetingPoints: data.meetingPoints,
+      hourlyRate: data.hourlyRate,
+      categories: data.categories,
+      bio: data.bio || "",
+    },
+  });
+}
+
 
 
