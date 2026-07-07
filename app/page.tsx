@@ -574,7 +574,7 @@ export default function Home() {
         <section id="como-funciona" className="py-24 px-6 max-w-7xl mx-auto w-full z-10 scroll-mt-20">
           <div className="text-center max-w-xl mx-auto mb-16">
             <h3 className="text-3xl md:text-5xl font-black uppercase text-slate-900 dark:text-white tracking-tighter">
-              Como Funciona o Volante Certo?
+              Como Funciona a Pista?
             </h3>
             <p className="text-slate-555 dark:text-slate-400 mt-4 text-sm font-medium">
               Em apenas três passos simples você agenda suas aulas práticas e inicia a sua jornada rumo à habilitação.
