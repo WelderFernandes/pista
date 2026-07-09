@@ -263,8 +263,8 @@ export function InstructorSidebar({ isCollapsed, pathname }: InstructorSidebarPr
       <div className={`mb-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-300 ${isCollapsed ? "p-2 mx-2" : "p-4 mx-3"
         }`}>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-xs text-white shadow-xs shrink-0">
-            V
+          <div className="w-8 h-8  rounded-xl flex items-center justify-center font-bold text-xs text-white shadow-xs shrink-0">
+            <Image src="/img/logo-icon.png" alt="Logo" width={24} height={24} />
           </div>
           {!isCollapsed && (
             <div className="transition-all duration-300">
