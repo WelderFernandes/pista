@@ -11,14 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface InstructorSidebarProps {
   isCollapsed: boolean;
-  toggleCollapse: () => void;
   pathname: string;
 }
 
-export function InstructorSidebar({ isCollapsed, toggleCollapse, pathname }: InstructorSidebarProps) {
+export function InstructorSidebar({ isCollapsed, pathname }: InstructorSidebarProps) {
   const { data: activeOrg } = authClient.useActiveOrganization();
   const { data: orgs } = authClient.useListOrganizations();
 
@@ -118,27 +119,45 @@ export function InstructorSidebar({ isCollapsed, toggleCollapse, pathname }: Ins
   ];
 
   return (
-    <aside className={`hidden md:flex flex-col bg-slate-50/60 dark:bg-slate-950/60 backdrop-blur-md fixed top-[37px] bottom-0 left-0 border-r border-slate-200/40 dark:border-slate-850 z-30 justify-between transition-all duration-300 ${isCollapsed ? "w-[68px]" : "w-[240px]"
-      }`}>
-      {/* Toggle Collapse Button */}
-      <button
-        type="button"
-        onClick={toggleCollapse}
-        className="hidden md:flex absolute -right-3 top-6 w-6 h-6 rounded-full bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 items-center justify-center text-slate-550 hover:text-slate-900 dark:hover:text-white hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer z-50"
-        aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
-      >
-        <svg
-          className={`w-3 h-3 text-slate-500 dark:text-slate-400 transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={3}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
+    <aside className={cn(
+      "hidden md:flex flex-col bg-slate-50/60 dark:bg-slate-950/60 backdrop-blur-md ",
+      "fixed top-0 bottom-0 left-0 border-r border-slate-200/40 dark:border-slate-850 ",
+      "z-30 justify-between transition-all duration-300",
+      isCollapsed ? "w-[68px]" : "w-[240px]"
+    )}>
       <div className="py-6 flex flex-col gap-1 overflow-x-hidden">
+        <div className={cn(
+          "relative mx-auto transition-all duration-300 flex items-center justify-center shrink-0",
+          isCollapsed ? "w-8 h-8 mb-1" : "w-[120px] h-[50px] mb-2 "
+        )}>
+          {/* Logo Completa (Expandida) */}
+          <div className={cn(
+            "absolute inset-0 transition-all duration-300 flex items-center justify-center",
+            isCollapsed ? "opacity-0 pointer-events-none scale-75" : "opacity-100 scale-100"
+          )}>
+            <Image
+              src="/img/pista-logo.png"
+              alt="Logo Completa"
+              fill
+              className="object-contain transition-transform duration-300 hover:scale-[1.02]"
+              priority
+            />
+          </div>
+
+          {/* Logo Ícone (Recolhida) */}
+          <div className={cn(
+            "absolute inset-0 transition-all duration-300 flex items-center justify-center",
+            isCollapsed ? "opacity-100 scale-100" : "opacity-0 pointer-events-none scale-75"
+          )}>
+            <Image
+              src="/img/logo-icon.PNG"
+              alt="Logo Ícone"
+              fill
+              className="object-contain transition-transform duration-300 hover:scale-[1.05]"
+              priority
+            />
+          </div>
+        </div>
         {/* Organization switcher */}
         <div className="px-3 mb-3">
           <DropdownMenu>

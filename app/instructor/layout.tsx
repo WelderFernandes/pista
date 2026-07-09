@@ -7,6 +7,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { InstructorHeader } from "@/components/instructor-header";
 import { InstructorSidebar } from "@/components/instructor-sidebar";
+import { cn } from "@/lib/utils";
 
 export default function InstructorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -135,15 +136,20 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <div className={`bg-slate-50 dark:bg-slate-955 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 flex flex-col font-sans transition-all duration-300 ${isCollapsed ? "md:pl-[68px]" : "md:pl-[240px]"
-      }`}>
+    <div className={cn(
+      "bg-slate-50 dark:bg-slate-955 text-slate-900 dark:text-slate-100",
+      "min-h-screen pb-[80px] md:pb-0 flex flex-col font-sans transition-all duration-300",
+      isCollapsed ? "md:pl-[68px]" : "md:pl-[240px]"
+    )}>
       {/* Top Nav Header */}
-      <InstructorHeader />
+      <InstructorHeader
+        isCollapsed={isCollapsed}
+        toggleCollapse={toggleCollapse}
+      />
 
       {/* Desktop Sidebar */}
       <InstructorSidebar
         isCollapsed={isCollapsed}
-        toggleCollapse={toggleCollapse}
         pathname={pathname}
       />
 
