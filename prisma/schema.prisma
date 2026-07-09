@@ -86,6 +86,8 @@ model InstructorSettings {
   hourlyRate     Int          @default(12000) @map("hourly_rate_in_cents")
   categories     String[]
   bio            String
+  classDuration  Int          @default(50) @map("class_duration_in_minutes")
+  categoryPrices Json?        @map("category_prices_in_cents")
   address        Address?
   updatedAt      DateTime     @updatedAt
 }
@@ -214,6 +216,28 @@ model Vehicle {
   category       String // Ex: "B" (Carro), "A" (Moto)
   brand          String?
   color          String?
+  automatic      Boolean      @default(false)
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+}
+
+model VehicleBrand {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  type      String         // "car", "motorcycle", "both"
+  models    VehicleModel[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model VehicleModel {
+  id        String       @id @default(uuid())
+  name      String
+  brandId   String
+  brand     VehicleBrand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  type      String       // "car", "motorcycle"
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([brandId, name, type])
 }

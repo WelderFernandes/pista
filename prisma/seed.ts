@@ -2,6 +2,7 @@ import "dotenv/config";
 import { auth } from "../lib/auth";
 import { prisma } from "../lib/prisma";
 import { fakerPT_BR as faker } from "@faker-js/faker";
+import { popularBrands, popularModelsByBrand } from "../lib/autocomplete-data";
 
 async function main() {
   console.log("Iniciando o seeding com dados realistas gerados pelo Faker JS...");
@@ -10,6 +11,8 @@ async function main() {
   faker.seed(42);
 
   // 1. Limpar dados antigos por segurança
+  await prisma.vehicleModel.deleteMany();
+  await prisma.vehicleBrand.deleteMany();
   await prisma.transaction.deleteMany();
   await prisma.classSession.deleteMany();
   await prisma.student.deleteMany();
@@ -32,6 +35,51 @@ async function main() {
     },
   });
   console.log(`Organização criada: ${org.name} (${org.id})`);
+
+  // Seeding vehicle brands and models
+  console.log("Semeando marcas e modelos de veículos populares...");
+  const findPopularBrands = await prisma.vehicleBrand.count();
+  if (findPopularBrands > 0) {
+    console.log("Marcas e modelos já semeados com sucesso!");
+    return;
+  } else {
+    for (const b of popularBrands) {
+      const brand = await prisma.vehicleBrand.create({
+        data: {
+          name: b.name,
+          type: b.type,
+        },
+      });
+
+      const brandData = popularModelsByBrand[b.name];
+      if (brandData) {
+        if (brandData.car) {
+          for (const modelName of brandData.car) {
+            await prisma.vehicleModel.create({
+              data: {
+                name: modelName,
+                brandId: brand.id,
+                type: "car",
+              },
+            });
+          }
+        }
+        if (brandData.motorcycle) {
+          for (const modelName of brandData.motorcycle) {
+            await prisma.vehicleModel.create({
+              data: {
+                name: modelName,
+                brandId: brand.id,
+                type: "motorcycle",
+              },
+            });
+          }
+        }
+      }
+    }
+    console.log("Marcas e modelos semeados com sucesso!");
+  }
+
 
   // 3. Criar Usuário do Instrutor usando o Better Auth API
   // A senha será "SenhaSegura123"
@@ -176,11 +224,11 @@ async function main() {
   for (let i = 0; i < totalFakerStudents; i++) {
     const name = faker.person.fullName();
     const id = name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
-    
+
     // Gerar foto baseada em gênero fictício
     const isMale = faker.datatype.boolean();
     const photoId = faker.number.int({ min: 1, max: 70 });
-    const photoUrl = isMale 
+    const photoUrl = isMale
       ? `https://xsgames.co/randomusers/assets/avatars/male/${photoId}.jpg`
       : `https://xsgames.co/randomusers/assets/avatars/female/${photoId}.jpg`;
 
@@ -228,7 +276,7 @@ async function main() {
 
     const formattedDate = date.toISOString().split("T")[0];
     const time = faker.helpers.arrayElement(hoursList);
-    
+
     // Calcula fim da aula (exemplo: 1h40m de duração padrão)
     const [h, m] = time.split(":").map(Number);
     let endH = h + 1;
