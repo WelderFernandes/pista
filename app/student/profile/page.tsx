@@ -1,7 +1,8 @@
 "use client";
 
 import { useApp } from "@/lib/context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { formatCentsToBRL } from "@/lib/utils";
 
 import { useSession } from "@/lib/auth-client";
@@ -12,6 +13,12 @@ export default function StudentProfile() {
   const { data: session } = useSession();
   const { students, transactions, payPendingPayment } = useApp();
   const [showPixModal, setShowPixModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
   const studentPayments = transactions.filter((t) => student && (t.studentName.includes(student.name.split(" ")[0]) || t.studentName === student.name));
@@ -127,42 +134,46 @@ export default function StudentProfile() {
       </section>
 
       {/* PIX Payment Modal */}
-      {showPixModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 relative text-center animate-fade-in">
+      {showPixModal && mounted && createPortal(
+        <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full relative text-center animate-scale-up">
             <button
               onClick={() => setShowPixModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Pagamento via PIX</h3>
-            <p className="text-xs text-slate-500 mb-6">Escaneie o QR Code abaixo para efetuar o pagamento da fatura.</p>
+            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2">
+              Pagamento via PIX
+            </h3>
+            <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-6 font-medium">Escaneie o QR Code abaixo para efetuar o pagamento da fatura.</p>
 
-            <div className="w-44 h-44 bg-slate-50 border border-slate-100 rounded-2xl mx-auto flex items-center justify-center mb-6 relative overflow-hidden">
+            <div className="w-44 h-44 bg-slate-50 dark:bg-slate-950 border border-slate-200/40 dark:border-slate-800/80 rounded-2xl mx-auto flex items-center justify-center mb-6 relative overflow-hidden">
+              {/* Fake QR code representation */}
               <div className="grid grid-cols-4 gap-2 w-32 h-32 opacity-70">
                 {Array.from({ length: 16 }).map((_, i) => (
-                  <div key={i} className={`rounded ${i % 3 === 0 || i % 7 === 0 ? "bg-slate-900" : "bg-transparent"}`} />
+                  <div key={i} className={`rounded ${i % 3 === 0 || i % 7 === 0 ? "bg-slate-900 dark:bg-slate-100" : "bg-transparent"}`} />
                 ))}
               </div>
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 font-bold text-xs text-slate-800">
+              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 font-bold text-xs text-slate-800 dark:text-white">
                 Fatura Volante Certo
               </div>
             </div>
 
-            <p className="text-xs font-semibold text-slate-500 mb-1">Valor da fatura</p>
-            <p className="text-2xl font-extrabold text-blue-600 mb-6">{formatCentsToBRL(student.pendingPayment)}</p>
+            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-455 dark:text-slate-500 mb-1">Valor da fatura</p>
+            <p className="text-2xl font-black text-blue-600 dark:text-blue-500 mb-6">{formatCentsToBRL(student.pendingPayment)}</p>
 
             <button
               onClick={handlePayPix}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-xl shadow-lg text-sm transition-transform active:scale-98 cursor-pointer"
+              className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-xl uppercase tracking-wider text-[10px]"
             >
               Confirmar Pagamento Realizado
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

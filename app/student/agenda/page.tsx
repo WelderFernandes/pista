@@ -1,7 +1,8 @@
 "use client";
 
 import { useApp } from "@/lib/context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,12 @@ export default function StudentAgenda() {
   const { data: session } = useSession();
   const { classes, addClass, students } = useApp();
   const [showRequestModal, setShowRequestModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   // Form state
   const [classType, setClassType] = useState("Aula de Baliza");
@@ -102,31 +109,31 @@ export default function StudentAgenda() {
             ))}
           </div>
         )}
-      </section>
-
-      {/* Request Modal */}
-      {showRequestModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in">
+      </section>      {/* Request Modal */}
+      {showRequestModal && mounted && createPortal(
+        <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
             <button
               onClick={() => setShowRequestModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Solicitar Agendamento de Aula</h3>
+            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
+              Solicitar Agendamento
+            </h3>
 
             <form onSubmit={handleRequestClass} className="flex flex-col gap-4">
               <div>
-                <Label htmlFor="classType" className="text-xs">Tipo de Aula</Label>
+                <Label htmlFor="classType" className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Tipo de Aula</Label>
                 <div className="mt-1">
                   <select
                     id="classType"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-slate-750 transition-colors duration-200"
+                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
                   >
                     <option value="Aula de Baliza">Aula de Baliza</option>
                     <option value="Prática de Direção">Prática de Direção</option>
@@ -137,24 +144,25 @@ export default function StudentAgenda() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label htmlFor="classDate" className="text-xs">Data Desejada</Label>
+                  <Label htmlFor="classDate" className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Data Desejada</Label>
                   <div className="mt-1">
                     <Input
                       type="date"
                       id="classDate"
                       value={classDate}
                       onChange={(e) => setClassDate(e.target.value)}
+                      className="rounded-xl text-xs h-10"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="classTime" className="text-xs">Horário de Início</Label>
+                  <Label htmlFor="classTime" className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Horário de Início</Label>
                   <div className="mt-1">
                     <select
                       id="classTime"
                       value={classTime}
                       onChange={(e) => setClassTime(e.target.value)}
-                      className="w-full rounded-xl border border-slate-250 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 text-xs text-slate-850 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-slate-750 transition-colors duration-200"
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
                     >
                       <option value="08:00">08:00</option>
                       <option value="09:40">09:40</option>
@@ -169,7 +177,7 @@ export default function StudentAgenda() {
               </div>
 
               <div>
-                <Label htmlFor="meetingPoint" className="text-xs">Ponto de Encontro</Label>
+                <Label htmlFor="meetingPoint" className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Ponto de Encontro</Label>
                 <div className="mt-1">
                   <Input
                     type="text"
@@ -177,19 +185,21 @@ export default function StudentAgenda() {
                     value={meetingPoint}
                     onChange={(e) => setMeetingPoint(e.target.value)}
                     placeholder="Ex: Centro, Pista de Baliza"
+                    className="rounded-xl text-xs h-10"
                   />
                 </div>
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-11 text-xs transition-transform active:scale-98 cursor-pointer mt-2"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 Enviar Solicitação
               </Button>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
