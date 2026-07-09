@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { z } from "zod";
+import Image from "next/image";
 
 type FormData = z.infer<typeof signUpSchema>;
 
@@ -185,24 +186,20 @@ export function LoginForm() {
   };
 
   return (
-    <div className="">
+    <div className="mx-auto">
       {/* Decorative glows */}
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/5 dark:bg-blue-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[120px] pointer-events-none" />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10 text-center">
-        <Link href="/" className="inline-flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-blue-600 to-rose-500 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/20 text-white group-hover:scale-105 transition-transform duration-300">
-            P
-          </div>
-          <span className="font-black text-2xl uppercase tracking-tighter text-slate-900 dark:text-white">
-            Pista
-          </span>
-        </Link>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
+
+      <div className="mt-8 flex flex-col gap-1 justify-center">
+        <div className="flex text-center w-[200px] h-[100px] relative mx-auto">
+          <Image src="/img/pista-logo.png" alt="Logo Pista" fill className="object-contain" />
+        </div>
+
         <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10 transition-colors duration-300 backdrop-blur-md">
+
           <div className="text-center mb-6">
             <h2 className="text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">
               {mode === "login" ? "Bem-vindo de volta" : "Crie sua conta"}
@@ -222,8 +219,8 @@ export function LoginForm() {
               type="button"
               onClick={() => setProfile("instructor")}
               className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${profile === "instructor"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
-                  : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
+                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }`}
             >
               Sou Instrutor
@@ -232,8 +229,8 @@ export function LoginForm() {
               type="button"
               onClick={() => setProfile("student")}
               className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${profile === "student"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
-                  : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
+                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }`}
             >
               Sou Aluno
@@ -281,7 +278,7 @@ export function LoginForm() {
 
                 {profile === "instructor" && (
                   <div>
-                    <Label htmlFor="orgName">Nome da Autoescola (Organização / Tenant)</Label>
+                    <Label htmlFor="orgName">Nome que você quer que seus alunos vejam!</Label>
                     <div className="mt-1">
                       <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.orgName ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
                         <InputGroupAddon align="inline-start">
@@ -292,7 +289,7 @@ export function LoginForm() {
                         <InputGroupInput
                           type="text"
                           id="orgName"
-                          placeholder="Ex: Autoescola Pista Pinheiros"
+                          placeholder="Ex: Instrutor Ivan OU Autoescola Pinheiros"
                           {...register("orgName")}
                         />
                       </InputGroup>
@@ -321,7 +318,7 @@ export function LoginForm() {
                   <InputGroupInput
                     type="email"
                     id="email"
-                    placeholder={profile === "instructor" ? "nome@suaautoescola.com" : "aluno@provedor.com"}
+                    placeholder={profile === "instructor" ? "instrutor@mail.com" : "aluno@provedor.com"}
                     {...register("email")}
                   />
                 </InputGroup>

@@ -14,6 +14,8 @@ export interface InstructorSettings  {
   meetingPoints: string[];
   hourlyRate: number;
   categories: string[];
+  classDuration?: number;
+  categoryPrices?: Record<string, number>;
   bio?: string;
   address?: Address;
 }
@@ -86,4 +88,5 @@ export interface Vehicle {
   category: string;
   brand?: string;
   color?: string;
+  automatic?: boolean;
 }

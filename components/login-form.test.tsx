@@ -3,6 +3,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { LoginForm } from "./login-form";
 
+// Mock next/image to prevent Next.js image optimization errors in Vitest
+vi.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} />;
+  },
+}));
+
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
   useRouter: vi.fn(() => ({
