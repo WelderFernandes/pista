@@ -23,6 +23,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const student = students.find((s) => s.userId === session?.user?.id) || students.find((s) => s.id === "mariana-costa") || students[0];
 
@@ -31,6 +32,19 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       setMounted(true);
     }, 0);
   }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    if (saved === "true") {
+      setIsCollapsed(true);
+    }
+  }, []);
+
+  const toggleCollapse = () => {
+    const nextVal = !isCollapsed;
+    setIsCollapsed(nextVal);
+    localStorage.setItem("sidebar-collapsed", String(nextVal));
+  };
 
   const navItems = [
     {
@@ -92,15 +106,16 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
   ];
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 md:pl-[240px] flex flex-col font-sans transition-colors duration-300">
+    <div className={`bg-slate-50 dark:bg-slate-955 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 flex flex-col font-sans transition-all duration-300 ${isCollapsed ? "md:pl-[68px]" : "md:pl-[240px]"
+      }`}>
       {/* Top Selector Bar (Switch Portals) */}
       <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
           <span className="font-bold uppercase tracking-wider text-[10px] text-slate-350">Modo Aluno Ativo</span>
         </div>
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="text-blue-400 hover:text-blue-355 transition-colors font-semibold flex items-center gap-1 text-[11px]"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -111,7 +126,8 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       </div>
 
       {/* Top Nav Header */}
-      <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">        <DropdownMenu>
+      <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer focus:outline-hidden text-left">
               <Avatar size="lg" className="border border-slate-200 dark:border-slate-800">
@@ -177,38 +193,65 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       </header>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-[240px] bg-white dark:bg-slate-900 text-slate-800 dark:text-white fixed top-[37px] bottom-0 left-0 border-r border-slate-200 dark:border-slate-850 z-30 justify-between transition-colors duration-300">
-        <div className="py-6 flex flex-col gap-2">
-          <div className="px-6 mb-6">
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Navegação Aluno</span>
+      <aside className={`hidden md:flex flex-col bg-white dark:bg-slate-900 text-slate-800 dark:text-white fixed top-[37px] bottom-0 left-0 border-r border-slate-200 dark:border-slate-850 z-30 justify-between transition-all duration-300 ${isCollapsed ? "w-[68px]" : "w-[240px]"
+        }`}>
+        {/* Toggle Collapse Button */}
+        <button
+          type="button"
+          onClick={toggleCollapse}
+          className="hidden md:flex absolute -right-3 top-6 w-6 h-6 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 items-center justify-center text-slate-550 hover:text-slate-900 dark:hover:text-white hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer z-50"
+          aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
+        >
+          <svg
+            className={`w-3 h-3 text-slate-500 dark:text-slate-400 transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div className="py-6 flex flex-col gap-2 overflow-x-hidden">
+          <div className={`px-6 mb-4 transition-all duration-300 ${isCollapsed ? "opacity-0 h-0 mb-0 px-0" : "opacity-100"}`}>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[10px]">Navegação Aluno</span>
           </div>
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/student" && pathname.startsWith(item.href));
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-6 py-3.5 text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-r-4 border-blue-500 font-bold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
-                }`}
-              >
-                {isActive ? item.activeIcon : item.icon}
-                {item.label}
-              </Link>
+              <div key={item.href} className="relative group/tooltip">
+                <Link
+                  href={item.href}
+                  className={`flex items-center text-sm font-medium transition-all ${isCollapsed ? "justify-center py-3 px-0" : "gap-3 px-6 py-3.5"
+                    } ${isActive
+                      ? "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-r-4 border-blue-500 font-bold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                    }`}
+                >
+                  {isActive ? item.activeIcon : item.icon}
+                  {!isCollapsed && <span>{item.label}</span>}
+                </Link>
+                {isCollapsed && (
+                  <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[10px] font-bold rounded-lg opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-all duration-200 shadow-md whitespace-nowrap z-50 uppercase tracking-wider scale-90 origin-left group-hover/tooltip:scale-100">
+                    {item.label}
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
-        <div className="p-6 border-t border-slate-200 dark:border-slate-850">
+        <div className={`transition-all duration-300 ${isCollapsed ? "p-3" : "p-6"} border-t border-slate-200 dark:border-slate-850`}>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-sm text-white">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-sm text-white shrink-0">
               V
             </div>
-            <div>
-              <p className="text-xs font-bold text-slate-850 dark:text-white">Volante Certo</p>
-              <p className="text-[9px] text-slate-500 dark:text-slate-400">Portal do Aluno</p>
-            </div>
+            {!isCollapsed && (
+              <div className="transition-all duration-350">
+                <p className="text-xs font-bold text-slate-850 dark:text-white">Volante Certo</p>
+                <p className="text-[9px] text-slate-500 dark:text-slate-400">Portal do Aluno</p>
+              </div>
+            )}
           </div>
         </div>
       </aside>
@@ -226,9 +269,8 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${
-                isActive ? "text-blue-655 dark:text-blue-500 font-bold" : "text-slate-500 dark:text-slate-450 font-medium"
-              }`}
+              className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${isActive ? "text-blue-655 dark:text-blue-500 font-bold" : "text-slate-500 dark:text-slate-450 font-medium"
+                }`}
             >
               <div className="mb-1">{isActive ? item.activeIcon : item.icon}</div>
               <span className="text-[10px] tracking-tight">{item.label}</span>
