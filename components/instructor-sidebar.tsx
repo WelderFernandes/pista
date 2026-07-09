@@ -159,10 +159,15 @@ export function InstructorSidebar({ isCollapsed, pathname }: InstructorSidebarPr
           </div>
         </div>
         {/* Organization switcher */}
-        <div className="px-3 mb-3">
+        <div className={cn("mb-3 transition-all duration-300 relative group/tooltip", isCollapsed ? "px-2" : "px-3")}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className={`w-full flex items-center justify-between rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 transition-all cursor-pointer text-left focus:outline-hidden ${isCollapsed ? "justify-center" : ""}`}>
+              <button
+                className={cn(
+                  "w-full flex items-center justify-between rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-pointer text-left focus:outline-hidden",
+                  isCollapsed ? "p-1.5 justify-center" : "p-2"
+                )}
+              >
                 <div className="flex items-center gap-2 min-w-0">
                   <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 shadow-xs">
                     <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -170,7 +175,7 @@ export function InstructorSidebar({ isCollapsed, pathname }: InstructorSidebarPr
                     </svg>
                   </div>
                   {!isCollapsed && (
-                    <div className="min-w-0 flex-1 ml-0.5">
+                    <div className="min-w-0 flex-1 ml-0.5 animate-fade-in">
                       <p className="text-[8px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">Organização</p>
                       <p className="text-xs font-black text-slate-850 dark:text-slate-200 truncate mt-1 leading-none">
                         {activeOrg?.name || "Carregando..."}
@@ -221,6 +226,11 @@ export function InstructorSidebar({ isCollapsed, pathname }: InstructorSidebarPr
               )}
             </DropdownMenuContent>
           </DropdownMenu>
+          {isCollapsed && (
+            <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[10px] font-bold rounded-lg opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-all duration-200 shadow-md whitespace-nowrap z-50 uppercase tracking-wider scale-90 origin-left group-hover/tooltip:scale-100">
+              Autoescola: {activeOrg?.name || "Carregando..."}
+            </div>
+          )}
         </div>
 
         <div className={`px-6 mb-4 transition-all duration-300 ${isCollapsed ? "opacity-0 h-0 mb-0 px-0" : "opacity-100"}`}>
