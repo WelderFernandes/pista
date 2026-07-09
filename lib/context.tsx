@@ -15,6 +15,7 @@ import {
   updateSettingsAction,
   addVehicleAction,
   deleteVehicleAction,
+  updateVehicleAction,
 } from "@/app/actions";
 
 interface AppContextType {
@@ -33,6 +34,7 @@ interface AppContextType {
   payPendingPayment: (studentId: string, amount: number) => void;
   addVehicle: (vehicle: Omit<Vehicle, "id">) => Promise<void>;
   deleteVehicle: (id: string) => Promise<void>;
+  updateVehicle: (id: string, vehicle: Omit<Vehicle, "id">) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -184,6 +186,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateVehicle = async (id: string, newV: Omit<Vehicle, "id">) => {
+    try {
+      await updateVehicleAction(id, newV);
+      await reloadData();
+    } catch (err) {
+      console.error("Erro ao atualizar veículo no banco:", err);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -202,6 +213,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         payPendingPayment,
         addVehicle,
         deleteVehicle,
+        updateVehicle,
       }}
     >
       {children}

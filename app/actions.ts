@@ -408,6 +408,8 @@ export async function updateSettingsAction(data: InstructorSettings) {
       hourlyRate: data.hourlyRate,
       categories: data.categories,
       bio: data.bio || "",
+      classDuration: data.classDuration || 50,
+      categoryPrices: data.categoryPrices || {},
     },
     update: {
       workDays: data.workDays,
@@ -421,6 +423,8 @@ export async function updateSettingsAction(data: InstructorSettings) {
       hourlyRate: data.hourlyRate,
       categories: data.categories,
       bio: data.bio || "",
+      classDuration: data.classDuration || 50,
+      categoryPrices: data.categoryPrices || {},
     },
   });
 
@@ -796,9 +800,72 @@ export async function createInstructorSettingsAction(orgId: string, data: {
 /**
  * Adiciona um veículo ao banco de dados associado ao tenant logado.
  */
+export async function getVehicleBrandsAction() {
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  return await prisma.vehicleBrand.findMany({
+    orderBy: { name: "asc" },
+  });
+}
+
+export async function getVehicleModelsAction(brandName: string) {
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  
+  const brand = await prisma.vehicleBrand.findUnique({
+    where: { name: brandName },
+  });
+
+  if (!brand) return [];
+
+  return await prisma.vehicleModel.findMany({
+    where: { brandId: brand.id },
+    orderBy: { name: "asc" },
+  });
+}
+
 export async function addVehicleAction(data: Omit<Vehicle, "id">) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
+
+  if (data.brand?.trim()) {
+    const brandNameClean = data.brand.trim();
+    let brand = await prisma.vehicleBrand.findUnique({
+      where: { name: brandNameClean },
+    });
+
+    if (!brand) {
+      const brandType = data.category === "A" ? "motorcycle" : "car";
+      brand = await prisma.vehicleBrand.create({
+        data: {
+          name: brandNameClean,
+          type: brandType,
+        },
+      });
+    }
+
+    if (data.name?.trim() && brand) {
+      const modelNameClean = data.name.trim();
+      const modelType = data.category === "A" ? "motorcycle" : "car";
+      const model = await prisma.vehicleModel.findFirst({
+        where: {
+          brandId: brand.id,
+          name: modelNameClean,
+          type: modelType,
+        },
+      });
+
+      if (!model) {
+        await prisma.vehicleModel.create({
+          data: {
+            name: modelNameClean,
+            brandId: brand.id,
+            type: modelType,
+          },
+        }).catch(() => {
+          // Ignore unique constraints concurrent insert errors
+        });
+      }
+    }
+  }
 
   return await tenantPrisma.vehicle.create({
     data: {
@@ -809,6 +876,68 @@ export async function addVehicleAction(data: Omit<Vehicle, "id">) {
       category: data.category,
       brand: data.brand || null,
       color: data.color || null,
+      automatic: data.automatic ?? false,
+    },
+  });
+}
+
+/**
+ * Atualiza um veículo existente no banco de dados.
+ */
+export async function updateVehicleAction(id: string, data: Omit<Vehicle, "id">) {
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  const tenantPrisma = getTenantPrisma(activeOrgId);
+
+  if (data.brand?.trim()) {
+    const brandNameClean = data.brand.trim();
+    let brand = await prisma.vehicleBrand.findUnique({
+      where: { name: brandNameClean },
+    });
+
+    if (!brand) {
+      const brandType = data.category === "A" ? "motorcycle" : "car";
+      brand = await prisma.vehicleBrand.create({
+        data: {
+          name: brandNameClean,
+          type: brandType,
+        },
+      });
+    }
+
+    if (data.name?.trim() && brand) {
+      const modelNameClean = data.name.trim();
+      const modelType = data.category === "A" ? "motorcycle" : "car";
+      const model = await prisma.vehicleModel.findFirst({
+        where: {
+          brandId: brand.id,
+          name: modelNameClean,
+          type: modelType,
+        },
+      });
+
+      if (!model) {
+        await prisma.vehicleModel.create({
+          data: {
+            name: modelNameClean,
+            brandId: brand.id,
+            type: modelType,
+          },
+        }).catch(() => {
+          // Ignore unique constraints concurrent insert errors
+        });
+      }
+    }
+  }
+
+  return await tenantPrisma.vehicle.update({
+    where: { id },
+    data: {
+      name: data.name,
+      plate: data.plate || null,
+      category: data.category,
+      brand: data.brand || null,
+      color: data.color || null,
+      automatic: data.automatic,
     },
   });
 }
