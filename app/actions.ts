@@ -6,6 +6,7 @@ import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from 
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { triggerClassReminder, cancelClassReminder } from "@/lib/novu";
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
@@ -222,7 +223,7 @@ export async function addClassAction(
     }
   }
 
-  return await tenantPrisma.classSession.create({
+  const session = await tenantPrisma.classSession.create({
     data: {
       studentId: data.studentId,
       organizationId: memberInfo.activeOrgId,
@@ -239,6 +240,16 @@ export async function addClassAction(
       instructorName: data.instructorName || "Carlos Eduardo",
     },
   });
+
+  const student = await tenantPrisma.student.findUnique({
+    where: { id: session.studentId },
+  });
+
+  if (student) {
+    void triggerClassReminder(session, student);
+  }
+
+  return session;
 }
 
 /**
@@ -287,10 +298,14 @@ export async function cancelClassAction(classId: string) {
     }
   }
 
-  return await tenantPrisma.classSession.update({
+  const session = await tenantPrisma.classSession.update({
     where: { id: classId },
     data: { status: "Cancelada" },
   });
+
+  void cancelClassReminder(classId);
+
+  return session;
 }
 
 /**
@@ -542,7 +557,7 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
   }
 
   // Cria a ClassSession
-  return await prisma.classSession.create({
+  const session = await prisma.classSession.create({
     data: {
       organizationId: data.organizationId,
       studentId: student.id,
@@ -557,6 +572,10 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
       status: "Pendente",
     },
   });
+
+  void triggerClassReminder(session, student);
+
+  return session;
 }
 
 /**
