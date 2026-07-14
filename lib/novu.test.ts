@@ -36,7 +36,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "bem-vindo",
       to: {
-        subscriberId: "user-1",
+        subscriberId: "alice@example.com",
         firstName: "Alice",
         email: "alice@example.com",
       },
@@ -97,7 +97,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "aula-confirmada",
       to: {
-        subscriberId: "student-1",
+        subscriberId: "bob@example.com",
         firstName: "Bob",
         phone: "+5527988217570",
         email: "bob@example.com",
@@ -139,7 +139,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "aula-cancelada",
       to: {
-        subscriberId: "student-1",
+        subscriberId: "bob@example.com",
         firstName: "Bob",
         phone: "+5527988217570",
         email: "bob@example.com",
@@ -173,7 +173,7 @@ describe("Novu Integration Helpers", () => {
       id: "student-1",
       name: "Bob",
       phone: "5527988217570",
-      email: process.env.NOVU_TESTE_EMAIL
+      email: "bob@example.com"
     };
 
     await triggerClassReminder(session, student);
@@ -183,10 +183,10 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "lembrete-aula-agendada",
       to: {
-        subscriberId: "student-1",
+        subscriberId: "bob@example.com",
         firstName: "Bob",
         phone: "+5527988217570",
-        email: process.env.NOVU_TESTE_EMAIL
+        email: "bob@example.com"
       },
       payload: {
         studentName: "Bob",
@@ -220,7 +220,7 @@ describe("Novu Integration Helpers", () => {
       id: "student-1",
       name: "Bob",
       phone: "(27) 98821-7570",
-      email: process.env.NOVU_TESTE_EMAIL
+      email: "bob@example.com"
     };
 
     await triggerClassReminder(session, student);

@@ -80,7 +80,7 @@ export async function triggerClassReminder(session: ClassSessionWithOrg, student
     const result = await novu.trigger({
       workflowId: "lembrete-aula-agendada",
       to: {
-        subscriberId: student.id,
+        subscriberId: student.email || student.id,
         firstName: student.name,
         phone: phone ? `+${phone}` : undefined,
         email: student.email || undefined,
@@ -129,7 +129,7 @@ export async function triggerWelcomeNotification(user: { id: string; name: strin
     const result = await novu.trigger({
       workflowId: "bem-vindo",
       to: {
-        subscriberId: user.id,
+        subscriberId: user.email || user.id,
         firstName: user.name,
         email: user.email,
       },
@@ -217,7 +217,7 @@ export async function triggerClassCancellationNotification(session: ClassSession
     const result = await novu.trigger({
       workflowId: "aula-cancelada",
       to: {
-        subscriberId: student.id,
+        subscriberId: student.email || student.id,
         firstName: student.name,
         phone: phone ? `+${phone}` : undefined,
         email: student.email || undefined,
@@ -263,7 +263,7 @@ export async function triggerClassConfirmationNotification(session: ClassSession
     const result = await novu.trigger({
       workflowId: "aula-confirmada",
       to: {
-        subscriberId: student.id,
+        subscriberId: student.email || student.id,
         firstName: student.name,
         phone: phone ? `+${phone}` : undefined,
         email: student.email || undefined,
