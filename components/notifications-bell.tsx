@@ -1,7 +1,10 @@
+"use client";
 import { Inbox } from "@novu/nextjs";
 import { User } from "better-auth";
 import { defaultLocalization } from "@/lib/novu/defaultLocalization";
 import { useApp } from "@/lib/context";
+import { useEffect, useState } from "react";
+import { getSubscriberByEmail } from "@/lib/novu/novu";
 
 const appearance = {
     elements: {
@@ -24,20 +27,30 @@ interface NotificationsBellProps {
 }
 
 export default function NotificationsBell({ user, session, subscriberId }: NotificationsBellProps) {
+    const [subscriber, setSubscriber] = useState();
     const appContext = useApp();
     const userId = user?.id || session?.user?.id;
-    const email = user?.email || session?.user?.email;
-
     const resolvedSubscriberId = subscriberId || userId;
+
+    useEffect(() => {
+        async function fetchSubscriber() {
+            if (user?.email) {
+                const data = await getSubscriberByEmail(user.email);
+                console.log("🚀 ~ fetchSubscriber ~ data:", data)
+                setSubscriber(data);
+            }
+        }
+        fetchSubscriber();
+    }, [user?.email]);
 
     console.log(`[Novu Inbox] Resolvido subscriberId: "${resolvedSubscriberId}" (User ID: "${userId}")`);
 
     return (
         <Inbox
             applicationIdentifier={process.env.NEXT_PUBLIC_NOVU_APPLICATION_IDENTIFIER}
-            subscriberId={user?.email || session?.user?.email}
-            // backendUrl={process.env.NEXT_PUBLIC_NOVU_BACKEND_URL}
-            // socketUrl={process.env.NEXT_PUBLIC_NOVU_SOCKET_URL}
+            subscriberId={resolvedSubscriberId}
+            backendUrl={process.env.NEXT_PUBLIC_NOVU_BACKEND_URL}
+            socketUrl={process.env.NEXT_PUBLIC_NOVU_SOCKET_URL}
             appearance={appearance}
             localization={defaultLocalization}
         />

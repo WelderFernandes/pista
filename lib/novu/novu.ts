@@ -43,6 +43,19 @@ interface StudentData {
   userId?: string | null;
 }
 
+
+
+export async function getSubscriberByEmail(email: string) {
+  const novu = getNovuClient();
+  if (!novu) return;
+  const result = await novu.subscribers.search({
+    email: email,
+  });
+
+  return result;
+}
+
+
 /**
  * Dispara o workflow de lembrete de aula no Novu.
  */
