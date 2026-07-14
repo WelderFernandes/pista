@@ -46,7 +46,10 @@ interface StudentData {
 
 
 export async function getSubscriberByEmail(email: string) {
-  const novu = getNovuClient();
+  const novu = new Novu({
+    secretKey: process.env.NOVU_SECRET_KEY,
+  });
+  console.log("🚀 ~ getSubscriberByEmail ~ novu:", novu)
   if (!novu) return;
   const result = await novu.subscribers.search({
     email: email,

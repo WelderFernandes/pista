@@ -24,10 +24,11 @@ interface NotificationsBellProps {
     user: User | null;
     session: any;
     subscriberId?: string;
+    sdjghfsdf?: string;
 }
 
-export default function NotificationsBell({ user, session, subscriberId }: NotificationsBellProps) {
-    const [subscriber, setSubscriber] = useState();
+export default function NotificationsBell({ user, session, subscriberId, sdjghfsdf }: NotificationsBellProps) {
+    const [subscriber, setSubscriber] = useState<any[]>([]);
     const appContext = useApp();
     const userId = user?.id || session?.user?.id;
     const resolvedSubscriberId = subscriberId || userId;
@@ -37,7 +38,6 @@ export default function NotificationsBell({ user, session, subscriberId }: Notif
             if (user?.email) {
                 const data = await getSubscriberByEmail(user.email);
                 console.log("🚀 ~ fetchSubscriber ~ data:", data)
-                setSubscriber(data);
             }
         }
         fetchSubscriber();
