@@ -3,12 +3,29 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { organization, emailOTP } from "better-auth/plugins";
 import { prisma } from "./prisma";
 import { sendEmail } from "./email";
-import { triggerWelcomeNotification } from "./novu/novu";
+import { triggerWelcomeNotification, upsertNovuSubscriber } from "./novu/novu";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          try {
+            await upsertNovuSubscriber({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            });
+          } catch (error) {
+            console.error("Erro no databaseHook do usuário ao criar assinante no Novu:", error);
+          }
+        },
+      },
+    },
+  },
 
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {

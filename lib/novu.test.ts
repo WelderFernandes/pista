@@ -1,13 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-// Define mock functions (must start with "mock")
 const mockTrigger = vi.fn().mockResolvedValue({ transactionId: "mock-tx-id" });
 const mockCancel = vi.fn().mockResolvedValue({ success: true });
+const mockSubscribersCreate = vi.fn().mockResolvedValue({ success: true });
 
 vi.mock("@novu/api", () => {
   class MockNovu {
     trigger = mockTrigger;
     cancel = mockCancel;
+    subscribers = {
+      create: mockSubscribersCreate,
+    };
   }
   return {
     Novu: MockNovu,
@@ -17,7 +20,7 @@ vi.mock("@novu/api", () => {
 // Define the environment variable before importing to ensure client instantiation
 process.env.NOVU_SECRET_KEY = "test-secret-key";
 
-import { triggerClassReminder, cancelClassReminder, getNovuClient, triggerWelcomeNotification, triggerInviteNotification, triggerClassCancellationNotification, triggerClassConfirmationNotification } from "./novu/novu";
+import { triggerClassReminder, cancelClassReminder, getNovuClient, triggerWelcomeNotification, triggerInviteNotification, triggerClassCancellationNotification, triggerClassConfirmationNotification, upsertNovuSubscriber } from "./novu/novu";
 
 describe("Novu Integration Helpers", () => {
   beforeEach(() => {
@@ -36,7 +39,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "bem-vindo",
       to: {
-        subscriberId: "alice@example.com",
+        subscriberId: "user-1",
         firstName: "Alice",
         email: "alice@example.com",
       },
@@ -97,7 +100,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "aula-confirmada",
       to: {
-        subscriberId: "bob@example.com",
+        subscriberId: "student-1",
         firstName: "Bob",
         phone: "+5527988217570",
         email: "bob@example.com",
@@ -139,7 +142,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "aula-cancelada",
       to: {
-        subscriberId: "bob@example.com",
+        subscriberId: "student-1",
         firstName: "Bob",
         phone: "+5527988217570",
         email: "bob@example.com",
@@ -183,7 +186,7 @@ describe("Novu Integration Helpers", () => {
     expect(mockTrigger).toHaveBeenCalledWith({
       workflowId: "lembrete-aula-agendada",
       to: {
-        subscriberId: "bob@example.com",
+        subscriberId: "student-1",
         firstName: "Bob",
         phone: "+5527988217570",
         email: "bob@example.com"
@@ -232,6 +235,24 @@ describe("Novu Integration Helpers", () => {
         }),
       })
     );
+  });
+
+  it("should create/update subscriber with correct payload", async () => {
+    const user = {
+      id: "user-1",
+      name: "Alice",
+      email: "alice@example.com",
+      phone: "5527988217570"
+    };
+
+    await upsertNovuSubscriber(user);
+
+    expect(mockSubscribersCreate).toHaveBeenCalledWith({
+      subscriberId: "user-1",
+      email: "alice@example.com",
+      firstName: "Alice",
+      phone: "+5527988217570",
+    });
   });
 
   it("should cancel class reminder event correctly", async () => {

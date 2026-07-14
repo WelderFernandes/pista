@@ -40,6 +40,7 @@ interface StudentData {
   name: string;
   phone: string;
   email?: string | null;
+  userId?: string | null;
 }
 
 /**
@@ -80,7 +81,7 @@ export async function triggerClassReminder(session: ClassSessionWithOrg, student
     const result = await novu.trigger({
       workflowId: "lembrete-aula-agendada",
       to: {
-        subscriberId: student.email || student.id,
+        subscriberId: student.userId || student.id,
         firstName: student.name,
         phone: phone ? `+${phone}` : undefined,
         email: student.email || undefined,
@@ -129,7 +130,7 @@ export async function triggerWelcomeNotification(user: { id: string; name: strin
     const result = await novu.trigger({
       workflowId: "bem-vindo",
       to: {
-        subscriberId: user.email || user.id,
+        subscriberId: user.id,
         firstName: user.name,
         email: user.email,
       },
@@ -217,7 +218,7 @@ export async function triggerClassCancellationNotification(session: ClassSession
     const result = await novu.trigger({
       workflowId: "aula-cancelada",
       to: {
-        subscriberId: student.email || student.id,
+        subscriberId: student.userId || student.id,
         firstName: student.name,
         phone: phone ? `+${phone}` : undefined,
         email: student.email || undefined,
@@ -263,7 +264,7 @@ export async function triggerClassConfirmationNotification(session: ClassSession
     const result = await novu.trigger({
       workflowId: "aula-confirmada",
       to: {
-        subscriberId: student.email || student.id,
+        subscriberId: student.userId || student.id,
         firstName: student.name,
         phone: phone ? `+${phone}` : undefined,
         email: student.email || undefined,
@@ -275,5 +276,38 @@ export async function triggerClassConfirmationNotification(session: ClassSession
     return result;
   } catch (error) {
     console.error("Erro ao disparar notificação de confirmação de aula via Novu:", error);
+  }
+}
+
+/**
+ * Cria ou atualiza explicitamente um assinante no Novu com base no ID do usuário.
+ */
+export async function upsertNovuSubscriber(user: { id: string; name: string; email: string; phone?: string | null }) {
+  const novu = getNovuClient();
+  if (!novu) {
+    console.warn("NOVU_SECRET_KEY is not set. Skipping Novu subscriber registration.");
+    return;
+  }
+
+  try {
+    console.log(`[Novu] Cadastrando/atualizando assinante: ${user.name} (${user.id})`);
+
+    // Sanitiza o número do telefone
+    let phone = user.phone?.replace(/\D/g, "");
+    if (phone && !phone.startsWith("55")) {
+      phone = `55${phone}`;
+    }
+
+    const result = await novu.subscribers.create({
+      subscriberId: user.id,
+      email: user.email,
+      firstName: user.name,
+      phone: phone ? `+${phone}` : undefined,
+    });
+
+    console.log(`[Novu] Assinante ${user.id} cadastrado com sucesso:`, result);
+    return result;
+  } catch (error) {
+    console.error(`[Novu] Erro ao cadastrar/atualizar assinante ${user.id}:`, error);
   }
 }
