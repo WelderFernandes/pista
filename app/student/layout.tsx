@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import NotificationsBell from "@/components/notifications-bell";
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
@@ -170,17 +171,23 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
         <div className="flex items-center gap-3">
           {mounted && (
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-655 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
-              aria-label="Alternar tema"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-4 h-4 text-amber-500" />
-              ) : (
-                <Moon className="w-4 h-4 text-indigo-650" />
-              )}
-            </button>
+            <>
+              <NotificationsBell
+                user={session?.user as any}
+                session={session}
+              />
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-655 dark:border-slate-800 dark:bg-slate-955/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+                aria-label="Alternar tema"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-4 h-4 text-amber-500" />
+                ) : (
+                  <Moon className="w-4 h-4 text-indigo-650" />
+                )}
+              </button>
+            </>
           )}
 
           <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-955/50 dark:hover:bg-slate-955 relative cursor-pointer text-slate-500 hover:text-blue-655 transition-all duration-300">
