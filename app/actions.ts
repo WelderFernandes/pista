@@ -6,7 +6,7 @@ import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from 
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { triggerClassReminder, cancelClassReminder } from "@/lib/novu";
+import { triggerClassReminder, cancelClassReminder } from "@/lib/novu/novu";
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
@@ -583,7 +583,7 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
  */
 export async function inviteMemberAction(email: string, role: string) {
   const { activeOrgId, user } = await requireRole(["owner", "admin"]);
-  
+
   return await prisma.invitation.create({
     data: {
       organizationId: activeOrgId,
@@ -601,7 +601,7 @@ export async function inviteMemberAction(email: string, role: string) {
  */
 export async function getTeamMembersAction() {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
-  
+
   return await prisma.member.findMany({
     where: {
       organizationId: activeOrgId,
@@ -627,7 +627,7 @@ export async function getTeamMembersAction() {
  */
 export async function getPendingInvitationsAction() {
   const { activeOrgId } = await requireRole(["owner", "admin"]);
-  
+
   return await prisma.invitation.findMany({
     where: {
       organizationId: activeOrgId,
@@ -828,7 +828,7 @@ export async function getVehicleBrandsAction() {
 
 export async function getVehicleModelsAction(brandName: string) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
-  
+
   const brand = await prisma.vehicleBrand.findUnique({
     where: { name: brandName },
   });

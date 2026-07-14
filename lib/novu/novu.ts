@@ -10,8 +10,12 @@ export function getNovuClient(): Novu | null {
   if (novuInstance) return novuInstance;
 
   const novuSecretKey = process.env.NOVU_SECRET_KEY;
+  const novuApiUrl = process.env.NOVU_API_URL;
   if (novuSecretKey) {
-    novuInstance = new Novu({ secretKey: novuSecretKey });
+    novuInstance = new Novu({
+      secretKey: novuSecretKey,
+      serverURL: novuApiUrl || undefined,
+    });
     return novuInstance;
   }
 
@@ -106,5 +110,38 @@ export async function cancelClassReminder(sessionId: string) {
     return result;
   } catch (error) {
     console.error("Erro ao cancelar notificação no Novu:", error);
+  }
+}
+
+/**
+ * Dispara o workflow de boas-vindas para o instrutor/membro.
+ */
+export async function triggerWelcomeNotification(user: { id: string; name: string; email: string }) {
+  const novu = getNovuClient();
+  if (!novu) {
+    console.warn("NOVU_SECRET_KEY is not set. Skipping Novu welcome trigger.");
+    return;
+  }
+
+  try {
+    console.log(`[Novu] Disparando evento 'bem-vindo' para o instrutor ${user.name} (${user.id})`);
+
+    const result = await novu.trigger({
+      workflowId: "bem-vindo",
+      to: {
+        subscriberId: user.id,
+        firstName: user.name,
+        email: user.email,
+      },
+      payload: {
+        name: user.name,
+        email: user.email,
+      },
+    });
+
+    console.log(`[Novu] Resposta do trigger bem-vindo:`, result);
+    return result;
+  } catch (error) {
+    console.error("Erro ao disparar notificação bem-vindo via Novu:", error);
   }
 }

@@ -17,11 +17,34 @@ vi.mock("@novu/api", () => {
 // Define the environment variable before importing to ensure client instantiation
 process.env.NOVU_SECRET_KEY = "test-secret-key";
 
-import { triggerClassReminder, cancelClassReminder, getNovuClient } from "./novu";
+import { triggerClassReminder, cancelClassReminder, getNovuClient, triggerWelcomeNotification } from "./novu/novu";
 
 describe("Novu Integration Helpers", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("should trigger welcome notification with correct payload", async () => {
+    const user = {
+      id: "user-1",
+      name: "Alice",
+      email: "alice@example.com"
+    };
+
+    await triggerWelcomeNotification(user);
+
+    expect(mockTrigger).toHaveBeenCalledWith({
+      workflowId: "bem-vindo",
+      to: {
+        subscriberId: "user-1",
+        firstName: "Alice",
+        email: "alice@example.com",
+      },
+      payload: {
+        name: "Alice",
+        email: "alice@example.com",
+      },
+    });
   });
 
   it("should trigger class reminder event with correct payload", async () => {

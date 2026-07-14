@@ -70,7 +70,7 @@ describe("LoginForm Prefill Flow", () => {
     // Check if the inputs are prefilled with the mock parameters
     const nameInput = screen.getByLabelText(/Nome completo/i) as HTMLInputElement;
     const emailInput = screen.getByLabelText(/E-mail institucional/i) as HTMLInputElement;
-    const orgInput = screen.getByLabelText(/Nome da Autoescola/i) as HTMLInputElement;
+    const orgInput = screen.getByLabelText(/Nome que você quer que seus alunos vejam!/i) as HTMLInputElement;
 
     expect(nameInput.value).toBe("Carlos Silva");
     expect(emailInput.value).toBe("carlos@exemplo.com");
