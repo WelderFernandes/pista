@@ -6,7 +6,7 @@ import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from 
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { triggerClassReminder, cancelClassReminder } from "@/lib/novu/novu";
+import { triggerClassReminder, cancelClassReminder, triggerInviteNotification, triggerClassCancellationNotification, triggerClassConfirmationNotification } from "@/lib/novu/novu";
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
@@ -259,10 +259,23 @@ export async function confirmClassAction(classId: string) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  return await tenantPrisma.classSession.update({
+  const session = await tenantPrisma.classSession.update({
     where: { id: classId },
     data: { status: "Confirmada" },
   });
+
+  try {
+    const student = await tenantPrisma.student.findUnique({
+      where: { id: session.studentId },
+    });
+    if (student) {
+      void triggerClassConfirmationNotification(session, student);
+    }
+  } catch (error) {
+    console.error("Erro ao disparar notificação de confirmação de aula via Novu:", error);
+  }
+
+  return session;
 }
 
 /**
@@ -304,6 +317,17 @@ export async function cancelClassAction(classId: string) {
   });
 
   void cancelClassReminder(classId);
+
+  try {
+    const student = await tenantPrisma.student.findUnique({
+      where: { id: session.studentId },
+    });
+    if (student) {
+      void triggerClassCancellationNotification(session, student);
+    }
+  } catch (error) {
+    console.error("Erro ao disparar notificação de cancelamento de aula via Novu:", error);
+  }
 
   return session;
 }
@@ -584,7 +608,7 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
 export async function inviteMemberAction(email: string, role: string) {
   const { activeOrgId, user } = await requireRole(["owner", "admin"]);
 
-  return await prisma.invitation.create({
+  const invitation = await prisma.invitation.create({
     data: {
       organizationId: activeOrgId,
       email: email.toLowerCase(),
@@ -594,6 +618,26 @@ export async function inviteMemberAction(email: string, role: string) {
       inviterId: user.id,
     },
   });
+
+  try {
+    const org = await prisma.organization.findUnique({
+      where: { id: activeOrgId },
+      select: { name: true },
+    });
+
+    const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/accept-invitation?id=${invitation.id}`;
+
+    void triggerInviteNotification({
+      email: invitation.email,
+      inviterName: user.name || "Administrador",
+      orgName: org?.name || "Autoescola",
+      inviteUrl,
+    });
+  } catch (error) {
+    console.error("Erro ao disparar e-mail de convite via Novu:", error);
+  }
+
+  return invitation;
 }
 
 /**

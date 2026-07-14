@@ -145,3 +145,135 @@ export async function triggerWelcomeNotification(user: { id: string; name: strin
     console.error("Erro ao disparar notificação bem-vindo via Novu:", error);
   }
 }
+
+interface InviteNotificationData {
+  email: string;
+  inviterName: string;
+  orgName: string;
+  inviteUrl: string;
+}
+
+/**
+ * Dispara o workflow de convite de novo membro via Novu.
+ */
+export async function triggerInviteNotification(data: InviteNotificationData) {
+  const novu = getNovuClient();
+  if (!novu) {
+    console.warn("NOVU_SECRET_KEY is not set. Skipping Novu invite trigger.");
+    return;
+  }
+
+  try {
+    console.log(`[Novu] Disparando convite para o email ${data.email} na organização ${data.orgName}`);
+
+    const result = await novu.trigger({
+      workflowId: "convite-membro",
+      to: {
+        subscriberId: data.email,
+        email: data.email,
+      },
+      payload: {
+        inviterName: data.inviterName,
+        orgName: data.orgName,
+        inviteUrl: data.inviteUrl,
+      },
+    });
+
+    console.log(`[Novu] Resposta do trigger convite-membro:`, result);
+    return result;
+  } catch (error) {
+    console.error("Erro ao disparar notificação de convite via Novu:", error);
+  }
+}
+
+/**
+ * Dispara o fluxo de cancelamento de aula (alerta instantâneo).
+ */
+export async function triggerClassCancellationNotification(session: ClassSessionWithOrg, student: StudentData) {
+  const novu = getNovuClient();
+  if (!novu) {
+    console.warn("NOVU_SECRET_KEY is not set. Skipping Novu class cancellation trigger.");
+    return;
+  }
+
+  try {
+    // Sanitiza o telefone do aluno
+    let phone = student.phone.replace(/\D/g, "");
+    if (phone && !phone.startsWith("55")) {
+      phone = `55${phone}`;
+    }
+
+    const payload = {
+      studentName: student.name,
+      classSubject: session.type,
+      classDate: new Date(session.date + "T00:00:00").toLocaleDateString("pt-BR"),
+      classTime: session.time,
+      instructorName: session.instructorName,
+      meetingPoint: session.meetingPoint,
+    };
+
+    console.log(`[Novu] Disparando cancelamento imediato 'aula-cancelada' para o aluno ${student.name}`);
+
+    const result = await novu.trigger({
+      workflowId: "aula-cancelada",
+      to: {
+        subscriberId: student.id,
+        firstName: student.name,
+        phone: phone ? `+${phone}` : undefined,
+        email: student.email || undefined,
+      },
+      payload: payload,
+    });
+
+    console.log(`[Novu] Resposta do trigger aula-cancelada:`, result);
+    return result;
+  } catch (error) {
+    console.error("Erro ao disparar notificação de cancelamento de aula via Novu:", error);
+  }
+}
+
+/**
+ * Dispara o fluxo de confirmação de aula (alerta instantâneo).
+ */
+export async function triggerClassConfirmationNotification(session: ClassSessionWithOrg, student: StudentData) {
+  const novu = getNovuClient();
+  if (!novu) {
+    console.warn("NOVU_SECRET_KEY is not set. Skipping Novu class confirmation trigger.");
+    return;
+  }
+
+  try {
+    // Sanitiza o telefone do aluno
+    let phone = student.phone.replace(/\D/g, "");
+    if (phone && !phone.startsWith("55")) {
+      phone = `55${phone}`;
+    }
+
+    const payload = {
+      studentName: student.name,
+      classSubject: session.type,
+      classDate: new Date(session.date + "T00:00:00").toLocaleDateString("pt-BR"),
+      classTime: session.time,
+      instructorName: session.instructorName,
+      meetingPoint: session.meetingPoint,
+    };
+
+    console.log(`[Novu] Disparando confirmação imediata 'aula-confirmada' para o aluno ${student.name}`);
+
+    const result = await novu.trigger({
+      workflowId: "aula-confirmada",
+      to: {
+        subscriberId: student.id,
+        firstName: student.name,
+        phone: phone ? `+${phone}` : undefined,
+        email: student.email || undefined,
+      },
+      payload: payload,
+    });
+
+    console.log(`[Novu] Resposta do trigger aula-confirmada:`, result);
+    return result;
+  } catch (error) {
+    console.error("Erro ao disparar notificação de confirmação de aula via Novu:", error);
+  }
+}
