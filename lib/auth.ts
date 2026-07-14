@@ -3,11 +3,13 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { organization, emailOTP } from "better-auth/plugins";
 import { prisma } from "./prisma";
 import { sendEmail } from "./email";
+import { triggerWelcomeNotification } from "./novu/novu";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
       void sendEmail({
@@ -53,6 +55,19 @@ export const auth = betterAuth({
   plugins: [
     organization({
       allowUserToCreateOrganization: true,
+      organizationHooks: {
+        afterCreateOrganization: async ({ organization, user, member }) => {
+          try {
+            await triggerWelcomeNotification({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            });
+          } catch (error) {
+            console.error("Erro ao disparar bem-vindo no afterCreateOrganization:", error);
+          }
+        },
+      },
     }),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {

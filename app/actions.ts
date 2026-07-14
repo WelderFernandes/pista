@@ -6,6 +6,7 @@ import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from 
 import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { triggerClassReminder, cancelClassReminder, triggerInviteNotification, triggerClassCancellationNotification, triggerClassConfirmationNotification } from "@/lib/novu/novu";
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
@@ -222,7 +223,7 @@ export async function addClassAction(
     }
   }
 
-  return await tenantPrisma.classSession.create({
+  const session = await tenantPrisma.classSession.create({
     data: {
       studentId: data.studentId,
       organizationId: memberInfo.activeOrgId,
@@ -239,6 +240,16 @@ export async function addClassAction(
       instructorName: data.instructorName || "Carlos Eduardo",
     },
   });
+
+  const student = await tenantPrisma.student.findUnique({
+    where: { id: session.studentId },
+  });
+
+  if (student) {
+    void triggerClassReminder(session, student);
+  }
+
+  return session;
 }
 
 /**
@@ -248,10 +259,23 @@ export async function confirmClassAction(classId: string) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
-  return await tenantPrisma.classSession.update({
+  const session = await tenantPrisma.classSession.update({
     where: { id: classId },
     data: { status: "Confirmada" },
   });
+
+  try {
+    const student = await tenantPrisma.student.findUnique({
+      where: { id: session.studentId },
+    });
+    if (student) {
+      void triggerClassConfirmationNotification(session, student);
+    }
+  } catch (error) {
+    console.error("Erro ao disparar notificação de confirmação de aula via Novu:", error);
+  }
+
+  return session;
 }
 
 /**
@@ -287,10 +311,25 @@ export async function cancelClassAction(classId: string) {
     }
   }
 
-  return await tenantPrisma.classSession.update({
+  const session = await tenantPrisma.classSession.update({
     where: { id: classId },
     data: { status: "Cancelada" },
   });
+
+  void cancelClassReminder(classId);
+
+  try {
+    const student = await tenantPrisma.student.findUnique({
+      where: { id: session.studentId },
+    });
+    if (student) {
+      void triggerClassCancellationNotification(session, student);
+    }
+  } catch (error) {
+    console.error("Erro ao disparar notificação de cancelamento de aula via Novu:", error);
+  }
+
+  return session;
 }
 
 /**
@@ -542,7 +581,7 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
   }
 
   // Cria a ClassSession
-  return await prisma.classSession.create({
+  const session = await prisma.classSession.create({
     data: {
       organizationId: data.organizationId,
       studentId: student.id,
@@ -557,6 +596,10 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
       status: "Pendente",
     },
   });
+
+  void triggerClassReminder(session, student);
+
+  return session;
 }
 
 /**
@@ -564,8 +607,8 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
  */
 export async function inviteMemberAction(email: string, role: string) {
   const { activeOrgId, user } = await requireRole(["owner", "admin"]);
-  
-  return await prisma.invitation.create({
+
+  const invitation = await prisma.invitation.create({
     data: {
       organizationId: activeOrgId,
       email: email.toLowerCase(),
@@ -575,6 +618,26 @@ export async function inviteMemberAction(email: string, role: string) {
       inviterId: user.id,
     },
   });
+
+  try {
+    const org = await prisma.organization.findUnique({
+      where: { id: activeOrgId },
+      select: { name: true },
+    });
+
+    const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/accept-invitation?id=${invitation.id}`;
+
+    void triggerInviteNotification({
+      email: invitation.email,
+      inviterName: user.name || "Administrador",
+      orgName: org?.name || "Autoescola",
+      inviteUrl,
+    });
+  } catch (error) {
+    console.error("Erro ao disparar e-mail de convite via Novu:", error);
+  }
+
+  return invitation;
 }
 
 /**
@@ -582,7 +645,7 @@ export async function inviteMemberAction(email: string, role: string) {
  */
 export async function getTeamMembersAction() {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
-  
+
   return await prisma.member.findMany({
     where: {
       organizationId: activeOrgId,
@@ -608,7 +671,7 @@ export async function getTeamMembersAction() {
  */
 export async function getPendingInvitationsAction() {
   const { activeOrgId } = await requireRole(["owner", "admin"]);
-  
+
   return await prisma.invitation.findMany({
     where: {
       organizationId: activeOrgId,
@@ -809,7 +872,7 @@ export async function getVehicleBrandsAction() {
 
 export async function getVehicleModelsAction(brandName: string) {
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
-  
+
   const brand = await prisma.vehicleBrand.findUnique({
     where: { name: brandName },
   });

@@ -17,11 +17,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { Inbox } from '@novu/nextjs';
+import { Button } from "./ui/button";
+import NotificationsBell from "./notifications-bell";
 
 interface InstructorHeaderProps {
   isCollapsed: boolean;
   toggleCollapse: () => void;
 }
+
 
 export function InstructorHeader({ isCollapsed, toggleCollapse }: InstructorHeaderProps) {
   const { data: session } = authClient.useSession();
@@ -48,10 +52,11 @@ export function InstructorHeader({ isCollapsed, toggleCollapse }: InstructorHead
       )}
     >
       {/* Toggle Collapse Button */}
-      <button
-        type="button"
+      <Button
+        variant={"ghost"}
+        size={"icon"}
         onClick={toggleCollapse}
-        className="p-2 rounded-xl border border-slate-200/60 bg-slate-50 hover:bg-slate-100/80 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-955 text-slate-500 hover:text-blue-600 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] cursor-pointer flex items-center justify-center h-9 w-9 shadow-xs"
+        className="text-slate-500 rounded-md   hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-900/80 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] cursor-pointer flex items-center justify-center h-9 w-9 shadow-xs"
         aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
       >
         <svg
@@ -67,7 +72,7 @@ export function InstructorHeader({ isCollapsed, toggleCollapse }: InstructorHead
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h10M4 18h16" />
           )}
         </svg>
-      </button>
+      </Button>
 
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
@@ -77,7 +82,12 @@ export function InstructorHeader({ isCollapsed, toggleCollapse }: InstructorHead
             </svg>
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-blue-600 rounded-full ring-2 ring-white dark:ring-slate-900" />
           </button>
+          <NotificationsBell
+            user={user}
+            session={session}
+          />
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-3 hover:opacity-90 active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-hidden text-left">

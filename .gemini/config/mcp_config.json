@@ -9,6 +9,12 @@
     },
     "better-auth": {
       "url": "https://mcp.better-auth.com/mcp"
+    },
+    "novu": {
+      "url": "https://api.novu.vexis.cloud",
+      "headers": {
+        "Authorization": "Bearer dc7cba5b653e0da9b544434a0c5ccafd"
+      }
     }
   }
 }
