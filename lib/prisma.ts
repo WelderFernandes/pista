@@ -7,6 +7,7 @@ const globalForPrisma = global as unknown as {
   prisma: PrismaClient | undefined;
   pgPool: Pool | undefined;
 };
+console.log("🚀 ~ globalForPrisma:", globalForPrisma)
 
 const pool =
   globalForPrisma.pgPool ??
