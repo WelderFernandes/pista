@@ -45,3 +45,5 @@ next-env.d.ts
 
 # debug/exploration files (não versionar em produção)
 /scratch/
+pnpm-lock.yaml
+pnpm-workspace.yaml
