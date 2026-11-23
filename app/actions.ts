@@ -3,10 +3,10 @@
 import { getActiveMember, requireRole, requireTenant } from "@/lib/auth-helpers";
 import { getTenantPrisma, prisma } from "@/lib/prisma";
 import { Student, ClassSession, Transaction, InstructorSettings, Vehicle } from "@/lib/store";
-import { publicBookingSchema, type PublicBookingData } from "@/lib/schemas";
+import { publicBookingSchema, inviteMemberSchema, addStudentSchema, addClassSchema, instructorSettingsSchema, vehicleSchema, paymentSchema, classRatingSchema, type PublicBookingData, type InviteMemberInput, type AddStudentInput, type AddClassInput, type InstructorSettingsInput, type VehicleInput, type PaymentInput, type ClassRatingInput } from "@/lib/schemas";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { triggerClassReminder, cancelClassReminder, triggerInviteNotification, triggerClassCancellationNotification, triggerClassConfirmationNotification } from "@/lib/novu/novu";
+import { triggerClassReminder, cancelClassReminder, triggerInviteNotification, triggerClassCancellationNotification, triggerClassConfirmationNotification, triggerOneHourReminder } from "@/lib/novu/novu";
 
 /**
  * Obtém todos os dados do banco de dados filtrados pelo tenant (organização ativa)
@@ -173,13 +173,16 @@ export async function getAppData() {
 /**
  * Cadastra um novo estudante no banco de dados associado ao tenant logado.
  */
-export async function addStudentAction(
-  data: Omit<Student, "id" | "progress" | "completedClasses" | "totalClasses" | "photoUrl">
-) {
+export async function addStudentAction(rawData: AddStudentInput) {
+  const data = addStudentSchema.parse(rawData);
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
   const id = data.name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
+
+  const neighborhoods = data.neighborhoods ?? [];
+  const meetingPoints = data.meetingPoints ?? [];
+  const categories = data.categories ?? [];
 
   return await tenantPrisma.student.create({
     data: {
@@ -187,11 +190,11 @@ export async function addStudentAction(
       organizationId: activeOrgId,
       name: data.name,
       phone: data.phone,
-      email: data.email,
+      email: data.email || undefined,
       city: data.city || "São Paulo",
-      neighborhoods: data.neighborhoods || [data.meetingPoint],
-      meetingPoints: data.meetingPoints || [data.meetingPoint],
-      categories: data.categories || [data.category],
+      neighborhoods: neighborhoods.length > 0 ? neighborhoods : [data.meetingPoint],
+      meetingPoints: meetingPoints.length > 0 ? meetingPoints : [data.meetingPoint],
+      categories: categories.length > 0 ? categories : [data.category],
       photoUrl: `https://xsgames.co/randomusers/assets/avatars/female/${Math.floor(Math.random() * 50) + 1}.jpg`,
       pendingPayment: 0,
       progress: 0,
@@ -204,12 +207,8 @@ export async function addStudentAction(
 /**
  * Adiciona um agendamento de aula no banco de dados associado ao tenant logado.
  */
-export async function addClassAction(
-  data: Omit<ClassSession, "id" | "status" | "studentPhoto" | "instructorName"> & {
-    studentPhoto?: string;
-    instructorName?: string;
-  }
-) {
+export async function addClassAction(rawData: AddClassInput) {
+  const data = addClassSchema.parse(rawData);
   const memberInfo = await requireRole(["owner", "admin", "instructor", "student"]);
   const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
 
@@ -247,6 +246,7 @@ export async function addClassAction(
 
   if (student) {
     void triggerClassReminder(session, student);
+    void triggerOneHourReminder(session, student);
   }
 
   return session;
@@ -270,6 +270,7 @@ export async function confirmClassAction(classId: string) {
     });
     if (student) {
       void triggerClassConfirmationNotification(session, student);
+      void triggerOneHourReminder(session, student);
     }
   } catch (error) {
     console.error("Erro ao disparar notificação de confirmação de aula via Novu:", error);
@@ -370,18 +371,19 @@ export async function completeClassAction(classId: string) {
  * Efetua o recebimento de pagamento de uma fatura pendente de aluno.
  * Deduz o valor do saldo pendente do estudante e cria a transação de entrada correspondente.
  */
-export async function payPendingPaymentAction(studentId: string, amount: number) {
+export async function payPendingPaymentAction(rawData: PaymentInput) {
+  const data = paymentSchema.parse(rawData);
   const memberInfo = await requireRole(["owner", "admin", "instructor", "student"]);
   const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
 
-  if (amount <= 0) {
+  if (data.amount <= 0) {
     throw new Error("O valor do pagamento deve ser maior que zero.");
   }
 
   // Se for estudante, garante que ele só pode pagar sua própria fatura
   if (memberInfo.role === "student") {
     const student = await tenantPrisma.student.findUnique({
-      where: { id: studentId },
+      where: { id: data.studentId },
     });
     if (!student || student.userId !== memberInfo.user.id) {
       throw new Error("Não autorizado.");
@@ -390,7 +392,7 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
 
   return await tenantPrisma.$transaction(async (tx: any) => {
     const student = await tx.student.findUnique({
-      where: { id: studentId },
+      where: { id: data.studentId },
     });
 
     if (!student) {
@@ -402,7 +404,7 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
       data: {
         studentName: student.name,
         organizationId: memberInfo.activeOrgId,
-        amount,
+        amount: data.amount,
         type: "payment",
         date: new Date().toISOString().split("T")[0],
         status: "Recebido",
@@ -412,10 +414,10 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
 
     // Deduz o débito do aluno no banco de dados
     await tx.student.update({
-      where: { id: studentId },
+      where: { id: data.studentId },
       data: {
         pendingPayment: {
-          decrement: amount,
+          decrement: data.amount,
         },
       },
     });
@@ -428,6 +430,7 @@ export async function payPendingPaymentAction(studentId: string, amount: number)
  * Atualiza as configurações administrativas da autoescola no banco de dados.
  */
 export async function updateSettingsAction(data: InstructorSettings) {
+  const validated = instructorSettingsSchema.parse(data);
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
@@ -436,31 +439,31 @@ export async function updateSettingsAction(data: InstructorSettings) {
     create: {
       id: activeOrgId,
       organizationId: activeOrgId,
-      workDays: data.workDays || [1, 2, 3, 4, 5, 6],
-      workStart: data.workStart || "08:00",
-      workEnd: data.workEnd || "18:00",
-      lunchStart: data.lunchStart || "12:00",
-      lunchEnd: data.lunchEnd || "13:30",
-      city: data.city,
-      neighborhoods: data.neighborhoods,
-      meetingPoints: data.meetingPoints,
-      hourlyRate: data.hourlyRate,
-      categories: data.categories,
+      workDays: validated.workDays,
+      workStart: validated.workStart,
+      workEnd: validated.workEnd,
+      lunchStart: validated.lunchStart,
+      lunchEnd: validated.lunchEnd,
+      city: validated.city,
+      neighborhoods: validated.neighborhoods,
+      meetingPoints: validated.meetingPoints,
+      hourlyRate: validated.hourlyRate,
+      categories: validated.categories,
       bio: data.bio || "",
       classDuration: data.classDuration || 50,
       categoryPrices: data.categoryPrices || {},
     },
     update: {
-      workDays: data.workDays,
-      workStart: data.workStart,
-      workEnd: data.workEnd,
-      lunchStart: data.lunchStart,
-      lunchEnd: data.lunchEnd,
-      city: data.city,
-      neighborhoods: data.neighborhoods,
-      meetingPoints: data.meetingPoints,
-      hourlyRate: data.hourlyRate,
-      categories: data.categories,
+      workDays: validated.workDays,
+      workStart: validated.workStart,
+      workEnd: validated.workEnd,
+      lunchStart: validated.lunchStart,
+      lunchEnd: validated.lunchEnd,
+      city: validated.city,
+      neighborhoods: validated.neighborhoods,
+      meetingPoints: validated.meetingPoints,
+      hourlyRate: validated.hourlyRate,
+      categories: validated.categories,
       bio: data.bio || "",
       classDuration: data.classDuration || 50,
       categoryPrices: data.categoryPrices || {},
@@ -520,26 +523,50 @@ export async function getPublicInstructors() {
     },
   });
 
-  return settingsList.map((settings: any) => ({
-    id: settings.organizationId,
-    name: settings.organization.name,
-    photo: settings.organization.logo || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=120&h=120&fit=crop&q=80",
-    rating: 4.9,
-    reviewsCount: 38,
-    city: settings.city,
-    neighborhoods: settings.neighborhoods,
-    meetingPoints: settings.meetingPoints,
-    hourlyRate: settings.hourlyRate,
-    categories: settings.categories,
-    bio: settings.bio,
-    distance: 2.4,
-    workDays: settings.workDays,
-    workStart: settings.workStart,
-    workEnd: settings.workEnd,
-    lunchStart: settings.lunchStart,
-    lunchEnd: settings.lunchEnd,
-    classes: settings.organization.classes,
-  }));
+  // Busca avaliações reais agrupadas por organização
+  const allRatings = await prisma.classRating.groupBy({
+    by: ["organizationId"],
+    _avg: { rating: true },
+    _count: { rating: true },
+  });
+
+  const ratingsMap = new Map(
+    allRatings.map((r) => [
+      r.organizationId,
+      {
+        averageRating: r._avg.rating ? Math.round(r._avg.rating * 10) / 10 : 0,
+        totalRatings: r._count.rating,
+      },
+    ])
+  );
+
+  return settingsList.map((settings: any) => {
+    const ratingData = ratingsMap.get(settings.organizationId) || {
+      averageRating: 0,
+      totalRatings: 0,
+    };
+
+    return {
+      id: settings.organizationId,
+      name: settings.organization.name,
+      photo: settings.organization.logo || "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=120&h=120&fit=crop&q=80",
+      rating: ratingData.averageRating || 4.9,
+      reviewsCount: ratingData.totalRatings || 38,
+      city: settings.city,
+      neighborhoods: settings.neighborhoods,
+      meetingPoints: settings.meetingPoints,
+      hourlyRate: settings.hourlyRate,
+      categories: settings.categories,
+      bio: settings.bio,
+      distance: 2.4,
+      workDays: settings.workDays,
+      workStart: settings.workStart,
+      workEnd: settings.workEnd,
+      lunchStart: settings.lunchStart,
+      lunchEnd: settings.lunchEnd,
+      classes: settings.organization.classes,
+    };
+  });
 }
 /**
  * Adiciona um agendamento de aula pública de visitante anônimo.
@@ -605,14 +632,19 @@ export async function addPublicClassAction(rawData: PublicBookingData) {
 /**
  * Envia um convite de membro com papel definido para a organização ativa do usuário.
  */
-export async function inviteMemberAction(email: string, role: string) {
+export async function inviteMemberAction(rawEmail: string, rawRole: string) {
+  const { email, role } = inviteMemberSchema.parse({
+    email: rawEmail,
+    role: rawRole,
+  });
+
   const { activeOrgId, user } = await requireRole(["owner", "admin"]);
 
   const invitation = await prisma.invitation.create({
     data: {
       organizationId: activeOrgId,
       email: email.toLowerCase(),
-      role: role,
+      role,
       status: "pending",
       expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 dias
       inviterId: user.id,
@@ -687,10 +719,20 @@ export async function getPendingInvitationsAction() {
  * Obtém os detalhes de um convite a partir de seu ID/token.
  */
 export async function getInvitationDetailsAction(invitationId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    throw new Error("Não autenticado.");
+  }
+
+  const memberInfo = await getActiveMember();
+  if (!memberInfo?.activeOrgId) {
+    throw new Error("Sem organização ativa.");
+  }
+
   return await prisma.invitation.findUnique({
-    where: {
-      id: invitationId,
-    },
+    where: { id: invitationId, organizationId: memberInfo.activeOrgId },
     include: {
       organization: {
         select: {
@@ -714,40 +756,43 @@ export async function acceptInvitationAction(invitationId: string) {
   }
 
   const invitation = await prisma.invitation.findUnique({
-    where: {
-      id: invitationId,
-    },
+    where: { id: invitationId },
+    include: { organization: true },
   });
 
   if (!invitation || invitation.status !== "pending") {
     throw new Error("Convite inválido ou expirado.");
   }
 
+  // O e-mail do usuário logado deve corresponder ao e-mail do convite
+  if (
+    invitation.email.toLowerCase() !== session.user.email?.toLowerCase()
+  ) {
+    throw new Error("Este convite não é para o seu e-mail.");
+  }
+
+  const allowedRoles = ["owner", "admin", "instructor", "student"];
+  if (!allowedRoles.includes(invitation.role)) {
+    throw new Error("Papel de convite inválido.");
+  }
+
   // Atualiza status do convite
   await prisma.invitation.update({
-    where: {
-      id: invitationId,
-    },
-    data: {
-      status: "accepted",
-    },
+    where: { id: invitationId },
+    data: { status: "accepted" },
   });
 
   // Cria o membro na organização
   const memberId = `${session.user.id}-${invitation.organizationId}`;
   const member = await prisma.member.upsert({
-    where: {
-      id: memberId,
-    },
+    where: { id: memberId },
     create: {
       id: memberId,
       organizationId: invitation.organizationId,
       userId: session.user.id,
       role: invitation.role,
     },
-    update: {
-      role: invitation.role,
-    },
+    update: { role: invitation.role },
   });
 
   // Atualiza a sessão definindo a organização ativa
@@ -786,6 +831,7 @@ export async function createInstructorSettingsAction(orgId: string, data: {
     complement?: string;
   };
 }) {
+  const validated = instructorSettingsSchema.parse(data);
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -810,24 +856,24 @@ export async function createInstructorSettingsAction(orgId: string, data: {
     create: {
       id: orgId,
       organizationId: orgId,
-      workDays: data.workDays || [1, 2, 3, 4, 5, 6],
-      workStart: data.workStart || "08:00",
-      workEnd: data.workEnd || "18:00",
-      lunchStart: data.lunchStart || "12:00",
-      lunchEnd: data.lunchEnd || "13:30",
-      city: data.city,
-      neighborhoods: data.neighborhoods,
-      meetingPoints: data.meetingPoints,
-      hourlyRate: data.hourlyRate,
-      categories: data.categories,
+      workDays: validated.workDays,
+      workStart: validated.workStart,
+      workEnd: validated.workEnd,
+      lunchStart: validated.lunchStart,
+      lunchEnd: validated.lunchEnd,
+      city: validated.city,
+      neighborhoods: validated.neighborhoods,
+      meetingPoints: validated.meetingPoints,
+      hourlyRate: validated.hourlyRate,
+      categories: validated.categories,
       bio: data.bio || "",
     },
     update: {
-      city: data.city,
-      neighborhoods: data.neighborhoods,
-      meetingPoints: data.meetingPoints,
-      hourlyRate: data.hourlyRate,
-      categories: data.categories,
+      city: validated.city,
+      neighborhoods: validated.neighborhoods,
+      meetingPoints: validated.meetingPoints,
+      hourlyRate: validated.hourlyRate,
+      categories: validated.categories,
       bio: data.bio || "",
     },
   });
@@ -885,7 +931,8 @@ export async function getVehicleModelsAction(brandName: string) {
   });
 }
 
-export async function addVehicleAction(data: Omit<Vehicle, "id">) {
+export async function addVehicleAction(rawData: VehicleInput) {
+  const data = vehicleSchema.parse(rawData);
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
@@ -947,7 +994,8 @@ export async function addVehicleAction(data: Omit<Vehicle, "id">) {
 /**
  * Atualiza um veículo existente no banco de dados.
  */
-export async function updateVehicleAction(id: string, data: Omit<Vehicle, "id">) {
+export async function updateVehicleAction(id: string, rawData: VehicleInput) {
+  const data = vehicleSchema.parse(rawData);
   const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
   const tenantPrisma = getTenantPrisma(activeOrgId);
 
@@ -1045,5 +1093,119 @@ export async function fetchAddressByCepAction(cep: string) {
   }
 }
 
+/**
+ * Submete uma avaliação (1-5 estrelas + comentário) para uma aula concluída.
+ * O aluno só pode avaliar aulas próprias da organização ativa.
+ */
+export async function submitClassActionRating(rawData: ClassRatingInput) {
+  const data = classRatingSchema.parse(rawData);
+  const memberInfo = await getActiveMember();
+  if (!memberInfo || !memberInfo.activeOrgId) {
+    throw new Error("Não autenticado ou sem organização ativa.");
+  }
 
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  // Verifica se a aula existe na organização e pertence ao aluno logado
+  const classSession = await tenantPrisma.classSession.findUnique({
+    where: { id: data.classSessionId },
+    include: { student: true },
+  });
+
+  if (!classSession) {
+    throw new Error("Aula não encontrada.");
+  }
+
+  if (classSession.student.userId !== memberInfo.user.id) {
+    throw new Error("Não autorizado a avaliar esta aula.");
+  }
+
+  if (classSession.status !== "Concluída") {
+    throw new Error("Só é possível avaliar aulas concluídas.");
+  }
+
+  // Verifica se já existe avaliação para esta aula
+  const existingRating = await tenantPrisma.classRating.findUnique({
+    where: { classSessionId: data.classSessionId },
+  });
+
+  if (existingRating) {
+    throw new Error("Esta aula já foi avaliada.");
+  }
+
+  const rating = await tenantPrisma.classRating.create({
+    data: {
+      classSessionId: data.classSessionId,
+      organizationId: memberInfo.activeOrgId,
+      studentId: classSession.studentId,
+      rating: data.rating,
+      comment: data.comment || null,
+    },
+  });
+
+  return rating;
+}
+
+/**
+ * Busca a avaliação de uma aula específica.
+ */
+export async function getClassRatingAction(classSessionId: string) {
+  const memberInfo = await getActiveMember();
+  if (!memberInfo || !memberInfo.activeOrgId) {
+    throw new Error("Não autenticado ou sem organização ativa.");
+  }
+
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  return await tenantPrisma.classRating.findUnique({
+    where: { classSessionId },
+    include: { student: { select: { name: true, photoUrl: true } } },
+  });
+}
+
+/**
+ * Lista todas as avaliações da organização ativa (para o instrutor ver).
+ */
+export async function getInstructorRatingsAction() {
+  const memberInfo = await getActiveMember();
+  if (!memberInfo || !memberInfo.activeOrgId) {
+    throw new Error("Não autenticado ou sem organização ativa.");
+  }
+
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  return await tenantPrisma.classRating.findMany({
+    include: {
+      student: { select: { name: true, photoUrl: true } },
+      classSession: { select: { type: true, date: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+/**
+ * Calcula a média de avaliações da organização ativa.
+ */
+export async function getInstructorAverageRatingAction() {
+  const memberInfo = await getActiveMember();
+  if (!memberInfo || !memberInfo.activeOrgId) {
+    throw new Error("Não autenticado ou sem organização ativa.");
+  }
+
+  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+
+  const ratings = await tenantPrisma.classRating.findMany({
+    where: { organizationId: memberInfo.activeOrgId },
+    select: { rating: true },
+  });
+
+  if (ratings.length === 0) {
+    return { averageRating: 0, totalRatings: 0 };
+  }
+
+  const sum = ratings.reduce((acc, r) => acc + r.rating, 0);
+  const averageRating = Math.round((sum / ratings.length) * 10) / 10;
+
+  return { averageRating, totalRatings: ratings.length };
+}
 

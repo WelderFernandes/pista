@@ -25,7 +25,7 @@ export default function StudentProfile() {
 
   const handlePayPix = () => {
     if (student) {
-      payPendingPayment(student.id, student.pendingPayment);
+      payPendingPayment({ studentId: student.id, amount: student.pendingPayment });
       setShowPixModal(false);
     }
   };

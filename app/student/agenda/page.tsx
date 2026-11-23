@@ -8,11 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 import { useSession } from "@/lib/auth-client";
+import { RatingModal } from "@/components/rating-modal";
+import { Star } from "@phosphor-icons/react";
 
 export default function StudentAgenda() {
   const { data: session } = useSession();
   const { classes, addClass, students } = useApp();
   const [showRequestModal, setShowRequestModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [ratingClassId, setRatingClassId] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -104,6 +108,17 @@ export default function StudentAgenda() {
                     {item.status}
                   </span>
                   <p className="text-[10px] text-slate-400 mt-1">Prof: {item.instructorName}</p>
+                  {item.status === "Concluída" && (
+                    <button
+                      onClick={() => {
+                        setRatingClassId(item.id);
+                        setShowRatingModal(true);
+                      }}
+                      className="mt-2 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                    >
+                      <Star className="w-3 h-3" /> Avaliar aula
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -200,6 +215,19 @@ export default function StudentAgenda() {
           </div>
         </div>,
         document.body
+      )}
+
+      {/* Rating Modal */}
+      {ratingClassId && showRatingModal && (
+        <RatingModal
+          classSessionId={ratingClassId}
+          studentName={student?.name || "Instrutor"}
+          classType="Sua aula"
+          onSuccess={() => {
+            setShowRatingModal(false);
+            setRatingClassId(null);
+          }}
+        />
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import { sendEmail } from "./email";
 import { triggerWelcomeNotification, upsertNovuSubscriber } from "./novu/novu";
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -88,7 +89,7 @@ export const auth = betterAuth({
     }),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
-        console.log("[Better Auth] sendVerificationOTP called:", { email, otp, type });
+        console.log("[Better Auth] sendVerificationOTP called:", { email, type });
         if (type === "forget-password") {
           sendEmail({
             to: email,

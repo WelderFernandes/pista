@@ -31,7 +31,7 @@ interface AppContextType {
   completeClass: (classId: string) => void;
   startClass: (classId: string) => void;
   updateSettings: (settings: InstructorSettings) => void;
-  payPendingPayment: (studentId: string, amount: number) => void;
+  payPendingPayment: ({ studentId, amount }: { studentId: string; amount: number }) => void;
   addVehicle: (vehicle: Omit<Vehicle, "id">) => Promise<void>;
   deleteVehicle: (id: string) => Promise<void>;
   updateVehicle: (id: string, vehicle: Omit<Vehicle, "id">) => Promise<void>;
@@ -150,9 +150,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const payPendingPayment = async (studentId: string, amount: number) => {
+  const payPendingPayment = async ({ studentId, amount }: { studentId: string; amount: number }) => {
     try {
-      await payPendingPaymentAction(studentId, amount);
+      await payPendingPaymentAction({ studentId, amount });
       await reloadData();
     } catch (err) {
       console.error("Erro ao registrar pagamento no banco:", err);

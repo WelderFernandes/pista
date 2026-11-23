@@ -312,6 +312,17 @@ exports.Prisma.VehicleModelScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ClassRatingScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  classSessionId: 'classSessionId',
+  studentId: 'studentId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -354,7 +365,8 @@ exports.Prisma.ModelName = {
   Invitation: 'Invitation',
   Vehicle: 'Vehicle',
   VehicleBrand: 'VehicleBrand',
-  VehicleModel: 'VehicleModel'
+  VehicleModel: 'VehicleModel',
+  ClassRating: 'ClassRating'
 };
 
 /**

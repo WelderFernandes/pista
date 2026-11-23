@@ -1,4 +1,5 @@
 import { Novu } from "@novu/api";
+import { sanitizePhoneBR } from "@/lib/utils";
 
 let novuInstance: Novu | null = null;
 
@@ -75,11 +76,7 @@ export async function triggerClassReminder(session: ClassSessionWithOrg, student
     const [hour, minute] = session.time.split(":").map(Number);
     const classDateTime = new Date(year, month - 1, day, hour, minute);
 
-    // Sanitiza o número do telefone para o formato internacional com DDI 55 (Brasil)
-    let phone = student.phone.replace(/\D/g, "");
-    if (phone && !phone.startsWith("55")) {
-      phone = `55${phone}`;
-    }
+    const phone = sanitizePhoneBR(student.phone);
 
     const payload = {
       studentName: student.name,
@@ -99,7 +96,7 @@ export async function triggerClassReminder(session: ClassSessionWithOrg, student
       to: {
         subscriberId: student.userId || student.id,
         firstName: student.name,
-        phone: phone ? `+${phone}` : undefined,
+        phone,
         email: student.email || undefined,
       },
       payload: payload,
@@ -214,11 +211,7 @@ export async function triggerClassCancellationNotification(session: ClassSession
   }
 
   try {
-    // Sanitiza o telefone do aluno
-    let phone = student.phone.replace(/\D/g, "");
-    if (phone && !phone.startsWith("55")) {
-      phone = `55${phone}`;
-    }
+    const phone = sanitizePhoneBR(student.phone);
 
     const payload = {
       studentName: student.name,
@@ -236,7 +229,7 @@ export async function triggerClassCancellationNotification(session: ClassSession
       to: {
         subscriberId: student.userId || student.id,
         firstName: student.name,
-        phone: phone ? `+${phone}` : undefined,
+        phone,
         email: student.email || undefined,
       },
       payload: payload,
@@ -260,11 +253,7 @@ export async function triggerClassConfirmationNotification(session: ClassSession
   }
 
   try {
-    // Sanitiza o telefone do aluno
-    let phone = student.phone.replace(/\D/g, "");
-    if (phone && !phone.startsWith("55")) {
-      phone = `55${phone}`;
-    }
+    const phone = sanitizePhoneBR(student.phone);
 
     const payload = {
       studentName: student.name,
@@ -282,7 +271,7 @@ export async function triggerClassConfirmationNotification(session: ClassSession
       to: {
         subscriberId: student.userId || student.id,
         firstName: student.name,
-        phone: phone ? `+${phone}` : undefined,
+        phone,
         email: student.email || undefined,
       },
       payload: payload,
@@ -292,6 +281,51 @@ export async function triggerClassConfirmationNotification(session: ClassSession
     return result;
   } catch (error) {
     console.error("Erro ao disparar notificação de confirmação de aula via Novu:", error);
+  }
+}
+
+/**
+ * Dispara o lembrete de "aula em 1 hora" via WhatsApp/Email.
+ * Deve ser agendado para rodar 1 hora antes do horário da aula.
+ */
+export async function triggerOneHourReminder(session: ClassSessionWithOrg, student: StudentData) {
+  const novu = getNovuClient();
+  if (!novu) {
+    console.warn("NOVU_SECRET_KEY is not set. Skipping Novu one-hour reminder trigger.");
+    return;
+  }
+
+  try {
+    const phone = sanitizePhoneBR(student.phone);
+
+    const payload = {
+      studentName: student.name,
+      classSubject: session.type,
+      classDate: new Date(session.date + "T00:00:00").toLocaleDateString("pt-BR"),
+      classTime: session.time,
+      instructorName: session.instructorName,
+      meetingPoint: session.meetingPoint,
+      duration: session.duration,
+    };
+
+    console.log(`[Novu] Disparando lembrete de 1h 'aula-em-uma-hora' para o aluno ${student.name} (${student.id})`);
+
+    const result = await novu.trigger({
+      workflowId: "aula-em-uma-hora",
+      to: {
+        subscriberId: student.userId || student.id,
+        firstName: student.name,
+        phone,
+        email: student.email || undefined,
+      },
+      payload,
+      transactionId: `session_${session.id}_1h_reminder`,
+    });
+
+    console.log(`[Novu] Resposta do lembrete de 1h:`, result);
+    return result;
+  } catch (error) {
+    console.error("Erro ao disparar lembrete de 1 hora via Novu:", error);
   }
 }
 
@@ -308,17 +342,11 @@ export async function upsertNovuSubscriber(user: { id: string; name: string; ema
   try {
     console.log(`[Novu] Cadastrando/atualizando assinante: ${user.name} (${user.id})`);
 
-    // Sanitiza o número do telefone
-    let phone = user.phone?.replace(/\D/g, "");
-    if (phone && !phone.startsWith("55")) {
-      phone = `55${phone}`;
-    }
-
     const result = await novu.subscribers.create({
       subscriberId: user.id,
       email: user.email,
       firstName: user.name,
-      phone: phone ? `+${phone}` : undefined,
+      phone: sanitizePhoneBR(user.phone),
     });
 
     console.log(`[Novu] Assinante ${user.id} cadastrado com sucesso:`, result);

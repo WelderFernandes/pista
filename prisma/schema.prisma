@@ -34,6 +34,7 @@ model Student {
   updatedAt        DateTime       @updatedAt
   classes          ClassSession[]
   vehicles         Vehicle[]
+  ratings          ClassRating[]
 }
 
 model ClassSession {
@@ -53,6 +54,7 @@ model ClassSession {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   student        Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  ratings        ClassRating[]
 }
 
 model Transaction {
@@ -179,6 +181,7 @@ model Organization {
   transactions       Transaction[]
   instructorSettings InstructorSettings?
   vehicles           Vehicle[]
+  ratings            ClassRating[]
 }
 
 model Member {
@@ -240,4 +243,20 @@ model VehicleModel {
   updatedAt DateTime     @updatedAt
 
   @@unique([brandId, name, type])
+}
+
+model ClassRating {
+  id           String   @id @default(uuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  classSessionId String   @unique
+  classSession  ClassSession @relation(fields: [classSessionId], references: [id], onDelete: Cascade)
+  studentId     String
+  student       Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  rating        Int       // 1 a 5 estrelas
+  comment       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([classSessionId, studentId])
 }

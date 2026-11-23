@@ -40,3 +40,17 @@ export function brlToCents(amount: number): number {
   }
   return Math.round(amount * 100);
 }
+
+/**
+ * Sanitiza um número de telefone brasileiro para o formato internacional com DDI 55.
+ * Remove caracteres não numéricos e adiciona o prefixo 55 se ainda não estiver presente.
+ * Exemplo: "(11) 99999-9999" -> "+5511999999999"
+ */
+export function sanitizePhoneBR(phone: string | null | undefined): string | undefined {
+  if (!phone) return undefined;
+  let cleaned = phone.replace(/\D/g, "");
+  if (cleaned && !cleaned.startsWith("55")) {
+    cleaned = `55${cleaned}`;
+  }
+  return cleaned ? `+${cleaned}` : undefined;
+}
