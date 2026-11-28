@@ -198,10 +198,10 @@ export function LoginForm() {
           <Image src="/img/pista-logo.png" alt="Logo Pista" fill className="object-contain" />
         </div>
 
-        <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10 transition-colors duration-300 backdrop-blur-md">
+        <div className="bg-card dark:bg-slate-900/90 border border-border dark:border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10 transition-colors duration-300 backdrop-blur-md">
 
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-2xl font-black uppercase text-foreground dark:text-white tracking-tight">
               {mode === "login" ? "Bem-vindo de volta" : "Crie sua conta"}
             </h2>
             <p className="text-xs text-slate-555 dark:text-slate-400 mt-1.5 font-medium">
@@ -214,13 +214,13 @@ export function LoginForm() {
           </div>
 
           {/* Profile Tabs Selector */}
-          <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl mb-6">
+          <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 border border-border dark:bg-slate-900 dark:border-slate-800 rounded-2xl mb-6">
             <button
               type="button"
               onClick={() => setProfile("instructor")}
               className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${profile === "instructor"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                : "text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-200"
                 }`}
             >
               Sou Instrutor
@@ -230,7 +230,7 @@ export function LoginForm() {
               onClick={() => setProfile("student")}
               className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${profile === "student"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                : "text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-200"
                 }`}
             >
               Sou Aluno
@@ -255,7 +255,7 @@ export function LoginForm() {
                 <div>
                   <Label htmlFor="name">Nome completo</Label>
                   <div className="mt-1">
-                    <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.name ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                    <InputGroup className={`rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors ${errors.name ? 'border-red-500 focus-within:border-red-500' : 'border-border dark:border-slate-800 focus-within:border-blue-600'}`}>
                       <InputGroupAddon align="inline-start">
                         <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -280,7 +280,7 @@ export function LoginForm() {
                   <div>
                     <Label htmlFor="orgName">Nome que você quer que seus alunos vejam!</Label>
                     <div className="mt-1">
-                      <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.orgName ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                      <InputGroup className={`rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors ${errors.orgName ? 'border-red-500 focus-within:border-red-500' : 'border-border dark:border-slate-800 focus-within:border-blue-600'}`}>
                         <InputGroupAddon align="inline-start">
                           <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -309,7 +309,7 @@ export function LoginForm() {
                 {profile === "instructor" ? "E-mail institucional" : "E-mail de acesso"}
               </Label>
               <div className="mt-1">
-                <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.email ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                <InputGroup className={`rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors ${errors.email ? 'border-red-500 focus-within:border-red-500' : 'border-border dark:border-slate-800 focus-within:border-blue-600'}`}>
                   <InputGroupAddon align="inline-start">
                     <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -333,7 +333,7 @@ export function LoginForm() {
             <div>
               <Label htmlFor="password">Senha de acesso</Label>
               <div className="mt-1">
-                <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.password ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                <InputGroup className={`rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors ${errors.password ? 'border-red-500 focus-within:border-red-500' : 'border-border dark:border-slate-800 focus-within:border-blue-600'}`}>
                   <InputGroupAddon align="inline-start">
                     <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -349,7 +349,7 @@ export function LoginForm() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                      className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1"
                     >
                       {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -367,7 +367,7 @@ export function LoginForm() {
               <div>
                 <Label htmlFor="confirmPassword">Confirmação de senha</Label>
                 <div className="mt-1">
-                  <InputGroup className={`rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors ${errors.confirmPassword ? 'border-red-500 focus-within:border-red-500' : 'border-slate-200 dark:border-slate-800 focus-within:border-blue-600'}`}>
+                  <InputGroup className={`rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors ${errors.confirmPassword ? 'border-red-500 focus-within:border-red-500' : 'border-border dark:border-slate-800 focus-within:border-blue-600'}`}>
                     <InputGroupAddon align="inline-start">
                       <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -383,7 +383,7 @@ export function LoginForm() {
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                        className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1"
                       >
                         {showConfirmPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -400,11 +400,11 @@ export function LoginForm() {
 
             {mode === "login" && (
               <div className="flex justify-between items-center text-xs mt-1">
-                <label className="flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400">
-                  <input type="checkbox" className="rounded bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-blue-600 focus:ring-0 focus:ring-offset-0" />
+                <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground dark:text-slate-400">
+                  <input type="checkbox" className="rounded bg-muted dark:bg-slate-950 border-border dark:border-slate-800 text-blue-600 focus:ring-0 focus:ring-offset-0" />
                   Lembrar de mim
                 </label>
-                <Link href="/recuperar-senha" className="text-slate-550 hover:underline">
+                <Link href="/recuperar-senha" className="text-muted-foreground hover:underline">
                   Esqueceu a senha?
                 </Link>
               </div>
@@ -431,13 +431,13 @@ export function LoginForm() {
             </Button>
           </form>
 
-          <div className="mt-8 text-center text-xs text-slate-500">
+          <div className="mt-8 text-center text-xs text-muted-foreground">
             {mode === "login" ? (
               <>
                 {profile === "instructor" ? "Deseja cadastrar sua Autoescola? " : "Ainda não tem conta de aluno? "}
                 <button
                   onClick={() => { setMode("signup"); setError(""); setSuccess(""); reset(); }}
-                  className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
+                  className="font-bold text-foreground dark:text-white hover:underline cursor-pointer"
                 >
                   Registre-se agora
                 </button>
@@ -447,7 +447,7 @@ export function LoginForm() {
                 Já possui uma conta ativa?{" "}
                 <button
                   onClick={() => { setMode("login"); setError(""); setSuccess(""); reset(); }}
-                  className="font-bold text-slate-800 dark:text-white hover:underline cursor-pointer"
+                  className="font-bold text-foreground dark:text-white hover:underline cursor-pointer"
                 >
                   Faça login aqui
                 </button>

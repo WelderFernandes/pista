@@ -39,21 +39,21 @@ export default function StudentDashboard() {
       {/* Welcome Section */}
       <div>
         <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Área do Aluno</p>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 mt-0.5">Olá, {student.name}</h2>
+        <h2 className="text-2xl font-extrabold tracking-tight text-foreground mt-0.5">Olá, {student.name}</h2>
       </div>
 
       {/* Progress Bento Card */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
+      <section className="bg-card p-6 rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
         <div className="flex justify-between items-end">
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Seu Progresso Prático</h3>
+            <h3 className="text-sm font-bold text-foreground">Seu Progresso Prático</h3>
             <p className="text-xs text-slate-400 mt-0.5">Categoria {student.category}</p>
           </div>
           <div className="text-2xl font-extrabold text-blue-600">{student.progress}%</div>
         </div>
 
         <div>
-          <div className="flex justify-between text-xs text-slate-500 font-semibold mb-1.5">
+          <div className="flex justify-between text-xs text-muted-foreground font-semibold mb-1.5">
             <span>Aulas Realizadas</span>
             <span>{student.completedClasses} de {student.totalClasses} concluídas</span>
           </div>
@@ -69,7 +69,7 @@ export default function StudentDashboard() {
       {/* Next Class Highlight */}
       <section className="flex flex-col gap-3">
         <div className="flex justify-between items-center">
-          <h3 className="text-sm font-bold text-slate-900">Próxima Aula</h3>
+          <h3 className="text-sm font-bold text-foreground">Próxima Aula</h3>
           {nextClass && (
             <span className="text-[10px] font-bold bg-blue-50 text-blue-700 px-2.5 py-0.5 border border-blue-100 rounded-full flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
@@ -79,18 +79,18 @@ export default function StudentDashboard() {
         </div>
 
         {nextClass ? (
-          <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4 relative overflow-hidden">
+          <div className="bg-card rounded-2xl p-5 border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute -right-10 -top-10 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
             
             <div className="flex items-start gap-4">
-              <div className="flex flex-col items-center justify-center bg-slate-50 rounded-xl min-w-[70px] py-2 border border-slate-100">
+              <div className="flex flex-col items-center justify-center bg-muted rounded-xl min-w-[70px] py-2 border border-border">
                 <span className="text-[9px] text-slate-400 font-bold uppercase">Junho</span>
-                <span className="text-xl font-extrabold text-slate-900 leading-none mt-0.5">
+                <span className="text-xl font-extrabold text-foreground leading-none mt-0.5">
                   {new Date(nextClass.date + "T00:00:00").getDate()}
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-slate-900">{nextClass.type}</span>
+                <span className="text-sm font-bold text-foreground">{nextClass.type}</span>
                 <span className="text-xs text-slate-400 mt-1 flex items-center gap-1">
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -107,7 +107,7 @@ export default function StudentDashboard() {
               </div>
             </div>
 
-            <div className="h-px w-full bg-slate-50" />
+            <div className="h-px w-full bg-muted" />
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -115,7 +115,7 @@ export default function StudentDashboard() {
                   CE
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-slate-900">{nextClass.instructorName}</span>
+                  <span className="text-xs font-bold text-foreground">{nextClass.instructorName}</span>
                   <span className="text-[10px] text-slate-400">Instrutor Credenciado</span>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export default function StudentDashboard() {
               <Link
                 href={`https://wa.me/5511977651122`}
                 target="_blank"
-                className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-blue-600 transition-colors"
+                className="w-8 h-8 rounded-full bg-muted hover:bg-slate-100 flex items-center justify-center text-blue-600 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -132,7 +132,7 @@ export default function StudentDashboard() {
             </div>
           </div>
         ) : (
-          <div className="text-center py-8 bg-white border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center">
+          <div className="text-center py-8 bg-card border border-dashed border-border rounded-2xl flex flex-col items-center justify-center">
             <p className="text-xs text-slate-400 font-medium">Sem próximas aulas agendadas.</p>
             <Link
               href="/student/agenda"
@@ -166,7 +166,7 @@ export default function StudentDashboard() {
             </div>
           </div>
         ) : (
-          <div className="bg-slate-50/50 border border-slate-100 rounded-2xl p-4 flex flex-col justify-between gap-3 relative">
+          <div className="bg-muted/50 border border-border rounded-2xl p-4 flex flex-col justify-between gap-3 relative">
             <div className="flex justify-between items-start">
               <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -179,15 +179,15 @@ export default function StudentDashboard() {
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-bold block uppercase">Financeiro</span>
-              <span className="text-xs font-bold text-slate-500">Nenhuma fatura pendente</span>
+              <span className="text-xs font-bold text-muted-foreground">Nenhuma fatura pendente</span>
             </div>
           </div>
         )}
 
         {/* Document Status */}
-        <div className="bg-slate-50/50 border border-slate-100 rounded-2xl p-4 flex flex-col justify-between gap-3">
+        <div className="bg-muted/50 border border-border rounded-2xl p-4 flex flex-col justify-between gap-3">
           <div className="flex justify-between items-start">
-            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-muted-foreground">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -198,7 +198,7 @@ export default function StudentDashboard() {
           </div>
           <div>
             <span className="text-[10px] text-slate-400 font-bold block uppercase">LADV & Documentação</span>
-            <span className="text-xs font-bold text-slate-500">Aprovados Detran</span>
+            <span className="text-xs font-bold text-muted-foreground">Aprovados Detran</span>
           </div>
         </div>
       </section>
@@ -206,38 +206,38 @@ export default function StudentDashboard() {
       {/* PIX Payment Modal */}
       {showPixModal && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full relative text-center animate-scale-up">
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full relative text-center animate-scale-up">
             <button
               onClick={() => setShowPixModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2">
+            <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-2">
               Pagamento via PIX
             </h3>
-            <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-6 font-medium">Escaneie o QR Code abaixo para efetuar o pagamento da fatura.</p>
+            <p className="text-[11px] text-slate-400 dark:text-muted-foreground mb-6 font-medium">Escaneie o QR Code abaixo para efetuar o pagamento da fatura.</p>
 
-            <div className="w-44 h-44 bg-slate-50 dark:bg-slate-950 border border-slate-200/40 dark:border-slate-800/80 rounded-2xl mx-auto flex items-center justify-center mb-6 relative overflow-hidden">
+            <div className="w-44 h-44 bg-muted dark:bg-slate-950 border border-border/40 dark:border-slate-800/80 rounded-2xl mx-auto flex items-center justify-center mb-6 relative overflow-hidden">
               {/* Fake QR code representation */}
               <div className="grid grid-cols-4 gap-2 w-32 h-32 opacity-70">
                 {Array.from({ length: 16 }).map((_, i) => (
                   <div key={i} className={`rounded ${i % 3 === 0 || i % 7 === 0 ? "bg-slate-900 dark:bg-slate-100" : "bg-transparent"}`} />
                 ))}
               </div>
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 font-bold text-xs text-slate-800 dark:text-white">
+              <div className="absolute inset-0 flex items-center justify-center bg-card/80 dark:bg-slate-900/80 font-bold text-xs text-foreground dark:text-white">
                 Fatura Volante Certo
               </div>
             </div>
 
-            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-450 dark:text-slate-500 mb-1">Valor da fatura</p>
+            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-450 dark:text-muted-foreground mb-1">Valor da fatura</p>
             <p className="text-2xl font-black text-blue-600 dark:text-blue-500 mb-6">{formatCentsToBRL(student.pendingPayment)}</p>
 
             <button
               onClick={handlePayPix}
-              className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-xl uppercase tracking-wider text-[10px]"
+              className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-xl uppercase tracking-wider text-[10px]"
             >
               Confirmar Pagamento Realizado
             </button>

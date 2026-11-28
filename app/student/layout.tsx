@@ -107,7 +107,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
   ];
 
   return (
-    <div className={`bg-slate-50 dark:bg-slate-955 text-slate-900 dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 flex flex-col font-sans transition-all duration-300 ${isCollapsed ? "md:pl-[68px]" : "md:pl-[240px]"
+    <div className={`bg-muted dark:bg-slate-950 text-foreground dark:text-slate-100 min-h-screen pb-[80px] md:pb-0 flex flex-col font-sans transition-all duration-300 ${isCollapsed ? "md:pl-[68px]" : "md:pl-[240px]"
       }`}>
       {/* Top Selector Bar (Switch Portals) */}
       <div className="bg-slate-900 text-white text-xs py-2 px-6 flex justify-between items-center z-50 border-b border-slate-800">
@@ -127,36 +127,36 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       </div>
 
       {/* Top Nav Header */}
-      <header className="w-full sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
+      <header className="w-full sticky top-0 z-40 bg-card dark:bg-slate-900 border-b border-border dark:border-slate-800 flex items-center justify-between px-6 py-4 shadow-sm transition-colors duration-300">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer focus:outline-hidden text-left">
-              <Avatar size="lg" className="border border-slate-200 dark:border-slate-800">
+              <Avatar size="lg" className="border border-border dark:border-slate-800">
                 {(session?.user?.image || student?.photoUrl) && (
                   <AvatarImage
                     src={session?.user?.image || student?.photoUrl || undefined}
                     alt="Foto de perfil do aluno"
                   />
                 )}
-                <AvatarFallback className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center">
-                  <UserIcon className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                <AvatarFallback className="bg-slate-100 dark:bg-slate-800 text-muted-foreground dark:text-slate-400 flex items-center justify-center">
+                  <UserIcon className="w-5 h-5 text-slate-400 dark:text-muted-foreground" />
                 </AvatarFallback>
               </Avatar>
               <div>
-                <h1 className="text-base font-bold text-slate-900 dark:text-white leading-tight">{session?.user?.name || student?.name || "Carregando..."}</h1>
+                <h1 className="text-base font-bold text-foreground dark:text-white leading-tight">{session?.user?.name || student?.name || "Carregando..."}</h1>
                 <p className="text-xs text-blue-600 dark:text-blue-500 font-semibold">{student ? `Categoria ${student.categories?.[0] || 'B'}` : "Aluno"}</p>
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-xl p-1 bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xl">
-            <DropdownMenuLabel className="px-2 py-1.5 text-xs text-slate-500 dark:text-slate-400">Minha Conta</DropdownMenuLabel>
-            <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
+          <DropdownMenuContent align="start" className="w-56 mt-1 rounded-xl p-1 bg-card border border-border dark:bg-slate-900 dark:border-slate-800 text-foreground dark:text-slate-100 shadow-xl">
+            <DropdownMenuLabel className="px-2 py-1.5 text-xs text-muted-foreground dark:text-slate-400">Minha Conta</DropdownMenuLabel>
+            <DropdownMenuSeparator className="my-1 border-t border-border dark:border-slate-800" />
             <DropdownMenuItem asChild>
               <Link href="/student/profile" className="flex items-center gap-2 px-2 py-1.5 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
                 Meu Perfil
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator className="my-1 border-t border-slate-100 dark:border-slate-800" />
+            <DropdownMenuSeparator className="my-1 border-t border-border dark:border-slate-800" />
             <DropdownMenuItem
               onClick={async () => {
                 await authClient.signOut();
@@ -178,7 +178,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
               />
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-655 dark:border-slate-800 dark:bg-slate-955/40 dark:hover:bg-slate-955 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
+                className="p-2 rounded-xl border border-border bg-muted hover:bg-slate-100 text-slate-655 dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-950 dark:text-slate-350 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center h-10 w-10 shadow-xs"
                 aria-label="Alternar tema"
               >
                 {theme === "dark" ? (
@@ -190,7 +190,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
             </>
           )}
 
-          <button className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-955/50 dark:hover:bg-slate-955 relative cursor-pointer text-slate-500 hover:text-blue-655 transition-all duration-300">
+          <button className="p-2.5 rounded-full bg-muted hover:bg-slate-100 dark:bg-slate-950/50 dark:hover:bg-slate-950 relative cursor-pointer text-muted-foreground hover:text-blue-655 transition-all duration-300">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
@@ -200,17 +200,17 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       </header>
 
       {/* Desktop Sidebar */}
-      <aside className={`hidden md:flex flex-col bg-white dark:bg-slate-900 text-slate-800 dark:text-white fixed top-[37px] bottom-0 left-0 border-r border-slate-200 dark:border-slate-850 z-30 justify-between transition-all duration-300 ${isCollapsed ? "w-[68px]" : "w-[240px]"
+      <aside className={`hidden md:flex flex-col bg-card dark:bg-slate-900 text-foreground dark:text-white fixed top-[37px] bottom-0 left-0 border-r border-border dark:border-slate-800 z-30 justify-between transition-all duration-300 ${isCollapsed ? "w-[68px]" : "w-[240px]"
         }`}>
         {/* Toggle Collapse Button */}
         <button
           type="button"
           onClick={toggleCollapse}
-          className="hidden md:flex absolute -right-3 top-6 w-6 h-6 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 items-center justify-center text-slate-550 hover:text-slate-900 dark:hover:text-white hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer z-50"
+          className="hidden md:flex absolute -right-3 top-6 w-6 h-6 rounded-full bg-card dark:bg-slate-900 border border-border dark:border-slate-800 items-center justify-center text-muted-foreground hover:text-foreground dark:hover:text-white hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer z-50"
           aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
         >
           <svg
-            className={`w-3 h-3 text-slate-500 dark:text-slate-400 transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
+            className={`w-3 h-3 text-muted-foreground dark:text-slate-400 transition-transform duration-300 ${isCollapsed ? "rotate-180" : ""}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -222,7 +222,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
         <div className="py-6 flex flex-col gap-2 overflow-x-hidden">
           <div className={`px-6 mb-4 transition-all duration-300 ${isCollapsed ? "opacity-0 h-0 mb-0 px-0" : "opacity-100"}`}>
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[10px]">Navegação Aluno</span>
+            <span className="text-xs text-muted-foreground dark:text-slate-400 font-bold uppercase tracking-wider text-[10px]">Navegação Aluno</span>
           </div>
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/student" && pathname.startsWith(item.href));
@@ -233,14 +233,14 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
                   className={`flex items-center text-sm font-medium transition-all ${isCollapsed ? "justify-center py-3 px-0" : "gap-3 px-6 py-3.5"
                     } ${isActive
                       ? "bg-blue-500/10 text-blue-600 dark:text-blue-500 border-r-4 border-blue-500 font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                      : "text-muted-foreground dark:text-slate-400 hover:text-foreground dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
                     }`}
                 >
                   {isActive ? item.activeIcon : item.icon}
                   {!isCollapsed && <span>{item.label}</span>}
                 </Link>
                 {isCollapsed && (
-                  <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[10px] font-bold rounded-lg opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-all duration-200 shadow-md whitespace-nowrap z-50 uppercase tracking-wider scale-90 origin-left group-hover/tooltip:scale-100">
+                  <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-foreground text-[10px] font-bold rounded-lg opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-all duration-200 shadow-md whitespace-nowrap z-50 uppercase tracking-wider scale-90 origin-left group-hover/tooltip:scale-100">
                     {item.label}
                   </div>
                 )}
@@ -248,15 +248,15 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
             );
           })}
         </div>
-        <div className={`transition-all duration-300 ${isCollapsed ? "p-3" : "p-6"} border-t border-slate-200 dark:border-slate-850`}>
+        <div className={`transition-all duration-300 ${isCollapsed ? "p-3" : "p-6"} border-t border-border dark:border-slate-800`}>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-sm text-white shrink-0">
               V
             </div>
             {!isCollapsed && (
               <div className="transition-all duration-350">
-                <p className="text-xs font-bold text-slate-850 dark:text-white">Volante Certo</p>
-                <p className="text-[9px] text-slate-500 dark:text-slate-400">Portal do Aluno</p>
+                <p className="text-xs font-bold text-foreground dark:text-white">Volante Certo</p>
+                <p className="text-[9px] text-muted-foreground dark:text-slate-400">Portal do Aluno</p>
               </div>
             )}
           </div>
@@ -269,14 +269,14 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-850 shadow-[0_-4px_12px_rgba(0,0,0,0.04)] z-50 transition-colors duration-300">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-card dark:bg-slate-900 border-t border-border dark:border-slate-800 shadow-[0_-4px_12px_rgba(0,0,0,0.04)] z-50 transition-colors duration-300">
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/student" && pathname.startsWith(item.href));
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${isActive ? "text-blue-655 dark:text-blue-500 font-bold" : "text-slate-500 dark:text-slate-450 font-medium"
+              className={`flex flex-col items-center justify-center w-16 active:scale-95 transition-transform duration-200 ${isActive ? "text-blue-655 dark:text-blue-500 font-bold" : "text-muted-foreground dark:text-slate-450 font-medium"
                 }`}
             >
               <div className="mb-1">{isActive ? item.activeIcon : item.icon}</div>

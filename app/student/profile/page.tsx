@@ -38,20 +38,20 @@ export default function StudentProfile() {
     <div className="flex flex-col gap-6 animate-fade-in pb-10">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Meu Perfil</h2>
-        <p className="text-slate-500 text-sm">Visualize suas informações pessoais, pagamentos e veículo designado.</p>
+        <h2 className="text-2xl font-extrabold tracking-tight text-foreground">Meu Perfil</h2>
+        <p className="text-muted-foreground text-sm">Visualize suas informações pessoais, pagamentos e veículo designado.</p>
       </div>
 
       {/* Profile Info Card */}
-      <section className="bg-white rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center md:items-start gap-6">
+      <section className="bg-card rounded-2xl p-6 border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-center md:items-start gap-6">
         <Avatar className="w-20 h-20 border-2 border-blue-500/20 shadow-md">
           {userImage && <AvatarImage src={userImage} alt={student.name} />}
-          <AvatarFallback className="bg-slate-100 text-slate-550 flex items-center justify-center">
+          <AvatarFallback className="bg-slate-100 text-muted-foreground flex items-center justify-center">
             <UserIcon className="w-8 h-8 text-slate-400" />
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 text-center md:text-left">
-          <h3 className="text-lg font-bold text-slate-900">{student.name}</h3>
+          <h3 className="text-lg font-bold text-foreground">{student.name}</h3>
           <span className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mt-1.5">
             Categoria {student.categories?.[0] || student.category || 'B'}
           </span>
@@ -59,23 +59,23 @@ export default function StudentProfile() {
           <div className="grid grid-cols-2 gap-3 mt-4 text-left max-w-sm mx-auto md:mx-0">
             <div>
               <span className="text-[10px] text-slate-400 font-bold block uppercase">Telefone</span>
-              <span className="text-xs font-bold text-slate-700">{student.phone}</span>
+              <span className="text-xs font-bold text-foreground">{student.phone}</span>
             </div>
             <div>
               <span className="text-[10px] text-slate-400 font-bold block uppercase">E-mail</span>
-              <span className="text-xs font-bold text-slate-700 truncate block">{student.email}</span>
+              <span className="text-xs font-bold text-foreground truncate block">{student.email}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Vehicle Info Card */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
-        <h3 className="text-sm font-bold text-slate-900 border-b border-slate-50 pb-3 mb-4">Veículo de Treinamento</h3>
+      <section className="bg-card p-6 rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+        <h3 className="text-sm font-bold text-foreground border-b border-slate-50 pb-3 mb-4">Veículo de Treinamento</h3>
         
         <div className="flex items-center justify-between">
           <div>
-            <h4 className="text-xs font-bold text-slate-800">Hyundai HB20 1.0 Manual</h4>
+            <h4 className="text-xs font-bold text-foreground">Hyundai HB20 1.0 Manual</h4>
             <p className="text-[10px] text-slate-400 mt-0.5">Placa: BRA-2E20 • Cor: Branco</p>
           </div>
           <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
@@ -85,9 +85,9 @@ export default function StudentProfile() {
       </section>
 
       {/* Payments History & Pending Invoice */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+      <section className="bg-card p-6 rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-4 border-b border-slate-50 pb-3">
-          <h3 className="text-sm font-bold text-slate-900">Extrato Financeiro</h3>
+          <h3 className="text-sm font-bold text-foreground">Extrato Financeiro</h3>
           
           {student.pendingPayment > 0 && (
             <button
@@ -116,16 +116,16 @@ export default function StudentProfile() {
           {studentPayments.map((t) => (
             <div
               key={t.id}
-              className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors"
+              className="flex items-center justify-between p-3 rounded-xl bg-muted border border-border hover:border-border transition-colors"
             >
               <div>
-                <h4 className="text-xs font-bold text-slate-900">{t.description}</h4>
+                <h4 className="text-xs font-bold text-foreground">{t.description}</h4>
                 <p className="text-[10px] text-slate-400 mt-0.5">
                   {new Date(t.date + "T00:00:00").toLocaleDateString("pt-BR", { day: 'numeric', month: 'short' })}
                 </p>
               </div>
               <div className="text-right">
-                <span className="text-xs font-extrabold text-slate-800">{formatCentsToBRL(t.amount)}</span>
+                <span className="text-xs font-extrabold text-foreground">{formatCentsToBRL(t.amount)}</span>
                 <span className="block text-[8px] text-emerald-600 font-bold uppercase mt-0.5">{t.status}</span>
               </div>
             </div>
@@ -136,38 +136,38 @@ export default function StudentProfile() {
       {/* PIX Payment Modal */}
       {showPixModal && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full relative text-center animate-scale-up">
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full relative text-center animate-scale-up">
             <button
               onClick={() => setShowPixModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2">
+            <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-2">
               Pagamento via PIX
             </h3>
-            <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-6 font-medium">Escaneie o QR Code abaixo para efetuar o pagamento da fatura.</p>
+            <p className="text-[11px] text-slate-400 dark:text-muted-foreground mb-6 font-medium">Escaneie o QR Code abaixo para efetuar o pagamento da fatura.</p>
 
-            <div className="w-44 h-44 bg-slate-50 dark:bg-slate-950 border border-slate-200/40 dark:border-slate-800/80 rounded-2xl mx-auto flex items-center justify-center mb-6 relative overflow-hidden">
+            <div className="w-44 h-44 bg-muted dark:bg-slate-950 border border-border/40 dark:border-slate-800/80 rounded-2xl mx-auto flex items-center justify-center mb-6 relative overflow-hidden">
               {/* Fake QR code representation */}
               <div className="grid grid-cols-4 gap-2 w-32 h-32 opacity-70">
                 {Array.from({ length: 16 }).map((_, i) => (
                   <div key={i} className={`rounded ${i % 3 === 0 || i % 7 === 0 ? "bg-slate-900 dark:bg-slate-100" : "bg-transparent"}`} />
                 ))}
               </div>
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 font-bold text-xs text-slate-800 dark:text-white">
+              <div className="absolute inset-0 flex items-center justify-center bg-card/80 dark:bg-slate-900/80 font-bold text-xs text-foreground dark:text-white">
                 Fatura Volante Certo
               </div>
             </div>
 
-            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-455 dark:text-slate-500 mb-1">Valor da fatura</p>
+            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-455 dark:text-muted-foreground mb-1">Valor da fatura</p>
             <p className="text-2xl font-black text-blue-600 dark:text-blue-500 mb-6">{formatCentsToBRL(student.pendingPayment)}</p>
 
             <button
               onClick={handlePayPix}
-              className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-xl uppercase tracking-wider text-[10px]"
+              className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-xl uppercase tracking-wider text-[10px]"
             >
               Confirmar Pagamento Realizado
             </button>

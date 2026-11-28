@@ -152,30 +152,30 @@ export default function InstructorProfile() {
     <div className="flex flex-col gap-6 animate-fade-in-up pb-10">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Perfil e Veículo</h2>
+        <h2 className="text-2xl font-black tracking-tight text-foreground dark:text-white">Perfil e Veículo</h2>
         <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Gerencie suas informações profissionais e dados do automóvel</p>
       </div>
 
       {/* Instructor Information */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <Avatar className="w-16 h-16 border border-slate-200/50 dark:border-slate-800 shadow-xs">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <Avatar className="w-16 h-16 border border-border/50 dark:border-slate-800 shadow-xs">
           {userImage && <AvatarImage src={userImage} alt={userName} />}
-          <AvatarFallback className="bg-slate-100 dark:bg-slate-950 text-slate-550 flex items-center justify-center">
+          <AvatarFallback className="bg-slate-100 dark:bg-slate-950 text-muted-foreground flex items-center justify-center">
             <UserIcon className="w-6 h-6 text-slate-400" />
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 text-center sm:text-left">
-          <h3 className="text-base font-black text-slate-900 dark:text-white">{userName}</h3>
-          <p className="text-[10px] text-blue-650 dark:text-blue-400 font-bold uppercase tracking-wider mt-0.5">Instrutor Credenciado Detran • Credencial #94827-C</p>
+          <h3 className="text-base font-black text-foreground dark:text-white">{userName}</h3>
+          <p className="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mt-0.5">Instrutor Credenciado Detran • Credencial #94827-C</p>
           
           <div className="grid grid-cols-2 gap-4 mt-5 text-left max-w-md">
             <div>
               <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">E-mail</span>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-250 block truncate">{userEmail}</span>
+              <span className="text-xs font-bold text-foreground dark:text-slate-200 block truncate">{userEmail}</span>
             </div>
             <div>
               <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">Categorias Habilitadas</span>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-250">
+              <span className="text-xs font-bold text-foreground dark:text-slate-200">
                 {settings?.categories && settings.categories.length > 0
                   ? settings.categories.join(", ")
                   : "B"}
@@ -186,10 +186,10 @@ export default function InstructorProfile() {
       </section>
 
       {/* Vehicle details */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
-        <div className="flex justify-between items-center mb-5 border-b border-slate-200/30 dark:border-slate-850 pb-3">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+        <div className="flex justify-between items-center mb-5 border-b border-border/30 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-3">
-            <h3 className="text-xs font-black text-slate-850 dark:text-white uppercase tracking-wider text-[9px]">Veículos de Instrução ({vehicles.length})</h3>
+            <h3 className="text-xs font-black text-foreground dark:text-white uppercase tracking-wider text-[9px]">Veículos de Instrução ({vehicles.length})</h3>
             <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-100/50 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
               Frota Ativa
             </span>
@@ -197,14 +197,14 @@ export default function InstructorProfile() {
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="px-3 py-1 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-[10px] font-bold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer uppercase tracking-wider"
+            className="px-3 py-1 bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground text-[10px] font-bold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer uppercase tracking-wider"
           >
             + Adicionar Veículo
           </button>
         </div>
 
         {vehicles.length === 0 ? (
-          <div className="text-center py-10 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-950/20">
+          <div className="text-center py-10 border border-dashed border-border dark:border-slate-800 rounded-2xl bg-muted/50 dark:bg-slate-950/20">
             <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Nenhum veículo cadastrado na frota</p>
             <p className="text-[10px] text-slate-400 mt-1">Clique em + Adicionar Veículo para cadastrar o primeiro.</p>
           </div>
@@ -213,12 +213,12 @@ export default function InstructorProfile() {
             {vehicles.map((v) => (
               <div
                 key={v.id}
-                className="bg-slate-50/50 dark:bg-slate-955/20 border border-slate-200/40 dark:border-slate-850 rounded-2xl p-4 transition-all hover:border-slate-350 dark:hover:border-slate-750 relative overflow-hidden group min-h-[92px] flex flex-col justify-center"
+                className="bg-muted/50 dark:bg-slate-950/20 border border-border/40 dark:border-slate-800 rounded-2xl p-4 transition-all hover:border-slate-350 dark:hover:border-slate-750 relative overflow-hidden group min-h-[92px] flex flex-col justify-center"
               >
                 {/* Content block that blurs on hover */}
                 <div className="transition-all duration-300 group-hover:blur-[2px] group-hover:opacity-30 flex flex-col gap-2.5">
                   <div className="flex justify-between items-start">
-                    <span className="text-xs font-black text-slate-850 dark:text-white">
+                    <span className="text-xs font-black text-foreground dark:text-white">
                       {v.brand || ""} {v.name}
                     </span>
                     <span className="bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-100/50 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
@@ -226,15 +226,15 @@ export default function InstructorProfile() {
                     </span>
                   </div>
                   <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
-                    <span className="bg-slate-100 text-slate-650 dark:bg-slate-850 dark:text-slate-350 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="bg-slate-100 text-muted-foreground dark:bg-slate-800 dark:text-slate-350 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                       Placa: {v.plate || "N/D"}
                     </span>
                     {v.color && (
-                      <span className="bg-slate-100 text-slate-650 dark:bg-slate-850 dark:text-slate-350 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      <span className="bg-slate-100 text-muted-foreground dark:bg-slate-800 dark:text-slate-350 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                         Cor: {v.color}
                       </span>
                     )}
-                    <span className="bg-slate-100 text-slate-650 dark:bg-slate-850 dark:text-slate-350 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <span className="bg-slate-100 text-muted-foreground dark:bg-slate-800 dark:text-slate-350 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                       {v.automatic ? "Automático" : "Manual"}
                     </span>
                   </div>
@@ -245,7 +245,7 @@ export default function InstructorProfile() {
                   <button
                     type="button"
                     onClick={() => handleViewVehicle(v)}
-                    className="w-8 h-8 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 shadow-sm hover:scale-[1.08] active:scale-[0.95] hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer"
+                    className="w-8 h-8 rounded-lg bg-card dark:bg-slate-900 border border-border/60 dark:border-slate-800 flex items-center justify-center text-foreground dark:text-slate-200 shadow-sm hover:scale-[1.08] active:scale-[0.95] hover:bg-muted dark:hover:bg-slate-800 transition-all cursor-pointer"
                     title="Visualizar"
                   >
                     <EyeIcon className="w-4 h-4" />
@@ -253,7 +253,7 @@ export default function InstructorProfile() {
                   <button
                     type="button"
                     onClick={() => handleEditVehicle(v)}
-                    className="w-8 h-8 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 shadow-sm hover:scale-[1.08] active:scale-[0.95] hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer"
+                    className="w-8 h-8 rounded-lg bg-card dark:bg-slate-900 border border-border/60 dark:border-slate-800 flex items-center justify-center text-foreground dark:text-slate-200 shadow-sm hover:scale-[1.08] active:scale-[0.95] hover:bg-muted dark:hover:bg-slate-800 transition-all cursor-pointer"
                     title="Editar"
                   >
                     <PencilIcon className="w-4 h-4" />
@@ -268,13 +268,13 @@ export default function InstructorProfile() {
       {/* Add Vehicle Modal Overlay */}
       {isModalOpen && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full animate-scale-up">
-            <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Novo Veículo na Frota</h3>
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full animate-scale-up">
+            <div className="flex justify-between items-center mb-5 pb-3 border-b border-border dark:border-slate-800">
+              <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider text-[11px]">Novo Veículo na Frota</h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 text-xs font-bold transition-colors cursor-pointer"
               >
                 ✕ Fechar
               </button>
@@ -303,7 +303,7 @@ export default function InstructorProfile() {
                   {showBrandSuggestions && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setShowBrandSuggestions(false)} />
-                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                         {dbBrands
                           .filter((b) => {
                             const matchesType =
@@ -326,7 +326,7 @@ export default function InstructorProfile() {
                                   setNewCategory("B");
                                 }
                               }}
-                              className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-850 dark:text-slate-250 cursor-pointer"
+                              className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 cursor-pointer"
                             >
                               {b.name}
                             </button>
@@ -370,7 +370,7 @@ export default function InstructorProfile() {
                   {showNameSuggestions && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setShowNameSuggestions(false)} />
-                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                         {(() => {
                           const filtered = dbModels.filter((m) => {
                             const matchesType =
@@ -402,7 +402,7 @@ export default function InstructorProfile() {
                                   setNewCategory("B");
                                 }
                               }}
-                              className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-850 dark:text-slate-250 cursor-pointer"
+                              className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 cursor-pointer"
                             >
                               {m.name}
                             </button>
@@ -422,7 +422,7 @@ export default function InstructorProfile() {
                     <button
                       type="button"
                       onClick={() => setShowCatDropdown(!showCatDropdown)}
-                      className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-white flex items-center justify-between cursor-pointer text-left font-medium"
+                      className="w-full h-10 px-3 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 text-xs text-foreground dark:text-white flex items-center justify-between cursor-pointer text-left font-medium"
                     >
                       <span>{newCategory}</span>
                       <span className="text-slate-400 text-[8px]">▼</span>
@@ -430,7 +430,7 @@ export default function InstructorProfile() {
                     {showCatDropdown && (
                       <>
                         <div className="fixed inset-0 z-10" onClick={() => setShowCatDropdown(false)} />
-                        <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                        <div className="absolute left-0 right-0 mt-1 bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                           {["B", "A", "C", "D"].map((cat) => (
                             <button
                               key={cat}
@@ -439,8 +439,8 @@ export default function InstructorProfile() {
                                 setNewCategory(cat);
                                 setShowCatDropdown(false);
                               }}
-                              className={`w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 cursor-pointer font-bold ${
-                                newCategory === cat ? "bg-slate-50 dark:bg-slate-850" : ""
+                              className={`w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 cursor-pointer font-bold ${
+                                newCategory === cat ? "bg-muted dark:bg-slate-800" : ""
                               }`}
                             >
                               Cat. {cat}
@@ -488,8 +488,8 @@ export default function InstructorProfile() {
                     onClick={() => setNewAutomatic(false)}
                     className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                       !newAutomatic
-                        ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                        : "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                        ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                        : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                     }`}
                   >
                     Manual
@@ -499,8 +499,8 @@ export default function InstructorProfile() {
                     onClick={() => setNewAutomatic(true)}
                     className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                       newAutomatic
-                        ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                        : "bg-white dark:bg-slate-955 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                        ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                        : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                     }`}
                   >
                     Automático
@@ -512,7 +512,7 @@ export default function InstructorProfile() {
               <button
                 type="submit"
                 disabled={isAdding}
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 {isAdding ? "Adicionando..." : "Confirmar Cadastro"}
               </button>
@@ -525,26 +525,26 @@ export default function InstructorProfile() {
       {/* View Vehicle Modal Overlay */}
       {isViewModalOpen && mounted && selectedVehicle && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full animate-scale-up">
-            <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Detalhes do Veículo</h3>
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full animate-scale-up">
+            <div className="flex justify-between items-center mb-5 pb-3 border-b border-border dark:border-slate-800">
+              <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider text-[11px]">Detalhes do Veículo</h3>
               <button
                 type="button"
                 onClick={() => {
                   setIsViewModalOpen(false);
                   setSelectedVehicle(null);
                 }}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 text-xs font-bold transition-colors cursor-pointer"
               >
                 ✕ Fechar
               </button>
             </div>
 
             <div className="flex flex-col gap-4 text-xs">
-              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200/40 dark:border-slate-850 flex flex-col gap-3">
+              <div className="bg-muted dark:bg-slate-950 p-4 rounded-2xl border border-border/40 dark:border-slate-800 flex flex-col gap-3">
                 <div>
                   <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider mb-0.5">Veículo</span>
-                  <span className="text-xs font-black text-slate-800 dark:text-white">
+                  <span className="text-xs font-black text-foreground dark:text-white">
                     {selectedVehicle.brand || ""} {selectedVehicle.name}
                   </span>
                 </div>
@@ -559,7 +559,7 @@ export default function InstructorProfile() {
                   </div>
                   <div>
                     <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider mb-0.5">Placa</span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                    <span className="font-bold text-foreground dark:text-slate-200">
                       {selectedVehicle.plate || "Não Informada"}
                     </span>
                   </div>
@@ -567,13 +567,13 @@ export default function InstructorProfile() {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider mb-0.5">Cor</span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                    <span className="font-bold text-foreground dark:text-slate-200">
                       {selectedVehicle.color || "Não Informada"}
                     </span>
                   </div>
                   <div>
                     <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider mb-0.5">Câmbio</span>
-                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                    <span className="font-bold text-foreground dark:text-slate-200">
                       {selectedVehicle.automatic ? "Automático" : "Manual"}
                     </span>
                   </div>
@@ -588,16 +588,16 @@ export default function InstructorProfile() {
       {/* Edit Vehicle Modal Overlay */}
       {isEditModalOpen && mounted && selectedVehicle && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full animate-scale-up">
-            <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Editar Veículo</h3>
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full animate-scale-up">
+            <div className="flex justify-between items-center mb-5 pb-3 border-b border-border dark:border-slate-800">
+              <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider text-[11px]">Editar Veículo</h3>
               <button
                 type="button"
                 onClick={() => {
                   setIsEditModalOpen(false);
                   setSelectedVehicle(null);
                 }}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 text-xs font-bold transition-colors cursor-pointer"
               >
                 ✕ Fechar
               </button>
@@ -626,7 +626,7 @@ export default function InstructorProfile() {
                   {showBrandSuggestions && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setShowBrandSuggestions(false)} />
-                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                         {dbBrands
                           .filter((b) => {
                             const matchesType =
@@ -649,7 +649,7 @@ export default function InstructorProfile() {
                                   setNewCategory("B");
                                 }
                               }}
-                              className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 cursor-pointer"
+                              className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 cursor-pointer"
                             >
                               {b.name}
                             </button>
@@ -693,7 +693,7 @@ export default function InstructorProfile() {
                   {showNameSuggestions && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setShowNameSuggestions(false)} />
-                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                      <div className="absolute left-0 right-0 mt-1 max-h-40 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                         {(() => {
                           const filtered = dbModels.filter((m) => {
                             const matchesType =
@@ -725,7 +725,7 @@ export default function InstructorProfile() {
                                   setNewCategory("B");
                                 }
                               }}
-                              className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 cursor-pointer"
+                              className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 cursor-pointer"
                             >
                               {m.name}
                             </button>
@@ -745,7 +745,7 @@ export default function InstructorProfile() {
                     <button
                       type="button"
                       onClick={() => setShowCatDropdown(!showCatDropdown)}
-                      className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-white flex items-center justify-between cursor-pointer text-left font-medium"
+                      className="w-full h-10 px-3 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 text-xs text-foreground dark:text-white flex items-center justify-between cursor-pointer text-left font-medium"
                     >
                       <span>{newCategory}</span>
                       <span className="text-slate-400 text-[8px]">▼</span>
@@ -753,7 +753,7 @@ export default function InstructorProfile() {
                     {showCatDropdown && (
                       <>
                         <div className="fixed inset-0 z-10" onClick={() => setShowCatDropdown(false)} />
-                        <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                        <div className="absolute left-0 right-0 mt-1 bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                           {["B", "A", "C", "D"].map((cat) => (
                             <button
                               key={cat}
@@ -762,8 +762,8 @@ export default function InstructorProfile() {
                                 setNewCategory(cat);
                                 setShowCatDropdown(false);
                               }}
-                              className={`w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 cursor-pointer font-bold ${
-                                newCategory === cat ? "bg-slate-50 dark:bg-slate-850" : ""
+                              className={`w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 cursor-pointer font-bold ${
+                                newCategory === cat ? "bg-muted dark:bg-slate-800" : ""
                               }`}
                             >
                               Cat. {cat}
@@ -811,8 +811,8 @@ export default function InstructorProfile() {
                     onClick={() => setNewAutomatic(false)}
                     className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                       !newAutomatic
-                        ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                        : "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                        ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                        : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                     }`}
                   >
                     Manual
@@ -822,8 +822,8 @@ export default function InstructorProfile() {
                     onClick={() => setNewAutomatic(true)}
                     className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                       newAutomatic
-                        ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                        : "bg-white dark:bg-slate-955 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                        ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                        : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                     }`}
                   >
                     Automático
@@ -835,7 +835,7 @@ export default function InstructorProfile() {
               <button
                 type="submit"
                 disabled={isAdding}
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 {isAdding ? "Salvando..." : "Salvar Alterações"}
               </button>

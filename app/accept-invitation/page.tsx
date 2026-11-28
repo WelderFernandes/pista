@@ -164,7 +164,7 @@ function AcceptInvitationContent() {
         )}
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-xs text-slate-500 hover:underline">
+          <Link href="/" className="text-xs text-muted-foreground hover:underline">
             Voltar para a página inicial
           </Link>
         </div>

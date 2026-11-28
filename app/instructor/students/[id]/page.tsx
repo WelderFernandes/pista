@@ -62,7 +62,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
   if (!student) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-500 font-semibold">Aluno não encontrado.</p>
+        <p className="text-muted-foreground font-semibold">Aluno não encontrado.</p>
         <Link href="/instructor/students" className="text-blue-600 font-bold hover:underline mt-4 block">
           Voltar para Lista
         </Link>
@@ -76,53 +76,53 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       <div className="flex items-center gap-3">
         <button
           onClick={() => router.back()}
-          className="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/40 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-600 dark:text-slate-400 transition-all cursor-pointer active:scale-95 shadow-xs"
+          className="p-2 rounded-xl bg-card dark:bg-slate-900 border border-border/40 dark:border-slate-800/80 hover:bg-muted dark:hover:bg-slate-800 text-muted-foreground dark:text-slate-400 transition-all cursor-pointer active:scale-95 shadow-xs"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
         </button>
         <div>
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">{student.name}</h2>
+          <h2 className="text-2xl font-black tracking-tight text-foreground dark:text-white">{student.name}</h2>
           <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Ficha cadastral e progresso prático do aluno</p>
         </div>
       </div>
 
       {/* Profile Info Card */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col md:flex-row items-center md:items-start gap-6">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col md:flex-row items-center md:items-start gap-6">
         <img
           alt={student.name}
-          className="w-20 h-20 rounded-full object-cover border border-slate-200/50 dark:border-slate-850 shadow-xs"
+          className="w-20 h-20 rounded-full object-cover border border-border/50 dark:border-slate-800 shadow-xs"
           src={student.photoUrl}
         />
         <div className="flex-1 text-center md:text-left w-full">
           <div className="flex flex-col md:flex-row md:items-center gap-2">
-            <h3 className="text-lg font-black text-slate-900 dark:text-white">{student.name}</h3>
-            <span className="inline-block bg-blue-50 border border-blue-100/50 text-blue-650 dark:bg-blue-950/30 dark:text-blue-400 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mx-auto md:mx-0">
+            <h3 className="text-lg font-black text-foreground dark:text-white">{student.name}</h3>
+            <span className="inline-block bg-blue-50 border border-blue-100/50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mx-auto md:mx-0">
               Cat. {student.category}
             </span>
           </div>
-          <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-1">Matrícula realizada em 12 de Outubro de 2023</p>
+          <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-semibold mt-1">Matrícula realizada em 12 de Outubro de 2023</p>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-5 max-w-lg mx-auto md:mx-0 text-left">
             <div>
               <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">Telefone</span>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-250">{student.phone}</span>
+              <span className="text-xs font-bold text-foreground dark:text-slate-200">{student.phone}</span>
             </div>
             <div>
               <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">E-mail</span>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-250 truncate block">{student.email}</span>
+              <span className="text-xs font-bold text-foreground dark:text-slate-200 truncate block">{student.email}</span>
             </div>
             <div className="col-span-2 md:col-span-1">
               <span className="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">Ponto de Encontro</span>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-250">{student.meetingPoint}</span>
+              <span className="text-xs font-bold text-foreground dark:text-slate-200">{student.meetingPoint}</span>
             </div>
           </div>
 
           <div className="flex gap-2.5 justify-center md:justify-start mt-6">
             <a
               href={`tel:${student.phone}`}
-              className="bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-900 border border-slate-250/60 dark:border-slate-850 text-slate-700 dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider px-4 py-2 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-xs"
+              className="bg-muted hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-900 border border-border/60 dark:border-slate-800 text-foreground dark:text-slate-300 font-bold text-[10px] uppercase tracking-wider px-4 py-2 rounded-xl flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-xs"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -147,30 +147,30 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       {/* Grid: Progress & Financial */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Progress Card */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col justify-between h-[180px]">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col justify-between h-[180px]">
           <div>
-            <h4 className="font-bold text-slate-850 dark:text-white uppercase tracking-wider text-[9px] mb-3">Progresso de Aulas Práticas</h4>
+            <h4 className="font-bold text-foreground dark:text-white uppercase tracking-wider text-[9px] mb-3">Progresso de Aulas Práticas</h4>
             <div className="flex items-baseline justify-between mb-2">
               <span className="text-3xl font-black text-blue-600 dark:text-blue-500">{student.progress}%</span>
-              <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold">
+              <span className="text-[10px] text-slate-400 dark:text-muted-foreground font-bold">
                 {student.completedClasses} de {student.totalClasses} Concluídas
               </span>
             </div>
-            <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-850 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <div
                 className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500"
                 style={{ width: `${student.progress}%` }}
               />
             </div>
           </div>
-          <div className="border-t border-slate-200/30 dark:border-slate-850 mt-4 pt-3 flex items-center justify-between text-[10px] text-slate-450 dark:text-slate-400">
+          <div className="border-t border-border/30 dark:border-slate-800 mt-4 pt-3 flex items-center justify-between text-[10px] text-slate-450 dark:text-slate-400">
             <span className="font-medium">Exame Estimado</span>
-            <span className="font-bold text-slate-700 dark:text-slate-300">Meados de Junho/2026</span>
+            <span className="font-bold text-foreground dark:text-slate-300">Meados de Junho/2026</span>
           </div>
         </div>
 
         {/* Financial Card */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col justify-between items-center text-center h-[180px]">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col justify-between items-center text-center h-[180px]">
           <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
             student.pendingPayment > 0 ? "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400" : "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400"
           }`}>
@@ -184,7 +184,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
           </div>
           
           <div className="mt-2 flex flex-col items-center">
-            <h4 className="font-bold text-slate-850 dark:text-white uppercase tracking-wider text-[9px] mb-1">Status Financeiro</h4>
+            <h4 className="font-bold text-foreground dark:text-white uppercase tracking-wider text-[9px] mb-1">Status Financeiro</h4>
             {student.pendingPayment > 0 ? (
               <>
                 <span className="bg-amber-50 border border-amber-100/50 text-amber-750 dark:bg-amber-950/30 dark:text-amber-400 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1">
@@ -197,7 +197,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
                 <span className="bg-emerald-50 border border-emerald-100/50 text-emerald-755 dark:bg-emerald-950/30 dark:text-emerald-400 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1">
                   Totalmente Pago
                 </span>
-                <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">Pacote contratado 100% quitado</p>
+                <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-semibold">Pacote contratado 100% quitado</p>
               </>
             )}
           </div>
@@ -205,11 +205,11 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       </div>
 
       {/* Veículos do Aluno */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h4 className="font-bold text-slate-850 dark:text-white uppercase tracking-wider text-[9px]">Veículo(s) Próprio(s) do Aluno</h4>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">Veículos trazidos pelo próprio aluno para as aulas práticas.</p>
+            <h4 className="font-bold text-foreground dark:text-white uppercase tracking-wider text-[9px]">Veículo(s) Próprio(s) do Aluno</h4>
+            <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-medium mt-0.5">Veículos trazidos pelo próprio aluno para as aulas práticas.</p>
           </div>
           <button
             onClick={() => setShowAddForm(!showAddForm)}
@@ -220,25 +220,25 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
         </div>
 
         {showAddForm && (
-          <form onSubmit={handleAddVehicle} className="mb-4 bg-slate-55/60 dark:bg-slate-950/40 p-4 rounded-xl border border-slate-200/50 dark:border-slate-850/80 flex flex-col gap-3.5">
+          <form onSubmit={handleAddVehicle} className="mb-4 bg-slate-55/60 dark:bg-slate-950/40 p-4 rounded-xl border border-border/50 dark:border-slate-800/80 flex flex-col gap-3.5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] font-bold text-slate-450 dark:text-slate-550 uppercase tracking-wider block mb-1">Nome do Veículo</label>
+                <label className="text-[8px] font-bold text-slate-450 dark:text-muted-foreground uppercase tracking-wider block mb-1">Nome do Veículo</label>
                 <input
                   type="text"
                   required
                   value={newVehName}
                   onChange={(e) => setNewVehName(e.target.value)}
                   placeholder="Ex: Fiat Uno 1.0"
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-650"
+                  className="w-full px-3 py-2 rounded-xl border border-border/60 dark:border-slate-800 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
               <div>
-                <label className="text-[8px] font-bold text-slate-455 dark:text-slate-550 uppercase tracking-wider block mb-1">Categoria</label>
+                <label className="text-[8px] font-bold text-slate-455 dark:text-muted-foreground uppercase tracking-wider block mb-1">Categoria</label>
                 <select
                   value={newVehCategory}
                   onChange={(e) => setNewVehCategory(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-650"
+                  className="w-full px-3 py-2 rounded-xl border border-border/60 dark:border-slate-800 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900 focus:outline-none focus:border-blue-600"
                 >
                   <option value="B">Cat. B (Carro)</option>
                   <option value="A">Cat. A (Moto)</option>
@@ -256,7 +256,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
                   value={newVehBrand}
                   onChange={(e) => setNewVehBrand(e.target.value)}
                   placeholder="Fiat"
-                  className="w-full px-2.5 py-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-650"
+                  className="w-full px-2.5 py-2 rounded-xl border border-border/60 dark:border-slate-800 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900 focus:outline-none focus:border-blue-600"
                 />
               </div>
               <div>
@@ -266,7 +266,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
                   value={newVehPlate}
                   onChange={(e) => setNewVehPlate(e.target.value)}
                   placeholder="XYZ9W87"
-                  className="w-full px-2.5 py-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-655"
+                  className="w-full px-2.5 py-2 rounded-xl border border-border/60 dark:border-slate-800 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900 focus:outline-none focus:border-blue-655"
                 />
               </div>
               <div>
@@ -276,7 +276,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
                   value={newVehColor}
                   onChange={(e) => setNewVehColor(e.target.value)}
                   placeholder="Vermelho"
-                  className="w-full px-2.5 py-2 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-900 focus:outline-none focus:border-blue-655"
+                  className="w-full px-2.5 py-2 rounded-xl border border-border/60 dark:border-slate-800 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900 focus:outline-none focus:border-blue-655"
                 />
               </div>
             </div>
@@ -292,14 +292,14 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
         )}
 
         {vehicles.filter(v => v.studentId === student.id).length === 0 ? (
-          <p className="text-xs text-slate-400 dark:text-slate-550 font-semibold py-2">Nenhum veículo próprio registrado para este aluno. Ele utilizará a frota da autoescola.</p>
+          <p className="text-xs text-slate-400 dark:text-muted-foreground font-semibold py-2">Nenhum veículo próprio registrado para este aluno. Ele utilizará a frota da autoescola.</p>
         ) : (
           <div className="flex flex-col gap-2">
             {vehicles.filter(v => v.studentId === student.id).map(v => (
-              <div key={v.id} className="flex justify-between items-center p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-900 text-xs hover:border-slate-300 dark:hover:border-slate-800 transition-colors">
+              <div key={v.id} className="flex justify-between items-center p-3.5 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-900 text-xs hover:border-slate-300 dark:hover:border-slate-800 transition-colors">
                 <div>
-                  <p className="font-bold text-slate-850 dark:text-slate-200">{v.name} {v.brand ? `(${v.brand})` : ""}</p>
-                  <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">Categoria: {v.category} • Placa: {v.plate || "N/D"} {v.color ? `• Cor: ${v.color}` : ""}</p>
+                  <p className="font-bold text-foreground dark:text-slate-200">{v.name} {v.brand ? `(${v.brand})` : ""}</p>
+                  <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-semibold mt-0.5">Categoria: {v.category} • Placa: {v.plate || "N/D"} {v.color ? `• Cor: ${v.color}` : ""}</p>
                 </div>
                 <button
                   onClick={() => deleteVehicle(v.id)}
@@ -314,7 +314,7 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
       </section>
 
       {/* Instructor Notes */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
         <div className="flex justify-between items-center mb-4">
           <h4 className="font-bold text-slate-855 dark:text-white uppercase tracking-wider text-[9px]">Observações do Instrutor</h4>
           <button
@@ -329,30 +329,30 @@ export default function StudentDetails({ params }: { params: Promise<{ id: strin
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full h-24 p-3 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-900 dark:text-white bg-white dark:bg-slate-950 focus:outline-none focus:border-blue-600 transition-colors font-medium leading-relaxed"
+            className="w-full h-24 p-3 rounded-xl border border-border/60 dark:border-slate-800 text-xs text-foreground dark:text-white bg-card dark:bg-slate-950 focus:outline-none focus:border-blue-600 transition-colors font-medium leading-relaxed"
           />
         ) : (
-          <p className="text-xs text-slate-650 dark:text-slate-400 bg-white dark:bg-slate-950 p-4 rounded-xl border border-slate-200/40 dark:border-slate-900 leading-relaxed font-semibold">
+          <p className="text-xs text-muted-foreground dark:text-slate-400 bg-card dark:bg-slate-950 p-4 rounded-xl border border-border/40 dark:border-slate-900 leading-relaxed font-semibold">
             {notes}
           </p>
         )}
       </section>
 
       {/* Student Class History */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
         <h4 className="font-bold text-slate-855 dark:text-white uppercase tracking-wider text-[9px] mb-4">Histórico de Aulas</h4>
         {studentClasses.length === 0 ? (
-          <p className="text-xs text-slate-400 dark:text-slate-500 font-semibold py-4">Nenhuma aula registrada para este aluno.</p>
+          <p className="text-xs text-slate-400 dark:text-muted-foreground font-semibold py-4">Nenhuma aula registrada para este aluno.</p>
         ) : (
           <div className="flex flex-col gap-3">
             {studentClasses.map((c) => (
               <div
                 key={c.id}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-900 hover:border-blue-200 dark:hover:border-blue-900 hover:scale-[1.005] active:scale-[0.995] transition-all duration-200 shadow-xs"
+                className="flex items-center justify-between p-3.5 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-900 hover:border-blue-200 dark:hover:border-blue-900 hover:scale-[1.005] active:scale-[0.995] transition-all duration-200 shadow-xs"
               >
                 <div>
-                  <h5 className="text-xs font-bold text-slate-850 dark:text-slate-200">{c.type}</h5>
-                  <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 font-semibold">
+                  <h5 className="text-xs font-bold text-foreground dark:text-slate-200">{c.type}</h5>
+                  <p className="text-[10px] text-slate-400 dark:text-muted-foreground mt-1 font-semibold">
                     {new Date(c.date + "T00:00:00").toLocaleDateString("pt-BR", { day: 'numeric', month: 'short' })} • {c.duration}
                   </p>
                 </div>

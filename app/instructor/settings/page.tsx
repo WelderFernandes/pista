@@ -334,9 +334,9 @@ export default function InstructorSettingsPage() {
       )}
 
       {/* Page Header */}
-      <div className="flex justify-between items-center border-b border-slate-200/30 dark:border-slate-850 pb-4">
+      <div className="flex justify-between items-center border-b border-border/30 dark:border-slate-800 pb-4">
         <div>
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-2xl font-black tracking-tight text-foreground dark:text-white">
             Configurações do Instrutor
           </h2>
           <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-0.5">
@@ -369,7 +369,7 @@ export default function InstructorSettingsPage() {
         {/* Left Column (Work time & Location settings) */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Public Profile Search Settings Card */}
-          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+          <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
             <h3 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider text-[9px] mb-2 flex items-center gap-1.5">
               <svg
                 className="w-4.5 h-4.5 text-blue-600 dark:text-blue-500"
@@ -386,7 +386,7 @@ export default function InstructorSettingsPage() {
               </svg>
               Área de Atuação & Perfil Público
             </h3>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mb-5">
+            <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-medium mb-5">
               Configure as informações que os alunos usarão para filtrar e
               encontrar você na busca.
             </p>
@@ -397,7 +397,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="cep" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">CEP de Atuação</Label>
                   <div className="mt-1 flex gap-2">
-                    <InputGroup className="flex-1 h-10 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="flex-1 h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <MapPin className="w-4 h-4 text-slate-400" />
                       </InputGroupAddon>
@@ -408,14 +408,14 @@ export default function InstructorSettingsPage() {
                         value={cep}
                         onChange={handleCepChange}
                         placeholder="Ex: 01310-100"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                     <button
                       type="button"
                       disabled={loadingCep || cep.replace(/\D/g, "").length !== 8}
                       onClick={() => handleCepSearch(cep)}
-                      className="bg-blue-650 hover:bg-blue-700 disabled:opacity-50 text-white px-4 rounded-xl text-xs font-bold transition-all h-10 flex items-center justify-center cursor-pointer shadow-xs active:scale-95"
+                      className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-4 rounded-xl text-xs font-bold transition-all h-10 flex items-center justify-center cursor-pointer shadow-xs active:scale-95"
                     >
                       {loadingCep ? "..." : "Buscar"}
                     </button>
@@ -430,7 +430,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="hourlyRate" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Valor da Hora/Aula (R$)</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <InputGroupText className="font-bold text-slate-400 text-xs">
                           R$
@@ -444,7 +444,7 @@ export default function InstructorSettingsPage() {
                           setHourlyRate(Math.max(0, Number(e.target.value)))
                         }
                         placeholder="Ex: 120"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                       <InputGroupAddon align="inline-end">
                         <InputGroupText className="font-bold text-slate-400 text-xs">
@@ -461,14 +461,14 @@ export default function InstructorSettingsPage() {
                 <div className="md:col-span-2">
                   <Label htmlFor="street" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Rua / Logradouro</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="street"
                         value={street}
                         onChange={(e) => setStreet(e.target.value)}
                         placeholder="Av. Paulista"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -477,14 +477,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="number" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Número</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="number"
                         value={number}
                         onChange={(e) => setNumber(e.target.value)}
                         placeholder="1000"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -495,14 +495,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="neighborhood" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Bairro</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="neighborhood"
                         value={neighborhood}
                         onChange={(e) => setNeighborhood(e.target.value)}
                         placeholder="Bela Vista"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -511,14 +511,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="complement" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Complemento</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="complement"
                         value={complement}
                         onChange={(e) => setComplement(e.target.value)}
                         placeholder="Apto 42"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -529,14 +529,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="city" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Cidade</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="city"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                         placeholder="São Paulo"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -545,7 +545,7 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="state" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Estado (UF)</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="state"
@@ -553,7 +553,7 @@ export default function InstructorSettingsPage() {
                         value={state}
                         onChange={(e) => setState(e.target.value.toUpperCase())}
                         placeholder="SP"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -566,7 +566,7 @@ export default function InstructorSettingsPage() {
                   Bairros de Atuação (separados por vírgula)
                 </Label>
                 <div className="mt-1">
-                  <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                  <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                     <InputGroupAddon align="inline-start">
                       <Buildings className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -576,7 +576,7 @@ export default function InstructorSettingsPage() {
                       value={neighborhoodsInput}
                       onChange={(e) => setNeighborhoodsInput(e.target.value)}
                       placeholder="Ex: Centro, Pinheiros, Vila Madalena"
-                      className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                      className="h-full px-3 text-xs text-foreground dark:text-white"
                     />
                   </InputGroup>
                 </div>
@@ -588,7 +588,7 @@ export default function InstructorSettingsPage() {
                   Pontos de Encontro Padrão (separados por vírgula)
                 </Label>
                 <div className="mt-1">
-                  <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                  <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                     <InputGroupAddon align="inline-start">
                       <MapTrifold className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -598,7 +598,7 @@ export default function InstructorSettingsPage() {
                       value={meetingPointsInput}
                       onChange={(e) => setMeetingPointsInput(e.target.value)}
                       placeholder="Ex: Autoescola Centro, Metrô Pinheiros"
-                      className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                      className="h-full px-3 text-xs text-foreground dark:text-white"
                     />
                   </InputGroup>
                 </div>
@@ -618,7 +618,7 @@ export default function InstructorSettingsPage() {
                         className={`px-4 py-2.5 rounded-xl border text-xs font-bold transition-all ${
                           isSelected
                             ? "bg-blue-600 border-blue-600 text-white shadow-sm"
-                            : "bg-slate-50 border-slate-150 text-slate-500 hover:bg-slate-100"
+                            : "bg-muted border-slate-150 text-muted-foreground hover:bg-slate-100"
                         }`}
                       >
                         {cat.label}
@@ -632,7 +632,7 @@ export default function InstructorSettingsPage() {
               <div>
                 <Label htmlFor="bio" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Apresentação / Minibiografia</Label>
                 <div className="mt-1">
-                  <InputGroup className="rounded-xl bg-white dark:bg-slate-950 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600 items-start">
+                  <InputGroup className="rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600 items-start">
                     <InputGroupAddon align="inline-start" className="pt-3">
                       <Info className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -642,7 +642,7 @@ export default function InstructorSettingsPage() {
                       onChange={(e) => setBio(e.target.value)}
                       rows={3}
                       placeholder="Fale brevemente sobre sua experiência e metodologia de ensino..."
-                      className="px-3 text-xs text-slate-800 dark:text-white min-h-[80px]"
+                      className="px-3 text-xs text-foreground dark:text-white min-h-[80px]"
                     />
                   </InputGroup>
                 </div>
@@ -651,7 +651,7 @@ export default function InstructorSettingsPage() {
           </div>
 
           {/* Days of Work Card */}
-          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+          <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
             <h3 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider text-[9px] mb-2 flex items-center gap-1.5">
               <svg
                 className="w-4.5 h-4.5 text-blue-600 dark:text-blue-500"
@@ -668,7 +668,7 @@ export default function InstructorSettingsPage() {
               </svg>
               Dias de Trabalho Semanais
             </h3>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mb-5">
+            <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-medium mb-5">
               Marque os dias que você normalmente atende na autoescola.
             </p>
 
@@ -683,7 +683,7 @@ export default function InstructorSettingsPage() {
                     className={`flex-1 min-w-[50px] py-3.5 rounded-xl border text-sm font-bold transition-all text-center ${
                       isSelected
                         ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-600/10"
-                        : "bg-slate-50 border-slate-100 text-slate-500 hover:bg-slate-100 hover:border-slate-200"
+                        : "bg-muted border-border text-muted-foreground hover:bg-slate-100 hover:border-border"
                     }`}
                   >
                     {day.label}
@@ -694,7 +694,7 @@ export default function InstructorSettingsPage() {
           </div>
 
           {/* Work Hours & Lunch Breaks Card */}
-          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+          <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
             <h3 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider text-[9px] mb-4 flex items-center gap-1.5">
               <svg
                 className="w-4.5 h-4.5 text-blue-600 dark:text-blue-500"
@@ -714,16 +714,16 @@ export default function InstructorSettingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Working Hours */}
-              <div className="bg-slate-50/50 dark:bg-slate-955/40 p-4 rounded-xl border border-slate-200/30 dark:border-slate-900 flex flex-col gap-3">
-                <span className="text-[9px] font-bold text-slate-650 dark:text-slate-400 uppercase tracking-wider">
+              <div className="bg-muted/50 dark:bg-slate-950/40 p-4 rounded-xl border border-border/30 dark:border-slate-900 flex flex-col gap-3">
+                <span className="text-[9px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-wider">
                   Jornada de Trabalho
                 </span>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[8px] text-slate-400 dark:text-slate-500 block mb-1 font-bold uppercase tracking-wider">
+                    <label className="text-[8px] text-slate-400 dark:text-muted-foreground block mb-1 font-bold uppercase tracking-wider">
                       Entrada
                     </label>
-                    <InputGroup className="h-9 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 focus-within:border-blue-600">
+                    <InputGroup className="h-9 rounded-xl bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -731,15 +731,15 @@ export default function InstructorSettingsPage() {
                         type="time"
                         value={workStart}
                         onChange={(e) => setWorkStart(e.target.value)}
-                        className="h-full px-2 text-xs font-bold text-slate-800 dark:text-white"
+                        className="h-full px-2 text-xs font-bold text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
                   <div>
-                    <label className="text-[8px] text-slate-400 dark:text-slate-500 block mb-1 font-bold uppercase tracking-wider">
+                    <label className="text-[8px] text-slate-400 dark:text-muted-foreground block mb-1 font-bold uppercase tracking-wider">
                       Saída
                     </label>
-                    <InputGroup className="h-9 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 focus-within:border-blue-600">
+                    <InputGroup className="h-9 rounded-xl bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -747,7 +747,7 @@ export default function InstructorSettingsPage() {
                         type="time"
                         value={workEnd}
                         onChange={(e) => setWorkEnd(e.target.value)}
-                        className="h-full px-2 text-xs font-bold text-slate-800 dark:text-white"
+                        className="h-full px-2 text-xs font-bold text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -755,16 +755,16 @@ export default function InstructorSettingsPage() {
               </div>
 
               {/* Lunch Break */}
-              <div className="bg-slate-50/50 dark:bg-slate-955/40 p-4 rounded-xl border border-slate-200/30 dark:border-slate-900 flex flex-col gap-3">
-                <span className="text-[9px] font-bold text-slate-650 dark:text-slate-400 uppercase tracking-wider">
+              <div className="bg-muted/50 dark:bg-slate-950/40 p-4 rounded-xl border border-border/30 dark:border-slate-900 flex flex-col gap-3">
+                <span className="text-[9px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-wider">
                   Intervalo de Almoço
                 </span>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[8px] text-slate-400 dark:text-slate-500 block mb-1 font-bold uppercase tracking-wider">
+                    <label className="text-[8px] text-slate-400 dark:text-muted-foreground block mb-1 font-bold uppercase tracking-wider">
                       Início
                     </label>
-                    <InputGroup className="h-9 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 focus-within:border-blue-600">
+                    <InputGroup className="h-9 rounded-xl bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -772,15 +772,15 @@ export default function InstructorSettingsPage() {
                         type="time"
                         value={lunchStart}
                         onChange={(e) => setLunchStart(e.target.value)}
-                        className="h-full px-2 text-xs font-bold text-slate-800 dark:text-white"
+                        className="h-full px-2 text-xs font-bold text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
                   <div>
-                    <label className="text-[8px] text-slate-400 dark:text-slate-500 block mb-1 font-bold uppercase tracking-wider">
+                    <label className="text-[8px] text-slate-400 dark:text-muted-foreground block mb-1 font-bold uppercase tracking-wider">
                       Término
                     </label>
-                    <InputGroup className="h-9 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 focus-within:border-blue-600">
+                    <InputGroup className="h-9 rounded-xl bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupAddon align="inline-start">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
                       </InputGroupAddon>
@@ -788,7 +788,7 @@ export default function InstructorSettingsPage() {
                         type="time"
                         value={lunchEnd}
                         onChange={(e) => setLunchEnd(e.target.value)}
-                        className="h-full px-2 text-xs font-bold text-slate-800 dark:text-white"
+                        className="h-full px-2 text-xs font-bold text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -797,20 +797,20 @@ export default function InstructorSettingsPage() {
             </div>
 
             {/* Practical Shift Info Panel */}
-            <div className="mt-6 border-t border-slate-100 pt-4 flex flex-col gap-2">
-              <span className="text-xs font-bold text-slate-500">
+            <div className="mt-6 border-t border-border pt-4 flex flex-col gap-2">
+              <span className="text-xs font-bold text-muted-foreground">
                 Resumo da Jornada Diária
               </span>
-              <div className="flex justify-between text-[11px] text-slate-600 dark:text-slate-400 bg-blue-50/40 dark:bg-blue-950/20 p-3.5 rounded-xl border border-blue-150/40 dark:border-blue-900/40 font-semibold">
+              <div className="flex justify-between text-[11px] text-muted-foreground dark:text-slate-400 bg-blue-50/40 dark:bg-blue-950/20 p-3.5 rounded-xl border border-blue-150/40 dark:border-blue-900/40 font-semibold">
                 <span>
                   Horas de Atendimento:{" "}
-                  <strong className="text-slate-800">
+                  <strong className="text-foreground">
                     {workStart} às {workEnd}
                   </strong>
                 </span>
                 <span>
                   Pausa para Almoço:{" "}
-                  <strong className="text-slate-800">
+                  <strong className="text-foreground">
                     {lunchStart} às {lunchEnd}
                   </strong>
                 </span>
@@ -821,7 +821,7 @@ export default function InstructorSettingsPage() {
 
         {/* Extra Slots Settings Column (right) */}
         <div className="flex flex-col gap-6">
-          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col gap-5">
+          <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col gap-5">
             <div>
               <h3 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider text-[9px] mb-1 flex items-center gap-1.5">
                 <svg
@@ -849,14 +849,14 @@ export default function InstructorSettingsPage() {
               <div>
                 <Label htmlFor="newExtraDate" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Data do Dia Extra</Label>
                 <div className="mt-1">
-                  <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                  <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                     <InputGroupInput
                       type="date"
                       id="newExtraDate"
                       required
                       value={newExtraDate}
                       onChange={(e) => setNewExtraDate(e.target.value)}
-                      className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                      className="h-full px-3 text-xs text-foreground dark:text-white"
                     />
                   </InputGroup>
                 </div>
@@ -866,14 +866,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="newExtraStart" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Hora Início</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="time"
                         id="newExtraStart"
                         required
                         value={newExtraStart}
                         onChange={(e) => setNewExtraStart(e.target.value)}
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -881,14 +881,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="newExtraEnd" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Hora Fim</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="time"
                         id="newExtraEnd"
                         required
                         value={newExtraEnd}
                         onChange={(e) => setNewExtraEnd(e.target.value)}
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white"
+                        className="h-full px-3 text-xs text-foreground dark:text-white"
                       />
                     </InputGroup>
                   </div>
@@ -904,13 +904,13 @@ export default function InstructorSettingsPage() {
             </form>
 
             {/* List of active Extra Days exceptions */}
-            <div className="border-t border-slate-100 pt-4">
+            <div className="border-t border-border pt-4">
               <span className="text-[9px] font-black text-slate-855 dark:text-white uppercase tracking-wider block mb-3">
                 Exceções Ativas ({extraDays.length})
               </span>
 
               {extraDays.length === 0 ? (
-                <div className="text-center py-6 border border-dashed border-slate-200/40 dark:border-slate-800/80 rounded-xl bg-slate-50/20 dark:bg-slate-955/10">
+                <div className="text-center py-6 border border-dashed border-border/40 dark:border-slate-800/80 rounded-xl bg-muted/20 dark:bg-slate-950/10">
                   <span className="text-[11px] text-slate-400 font-medium">
                     Nenhum dia extra cadastrado
                   </span>
@@ -925,10 +925,10 @@ export default function InstructorSettingsPage() {
                     return (
                       <div
                         key={ed.date}
-                        className="flex items-center justify-between bg-white dark:bg-slate-955 p-3 rounded-xl border border-slate-200/40 dark:border-slate-900"
+                        className="flex items-center justify-between bg-card dark:bg-slate-950 p-3 rounded-xl border border-border/40 dark:border-slate-900"
                       >
                         <div className="flex flex-col">
-                          <span className="text-xs font-bold text-slate-900">
+                          <span className="text-xs font-bold text-foreground">
                             {dateFormatted}
                           </span>
                           <span className="text-[10px] text-blue-600 font-medium">
@@ -938,7 +938,7 @@ export default function InstructorSettingsPage() {
                         <button
                           type="button"
                           onClick={() => handleRemoveExtraDay(ed.date)}
-                          className="p-1.5 text-slate-400 hover:text-red-500 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all cursor-pointer"
+                          className="p-1.5 text-slate-400 hover:text-red-500 rounded-xl hover:bg-muted dark:hover:bg-slate-900 transition-all cursor-pointer"
                           title="Remover Exceção"
                         >
                           <svg
@@ -964,7 +964,7 @@ export default function InstructorSettingsPage() {
           </div>
 
           {/* Frota de Veículos Card */}
-          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col gap-5">
+          <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col gap-5">
             <div>
               <h3 className="text-xs font-black text-slate-855 dark:text-white uppercase tracking-wider text-[9px] mb-1 flex items-center gap-1.5">
                 <svg className="w-4.5 h-4.5 text-blue-600 dark:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -984,7 +984,7 @@ export default function InstructorSettingsPage() {
                 <div className="relative">
                   <Label htmlFor="vehBrand" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Marca</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="vehBrand"
@@ -998,7 +998,7 @@ export default function InstructorSettingsPage() {
                           setShowBrandSuggestions(true);
                         }}
                         placeholder="Ex: Chevrolet"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white bg-white dark:bg-slate-900"
+                        className="h-full px-3 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900"
                       />
                     </InputGroup>
                     {showBrandSuggestions && (
@@ -1007,7 +1007,7 @@ export default function InstructorSettingsPage() {
                           className="fixed inset-0 z-10" 
                           onClick={() => setShowBrandSuggestions(false)} 
                         />
-                        <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                        <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                           {dbBrands
                             .filter((b) => {
                               const matchesType =
@@ -1030,7 +1030,7 @@ export default function InstructorSettingsPage() {
                                     setNewVehCategory("B");
                                   }
                                 }}
-                                className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 transition-colors cursor-pointer"
+                                className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 transition-colors cursor-pointer"
                               >
                                 {b.name}
                               </button>
@@ -1043,7 +1043,7 @@ export default function InstructorSettingsPage() {
                             const matchesSearch = b.name.toLowerCase().includes(newVehBrand.toLowerCase());
                             return matchesType && matchesSearch;
                           }).length === 0 && (
-                            <div className="px-3 py-2 text-xs text-slate-400 dark:text-slate-550">
+                            <div className="px-3 py-2 text-xs text-slate-400 dark:text-muted-foreground">
                               Nenhuma marca sugerida
                             </div>
                           )}
@@ -1057,7 +1057,7 @@ export default function InstructorSettingsPage() {
                 <div className="relative">
                   <Label htmlFor="vehName" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Nome do Veículo / Modelo</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="vehName"
@@ -1072,7 +1072,7 @@ export default function InstructorSettingsPage() {
                           setShowNameSuggestions(true);
                         }}
                         placeholder="Ex: Onix 1.0"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white bg-white dark:bg-slate-900"
+                        className="h-full px-3 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900"
                       />
                     </InputGroup>
                     {showNameSuggestions && (
@@ -1081,7 +1081,7 @@ export default function InstructorSettingsPage() {
                           className="fixed inset-0 z-10" 
                           onClick={() => setShowNameSuggestions(false)} 
                         />
-                        <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                        <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                           {(() => {
                             const filteredModels = dbModels.filter(m => {
                               const matchesType =
@@ -1094,7 +1094,7 @@ export default function InstructorSettingsPage() {
 
                             if (filteredModels.length === 0) {
                               return (
-                                <div className="px-3 py-2 text-xs text-slate-400 dark:text-slate-550">
+                                <div className="px-3 py-2 text-xs text-slate-400 dark:text-muted-foreground">
                                   Nenhuma sugestão encontrada
                                 </div>
                               );
@@ -1113,7 +1113,7 @@ export default function InstructorSettingsPage() {
                                     setNewVehCategory("B");
                                   }
                                 }}
-                                className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 transition-colors cursor-pointer"
+                                className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 transition-colors cursor-pointer"
                               >
                                 {m.name}
                               </button>
@@ -1133,7 +1133,7 @@ export default function InstructorSettingsPage() {
                     <button
                       type="button"
                       onClick={() => setShowCatDropdown(!showCatDropdown)}
-                      className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-xs focus:outline-none focus:border-blue-600 text-slate-850 dark:text-white flex items-center justify-between cursor-pointer text-left font-medium"
+                      className="w-full h-10 px-3 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-905 text-xs focus:outline-none focus:border-blue-600 text-foreground dark:text-white flex items-center justify-between cursor-pointer text-left font-medium"
                     >
                       <span>
                         {newVehCategory === "B" && "Cat. B (Carro)"}
@@ -1146,7 +1146,7 @@ export default function InstructorSettingsPage() {
                     {showCatDropdown && (
                       <>
                         <div className="fixed inset-0 z-10" onClick={() => setShowCatDropdown(false)} />
-                        <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                        <div className="absolute left-0 right-0 mt-1 bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                           {[
                             { value: "B", label: "Cat. B (Carro)" },
                             { value: "A", label: "Cat. A (Moto)" },
@@ -1160,8 +1160,8 @@ export default function InstructorSettingsPage() {
                                 setNewVehCategory(opt.value);
                                 setShowCatDropdown(false);
                               }}
-                              className={`w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 transition-colors flex items-center justify-between cursor-pointer ${
-                                newVehCategory === opt.value ? "bg-slate-50 dark:bg-slate-850 font-bold" : ""
+                              className={`w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 transition-colors flex items-center justify-between cursor-pointer ${
+                                newVehCategory === opt.value ? "bg-muted dark:bg-slate-800 font-bold" : ""
                               }`}
                             >
                               <span>{opt.label}</span>
@@ -1177,14 +1177,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="vehPlate" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Placa</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="vehPlate"
                         value={newVehPlate}
                         onChange={(e) => setNewVehPlate(e.target.value)}
                         placeholder="ABC1D23"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white bg-white dark:bg-slate-900"
+                        className="h-full px-3 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900"
                       />
                     </InputGroup>
                   </div>
@@ -1193,14 +1193,14 @@ export default function InstructorSettingsPage() {
                 <div>
                   <Label htmlFor="vehColor" className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">Cor (opcional)</Label>
                   <div className="mt-1">
-                    <InputGroup className="h-10 rounded-xl bg-white dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850 focus-within:border-blue-600">
+                    <InputGroup className="h-10 rounded-xl bg-card dark:bg-slate-950 border border-border/40 dark:border-slate-800 focus-within:border-blue-600">
                       <InputGroupInput
                         type="text"
                         id="vehColor"
                         value={newVehColor}
                         onChange={(e) => setNewVehColor(e.target.value)}
                         placeholder="Prata"
-                        className="h-full px-3 text-xs text-slate-800 dark:text-white bg-white dark:bg-slate-900"
+                        className="h-full px-3 text-xs text-foreground dark:text-white bg-card dark:bg-slate-900"
                       />
                     </InputGroup>
                   </div>
@@ -1216,8 +1216,8 @@ export default function InstructorSettingsPage() {
                     onClick={() => setNewVehAutomatic(false)}
                     className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                       !newVehAutomatic
-                        ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                        : "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                        ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                        : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                     }`}
                   >
                     Manual
@@ -1227,8 +1227,8 @@ export default function InstructorSettingsPage() {
                     onClick={() => setNewVehAutomatic(true)}
                     className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                       newVehAutomatic
-                        ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                        : "bg-white dark:bg-slate-955 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                        ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                        : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                     }`}
                   >
                     Automático
@@ -1245,14 +1245,14 @@ export default function InstructorSettingsPage() {
               </Button>
             </form>
 
-            <div className="border-t border-slate-200/30 dark:border-slate-850 pt-4">
-              <span className="text-[9px] font-black text-slate-850 dark:text-white uppercase tracking-wider block mb-3">
+            <div className="border-t border-border/30 dark:border-slate-800 pt-4">
+              <span className="text-[9px] font-black text-foreground dark:text-white uppercase tracking-wider block mb-3">
                 Frota Registrada ({vehicles.filter(v => !v.studentId).length})
               </span>
 
               {vehicles.filter(v => !v.studentId).length === 0 ? (
-                <div className="text-center py-6 border border-dashed border-slate-200/40 dark:border-slate-800/80 rounded-xl bg-slate-50/20 dark:bg-slate-955/10">
-                  <span className="text-[10px] text-slate-400 dark:text-slate-550 font-medium">
+                <div className="text-center py-6 border border-dashed border-border/40 dark:border-slate-800/80 rounded-xl bg-muted/20 dark:bg-slate-950/10">
+                  <span className="text-[10px] text-slate-400 dark:text-muted-foreground font-medium">
                     Nenhum veículo na frota
                   </span>
                 </div>
@@ -1261,20 +1261,20 @@ export default function InstructorSettingsPage() {
                   {vehicles.filter(v => !v.studentId).map((v) => (
                     <div
                       key={v.id}
-                      className="flex items-center justify-between bg-white dark:bg-slate-955 p-3 rounded-xl border border-slate-200/40 dark:border-slate-900"
+                      className="flex items-center justify-between bg-card dark:bg-slate-950 p-3 rounded-xl border border-border/40 dark:border-slate-900"
                     >
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-slate-850 dark:text-slate-200">
+                        <span className="text-xs font-bold text-foreground dark:text-slate-200">
                           {v.name}
                         </span>
-                        <span className="text-[9px] text-blue-650 dark:text-blue-400 font-bold uppercase tracking-wider mt-0.5">
+                        <span className="text-[9px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mt-0.5">
                           Cat. {v.category} • Placa: {v.plate || "N/D"} • Câmbio: {v.automatic ? "Automático" : "Manual"}
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() => deleteVehicle(v.id)}
-                        className="p-1.5 text-slate-400 hover:text-red-500 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all cursor-pointer"
+                        className="p-1.5 text-slate-400 hover:text-red-500 rounded-xl hover:bg-muted dark:hover:bg-slate-900 transition-all cursor-pointer"
                         title="Remover Veículo"
                       >
                         <svg
