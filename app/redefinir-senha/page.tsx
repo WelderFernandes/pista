@@ -210,7 +210,7 @@ function ResetPasswordForm() {
                 disabled={resendOtpMutation.isPending}
                 className="flex items-center gap-1.5 text-orange-600 hover:text-orange-700 font-bold hover:underline cursor-pointer disabled:opacity-50 mx-auto"
               >
-                <ArrowCounterClockwise className="w-4 h-4 animate-spin-hover" />
+                <ArrowCounterClockwise className="w-4 h-4" />
                 Reenviar Código OTP
               </button>
             ) : (

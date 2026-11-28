@@ -25,7 +25,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           <XCircleIcon className="size-4" />
         ),
         loading: (
-          <SpinnerIcon className="size-4 animate-spin" />
+          <SpinnerIcon className="size-4 motion-safe:animate-spin" />
         ),
       }}
       style={

@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -130,7 +131,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
   if (isPending) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-muted dark:bg-slate-950">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+        <Spinner size="lg" className="size-10 text-primary" />
       </div>
     );
   }
