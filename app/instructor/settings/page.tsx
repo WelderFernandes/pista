@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import React, { useState, useEffect } from "react";
 import { useApp } from "@/lib/context";
 import { centsToBRL, brlToCents } from "@/lib/utils";
@@ -201,13 +202,13 @@ export default function InstructorSettingsPage() {
   const handleAddExtraDay = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newExtraDate) {
-      alert("Por favor, selecione uma data válida para a agenda extra.");
+      toast.error("Por favor, selecione uma data válida para a agenda extra.");
       return;
     }
 
     // Check if date already exists
     if (extraDays.some((ed) => ed.date === newExtraDate)) {
-      alert("Já existe uma agenda extra configurada para esta data.");
+      toast.error("Já existe uma agenda extra configurada para esta data.");
       return;
     }
 
@@ -237,51 +238,51 @@ export default function InstructorSettingsPage() {
   const handleSaveAll = () => {
     // Basic validation
     if (workStart >= workEnd) {
-      alert(
+      toast.error(
         "O horário de início do trabalho deve ser anterior ao horário de término.",
       );
       return;
     }
     if (lunchStart >= lunchEnd) {
-      alert("O horário de início do almoço deve ser anterior ao término.");
+      toast.error("O horário de início do almoço deve ser anterior ao término.");
       return;
     }
     if (lunchStart < workStart || lunchEnd > workEnd) {
-      alert(
+      toast.error(
         "O horário de almoço deve estar contido dentro do período de trabalho.",
       );
       return;
     }
     if (!city.trim()) {
-      alert("Por favor, informe a cidade de atuação.");
+      toast.error("Por favor, informe a cidade de atuação.");
       return;
     }
     if (categories.length === 0) {
-      alert("Selecione ao menos uma categoria habilitada.");
+      toast.error("Selecione ao menos uma categoria habilitada.");
       return;
     }
     if (!cep.trim() || cep.replace(/\D/g, "").length !== 8) {
-      alert("Por favor, informe um CEP válido.");
+      toast.error("Por favor, informe um CEP válido.");
       return;
     }
     if (!street.trim()) {
-      alert("Por favor, informe a rua/logradouro.");
+      toast.error("Por favor, informe a rua/logradouro.");
       return;
     }
     if (!neighborhood.trim()) {
-      alert("Por favor, informe o bairro.");
+      toast.error("Por favor, informe o bairro.");
       return;
     }
     if (!number.trim()) {
-      alert("Por favor, informe o número do endereço.");
+      toast.error("Por favor, informe o número do endereço.");
       return;
     }
     if (!city.trim()) {
-      alert("Por favor, informe a cidade.");
+      toast.error("Por favor, informe a cidade.");
       return;
     }
     if (!state.trim() || state.trim().length !== 2) {
-      alert("Por favor, informe a UF/estado.");
+      toast.error("Por favor, informe a UF/estado.");
       return;
     }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {  useSession } from "@/lib/auth-client";
@@ -73,7 +74,7 @@ function AcceptInvitationContent() {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-slate-950 text-white">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" />
+          <Spinner size="lg" className="size-12 text-orange-500" />
           <p className="text-sm font-semibold text-slate-400">Verificando convite...</p>
         </div>
       </div>
@@ -178,7 +179,7 @@ export default function AcceptInvitationPage() {
     <Suspense fallback={
       <div className="flex h-screen w-full items-center justify-center bg-slate-950 text-white">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" />
+          <Spinner size="lg" className="size-12 text-orange-500" />
           <p className="text-sm font-semibold text-slate-400">Carregando convite...</p>
         </div>
       </div>

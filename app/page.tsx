@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -1052,7 +1053,7 @@ export default function Home() {
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin" />
+                        <Spinner size="sm" />
                         Criando sua conta...
                       </>
                     ) : (

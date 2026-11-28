@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTeamMembersAction, getPendingInvitationsAction, inviteMemberAction } from "@/app/actions";
@@ -145,7 +146,7 @@ export default function TeamPage() {
             
             {invitesLoading ? (
               <div className="flex justify-center p-4">
-                <div className="h-4 w-4 animate-spin rounded-full border border-blue-600 border-t-transparent" />
+                <Spinner className="text-primary" />
               </div>
             ) : invitations.length === 0 ? (
               <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-semibold text-center py-4">Nenhum convite pendente.</p>
@@ -183,7 +184,7 @@ export default function TeamPage() {
 
             {membersLoading ? (
               <div className="flex justify-center p-8">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                <Spinner size="lg" className="text-primary" />
               </div>
             ) : members.length === 0 ? (
               <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-semibold text-center py-8">Nenhum membro ativo encontrado.</p>

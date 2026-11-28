@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { 
@@ -188,7 +189,7 @@ export default function InstructorsPage() {
   const handleConfirmBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!bookingName || !bookingPhone || !selectedSlot || !selectedInstructor) {
-      alert("Por favor, preencha todos os campos e selecione um horário.");
+      toast.error("Por favor, preencha todos os campos e selecione um horário.");
       return;
     }
 
@@ -219,7 +220,7 @@ export default function InstructorsPage() {
       }, 4000);
     } catch (error) {
       const err = error as Error;
-      alert(err?.message || "Erro ao realizar o agendamento. Verifique os dados inseridos.");
+      toast.error(err?.message || "Erro ao realizar o agendamento. Verifique os dados inseridos.");
     }
   };
 
