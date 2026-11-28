@@ -220,6 +220,14 @@ export async function addClassAction(rawData: AddClassInput) {
     if (!student || data.studentId !== student.id) {
       throw new Error("Não autorizado.");
     }
+  } else {
+    // Instrutor/admin/owner só podem agendar para alunos da própria organização
+    const student = await tenantPrisma.student.findFirst({
+      where: { id: data.studentId },
+    });
+    if (!student) {
+      throw new Error("Aluno não encontrado nesta organização.");
+    }
   }
 
   const session = await tenantPrisma.classSession.create({
@@ -977,6 +985,16 @@ export async function addVehicleAction(rawData: VehicleInput) {
     }
   }
 
+  if (data.studentId) {
+    // Impede vincular veículo a aluno de outra organização
+    const student = await tenantPrisma.student.findFirst({
+      where: { id: data.studentId },
+    });
+    if (!student) {
+      throw new Error("Aluno não encontrado nesta organização.");
+    }
+  }
+
   return await tenantPrisma.vehicle.create({
     data: {
       organizationId: activeOrgId,
@@ -1150,29 +1168,35 @@ export async function submitClassActionRating(rawData: ClassRatingInput) {
  * Busca a avaliação de uma aula específica.
  */
 export async function getClassRatingAction(classSessionId: string) {
-  const memberInfo = await getActiveMember();
-  if (!memberInfo || !memberInfo.activeOrgId) {
-    throw new Error("Não autenticado ou sem organização ativa.");
+  const { activeOrgId, role, user } = await requireRole([
+    "owner",
+    "admin",
+    "instructor",
+    "student",
+  ]);
+  const tenantPrisma = getTenantPrisma(activeOrgId);
+
+  const rating = await tenantPrisma.classRating.findUnique({
+    where: { classSessionId },
+    include: { student: { select: { name: true, photoUrl: true, userId: true } } },
+  });
+  if (!rating) return null;
+
+  // Aluno só vê a própria avaliação; instrutores e administradores veem as da organização
+  if (role === "student" && rating.student.userId !== user.id) {
+    throw new Error("Não autorizado.");
   }
 
-  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
-
-  return await tenantPrisma.classRating.findUnique({
-    where: { classSessionId },
-    include: { student: { select: { name: true, photoUrl: true } } },
-  });
+  const { student, ...rest } = rating;
+  return { ...rest, student: { name: student.name, photoUrl: student.photoUrl } };
 }
 
 /**
  * Lista todas as avaliações da organização ativa (para o instrutor ver).
  */
 export async function getInstructorRatingsAction() {
-  const memberInfo = await getActiveMember();
-  if (!memberInfo || !memberInfo.activeOrgId) {
-    throw new Error("Não autenticado ou sem organização ativa.");
-  }
-
-  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  const tenantPrisma = getTenantPrisma(activeOrgId);
 
   return await tenantPrisma.classRating.findMany({
     include: {
@@ -1187,15 +1211,11 @@ export async function getInstructorRatingsAction() {
  * Calcula a média de avaliações da organização ativa.
  */
 export async function getInstructorAverageRatingAction() {
-  const memberInfo = await getActiveMember();
-  if (!memberInfo || !memberInfo.activeOrgId) {
-    throw new Error("Não autenticado ou sem organização ativa.");
-  }
-
-  const tenantPrisma = getTenantPrisma(memberInfo.activeOrgId);
+  const { activeOrgId } = await requireRole(["owner", "admin", "instructor"]);
+  const tenantPrisma = getTenantPrisma(activeOrgId);
 
   const ratings = await tenantPrisma.classRating.findMany({
-    where: { organizationId: memberInfo.activeOrgId },
+    where: { organizationId: activeOrgId },
     select: { rating: true },
   });
 
