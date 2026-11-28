@@ -66,7 +66,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
   return (
     <div
       ref={containerRef}
-      className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 h-14 rounded-xl relative flex items-center justify-center select-none overflow-hidden w-full shadow-inner"
+      className="bg-slate-100 dark:bg-slate-900 border border-border dark:border-slate-800 h-14 rounded-xl relative flex items-center justify-center select-none overflow-hidden w-full shadow-inner"
     >
       {/* Background fill based on drag position */}
       <div 
@@ -74,7 +74,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
         style={{ width: `calc(${sliderPos}% + 44px - (${sliderPos}px * 0.44))` }}
       />
 
-      <span className="text-xs font-bold text-slate-400 dark:text-slate-500 select-none pointer-events-none z-10 transition-opacity" style={{ opacity: (100 - sliderPos) / 100 }}>
+      <span className="text-xs font-bold text-slate-400 dark:text-muted-foreground select-none pointer-events-none z-10 transition-opacity" style={{ opacity: (100 - sliderPos) / 100 }}>
         {text}
       </span>
 
@@ -82,7 +82,7 @@ function SlideToUnlock({ onUnlock, text = "Deslize para iniciar a aula" }: { onU
       <div
         onMouseDown={startDrag}
         onTouchStart={startDrag}
-        className="absolute top-1 w-12 bottom-1 bg-white rounded-xl flex items-center justify-center shadow-md cursor-grab active:cursor-grabbing z-20"
+        className="absolute top-1 w-12 bottom-1 bg-card rounded-xl flex items-center justify-center shadow-md cursor-grab active:cursor-grabbing z-20"
         style={{ 
           left: `calc(${sliderPos}% - ${(sliderPos * 40) / 100}px + 4px)` 
         }}
@@ -211,7 +211,7 @@ export default function InstructorAgenda() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Agenda de Aulas</h2>
+          <h2 className="text-2xl font-black tracking-tight text-foreground dark:text-white">Agenda de Aulas</h2>
           <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Visualize e coordene seus horários de instrução</p>
         </div>
         <button
@@ -226,13 +226,13 @@ export default function InstructorAgenda() {
       </div>
 
       {/* Week Selector Grid */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-5 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
         <div className="flex justify-between items-center mb-4">
-          <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Junho de 2026</span>
+          <span className="text-[10px] text-slate-400 dark:text-muted-foreground font-bold uppercase tracking-wider">Junho de 2026</span>
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrevDay}
-              className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+              className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-muted-foreground dark:text-slate-400 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
               disabled={selectedDate === "2026-06-01"}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -242,7 +242,7 @@ export default function InstructorAgenda() {
             <span className="text-[9px] font-bold text-blue-600 dark:text-blue-500 uppercase tracking-wider">Navegar</span>
             <button
               onClick={handleNextDay}
-              className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+              className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-muted-foreground dark:text-slate-400 transition-colors disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
               disabled={selectedDate === "2026-06-30"}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -265,7 +265,7 @@ export default function InstructorAgenda() {
                 className={`py-2 px-3.5 min-w-[58px] rounded-xl flex flex-col items-center justify-center gap-0.5 transition-all duration-200 active:scale-95 cursor-pointer snap-center ${
                   isSelected
                     ? "bg-blue-600 text-white font-bold shadow-[0_4px_12px_rgba(37,99,235,0.15)]"
-                    : "bg-slate-50 dark:bg-slate-950/40 text-slate-550 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
+                    : "bg-muted dark:bg-slate-950/40 text-muted-foreground dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
                 }`}
               >
                 <span className="text-[9px] uppercase font-bold tracking-tight opacity-80">{d.day}</span>
@@ -277,23 +277,23 @@ export default function InstructorAgenda() {
       </section>
 
       {/* Schedule List */}
-      <section className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col gap-6">
-        <h3 className="text-sm font-bold text-slate-850 dark:text-white border-b border-slate-200/40 dark:border-slate-800/60 pb-3 uppercase tracking-wider text-[10px]">
+      <section className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] flex flex-col gap-6">
+        <h3 className="text-sm font-bold text-foreground dark:text-white border-b border-border/40 dark:border-slate-800/60 pb-3 uppercase tracking-wider text-[10px]">
           Horários para {new Date(selectedDate + "T00:00:00").toLocaleDateString("pt-BR", { weekday: 'long', day: 'numeric', month: 'long' })}
         </h3>
 
         <div className="flex flex-col gap-4">
           {!isWorking ? (
-            <div className="text-center py-10 px-6 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-950/50 flex items-center justify-center text-slate-400">
+            <div className="text-center py-10 px-6 border border-dashed border-border dark:border-slate-800 rounded-2xl flex flex-col items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-muted dark:bg-slate-950/50 flex items-center justify-center text-slate-400">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
                 </svg>
               </div>
-              <h4 className="font-bold text-slate-700 dark:text-slate-200 text-xs">Dia de Folga</h4>
+              <h4 className="font-bold text-foreground dark:text-slate-200 text-xs">Dia de Folga</h4>
               <p className="text-[11px] text-slate-400 max-w-xs leading-relaxed">
                 Você normalmente não trabalha aos{" "}
-                <span className="font-bold text-slate-650 dark:text-slate-300">
+                <span className="font-bold text-muted-foreground dark:text-slate-300">
                   {new Date(selectedDate + "T00:00:00").toLocaleDateString("pt-BR", { weekday: "long" })}s
                 </span>
                 .
@@ -329,23 +329,23 @@ export default function InstructorAgenda() {
                     {/* Student Class details */}
                     <div 
                       onClick={() => setSelectedClassId(session.id)}
-                      className="flex-1 bg-white dark:bg-slate-950 p-4 rounded-xl border border-slate-200/40 dark:border-slate-900 hover:border-blue-200 dark:hover:border-blue-900 transition-all flex items-center justify-between gap-4 shadow-sm cursor-pointer hover:scale-[1.005] active:scale-[0.995] duration-200"
+                      className="flex-1 bg-card dark:bg-slate-950 p-4 rounded-xl border border-border/40 dark:border-slate-900 hover:border-blue-200 dark:hover:border-blue-900 transition-all flex items-center justify-between gap-4 shadow-sm cursor-pointer hover:scale-[1.005] active:scale-[0.995] duration-200"
                     >
                       <div className="flex items-center gap-3">
                         <img
                           alt={session.studentName}
-                          className="w-8 h-8 rounded-full object-cover border border-slate-200/50 dark:border-slate-900"
+                          className="w-8 h-8 rounded-full object-cover border border-border/50 dark:border-slate-900"
                           src={session.studentPhoto}
                         />
                         <div>
-                          <h4 className="font-bold text-slate-850 dark:text-slate-200 text-xs">{session.studentName}</h4>
-                          <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 font-medium">{session.type} • {session.meetingPoint}</p>
+                          <h4 className="font-bold text-foreground dark:text-slate-200 text-xs">{session.studentName}</h4>
+                          <p className="text-[10px] text-slate-400 dark:text-muted-foreground mt-1 font-medium">{session.type} • {session.meetingPoint}</p>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider ${
-                          session.status === "Confirmada" ? "bg-blue-50 text-blue-650 border border-blue-100/55 dark:bg-blue-950/30 dark:text-blue-400" :
+                          session.status === "Confirmada" ? "bg-blue-50 text-blue-600 border border-blue-100/55 dark:bg-blue-950/30 dark:text-blue-400" :
                           session.status === "Concluída" ? "bg-emerald-50 text-emerald-700 border border-emerald-100/55 dark:bg-emerald-950/30 dark:text-emerald-400" :
                           session.status === "Cancelada" ? "bg-red-50 text-red-700 border border-red-100/55 dark:bg-red-950/30 dark:text-red-400" :
                           session.status === "Em andamento" ? "bg-blue-50 text-blue-700 border border-blue-100 animate-pulse dark:bg-blue-950/30 dark:text-blue-400" :
@@ -377,7 +377,7 @@ export default function InstructorAgenda() {
                     <div className="w-px h-10 bg-slate-100 dark:bg-slate-900 relative">
                       <div className="absolute top-4 -left-1 w-2.5 h-2.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-white dark:border-slate-950" />
                     </div>
-                    <div className="flex-1 py-2.5 px-4 bg-slate-50/50 dark:bg-slate-900/20 rounded-xl text-left text-[10px] text-slate-400 font-semibold flex items-center justify-between border border-slate-100/40">
+                    <div className="flex-1 py-2.5 px-4 bg-muted/50 dark:bg-slate-900/20 rounded-xl text-left text-[10px] text-slate-400 font-semibold flex items-center justify-between border border-border/40">
                       <span>Fora do Expediente ({workStart} - {workEnd})</span>
                       <svg className="w-4 h-4 text-slate-450" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -404,7 +404,7 @@ export default function InstructorAgenda() {
                         </svg>
                         Intervalo ({lunchStart} - {lunchEnd})
                       </span>
-                      <span className="text-[8px] text-blue-650 bg-blue-100/60 dark:bg-blue-900/30 px-2 py-0.5 rounded-full font-black tracking-wider uppercase">Pausa</span>
+                      <span className="text-[8px] text-blue-600 bg-blue-100/60 dark:bg-blue-900/30 px-2 py-0.5 rounded-full font-black tracking-wider uppercase">Pausa</span>
                     </div>
                   </div>
                 );
@@ -430,7 +430,7 @@ export default function InstructorAgenda() {
                       setClassTime(slot);
                       setShowAddModal(true);
                     }}
-                    className="flex-1 py-2.5 px-4 border border-dashed border-slate-200 dark:border-slate-800 hover:border-blue-200/80 hover:bg-blue-50/10 dark:hover:bg-blue-950/20 text-left text-xs text-slate-400 dark:text-slate-500 font-medium transition-all active:scale-[0.995] duration-150 flex items-center justify-between cursor-pointer rounded-xl"
+                    className="flex-1 py-2.5 px-4 border border-dashed border-border dark:border-slate-800 hover:border-blue-200/80 hover:bg-blue-50/10 dark:hover:bg-blue-950/20 text-left text-xs text-slate-400 dark:text-muted-foreground font-medium transition-all active:scale-[0.995] duration-150 flex items-center justify-between cursor-pointer rounded-xl"
                   >
                     <span>Disponível para Agendamento</span>
                     <span className="text-blue-600 dark:text-blue-500 font-bold hover:underline flex items-center gap-0.5 text-[10px]">
@@ -450,16 +450,16 @@ export default function InstructorAgenda() {
       {/* Add Appointment Modal */}
       {showAddModal && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
             <button
               onClick={() => setShowAddModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
+            <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-border dark:border-slate-800">
               Reservar Horário: {classTime}
             </h3>
 
@@ -471,7 +471,7 @@ export default function InstructorAgenda() {
                     id="selectedStudent"
                     value={selectedStudent}
                     onChange={(e) => setSelectedStudent(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
+                    className="w-full rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 p-2.5 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
                   >
                     {students.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -489,7 +489,7 @@ export default function InstructorAgenda() {
                     id="classType"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
+                    className="w-full rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 p-2.5 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
                   >
                     <option value="Aula de Baliza">Aula de Baliza</option>
                     <option value="Prática de Direção">Prática de Direção</option>
@@ -514,7 +514,7 @@ export default function InstructorAgenda() {
 
               <Button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 Confirmar Reserva
               </Button>
@@ -527,11 +527,11 @@ export default function InstructorAgenda() {
       {/* Appointment Detail Bottom-Drawer Modal */}
       {selectedClass && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-end md:items-center justify-center p-0 md:p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-t-3xl md:rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200/40 dark:border-slate-800/85 relative animate-scale-up flex flex-col gap-5 max-h-[90vh] md:max-h-none overflow-y-auto">
+          <div className="bg-card dark:bg-slate-900 rounded-t-3xl md:rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-border/40 dark:border-slate-800/85 relative animate-scale-up flex flex-col gap-5 max-h-[90vh] md:max-h-none overflow-y-auto">
             {/* Close Button */}
             <button
               onClick={() => setSelectedClassId(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer transition-colors"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-300 p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -540,24 +540,24 @@ export default function InstructorAgenda() {
 
             {/* Title */}
             <div>
-              <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-1">Detalhes da Aula</h3>
-              <p className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">Ficha de acompanhamento operacional</p>
+              <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-1">Detalhes da Aula</h3>
+              <p className="text-[11px] text-slate-400 dark:text-muted-foreground font-semibold mt-0.5">Ficha de acompanhamento operacional</p>
             </div>
 
             {/* Student card info */}
-            <div className="flex items-center gap-3.5 bg-slate-50 dark:bg-slate-950 p-4 border border-slate-200/30 dark:border-slate-900 rounded-xl">
+            <div className="flex items-center gap-3.5 bg-muted dark:bg-slate-950 p-4 border border-border/30 dark:border-slate-900 rounded-xl">
               <img
                 alt={selectedClass.studentName}
                 className="w-12 h-12 rounded-full object-cover border border-blue-600/20"
                 src={selectedClass.studentPhoto}
               />
               <div>
-                <h4 className="font-bold text-slate-850 dark:text-slate-250 text-xs leading-none">{selectedClass.studentName}</h4>
+                <h4 className="font-bold text-foreground dark:text-slate-200 text-xs leading-none">{selectedClass.studentName}</h4>
                 <div className="flex items-center gap-1.5 mt-2">
-                  <span className="bg-blue-50/80 text-blue-650 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-100/50 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="bg-blue-50/80 text-blue-600 dark:bg-blue-950/30 dark:text-blue-400 border border-blue-100/50 text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Aula 14 de 20
                   </span>
-                  <span className="text-[9px] text-slate-450 dark:text-slate-500 font-bold uppercase">Cat. B</span>
+                  <span className="text-[9px] text-slate-450 dark:text-muted-foreground font-bold uppercase">Cat. B</span>
                 </div>
               </div>
             </div>
@@ -565,7 +565,7 @@ export default function InstructorAgenda() {
             {/* Bento Grid Lesson Parameters */}
             <div className="grid grid-cols-2 gap-3">
               {/* Date & Time */}
-              <div className="col-span-2 bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200/30 dark:border-slate-900 flex justify-between items-center">
+              <div className="col-span-2 bg-muted dark:bg-slate-950 p-4 rounded-xl border border-border/30 dark:border-slate-900 flex justify-between items-center">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-500 flex items-center justify-center">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -574,44 +574,44 @@ export default function InstructorAgenda() {
                   </div>
                   <div>
                     <span className="text-[8px] text-slate-400 font-bold block uppercase tracking-wider">Data</span>
-                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    <span className="text-xs font-bold text-foreground dark:text-slate-300">
                       {new Date(selectedClass.date + "T00:00:00").toLocaleDateString("pt-BR", { day: 'numeric', month: 'short' })}
                     </span>
                   </div>
                 </div>
                 <div className="text-right">
                   <span className="text-[8px] text-slate-400 font-bold block uppercase tracking-wider">Horário</span>
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{selectedClass.duration}</span>
+                  <span className="text-xs font-bold text-foreground dark:text-slate-300">{selectedClass.duration}</span>
                 </div>
               </div>
 
               {/* Class Type */}
-              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200/30 dark:border-slate-900 flex flex-col gap-1.5">
+              <div className="bg-muted dark:bg-slate-950 p-4 rounded-xl border border-border/30 dark:border-slate-900 flex flex-col gap-1.5">
                 <div className="flex items-center gap-1.5 text-slate-400">
                   <svg className="w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span className="text-[8px] font-bold uppercase tracking-wider">Tipo de Aula</span>
                 </div>
-                <p className="text-xs font-bold text-slate-700 dark:text-slate-300">{selectedClass.type}</p>
+                <p className="text-xs font-bold text-foreground dark:text-slate-300">{selectedClass.type}</p>
               </div>
 
               {/* Meeting Point */}
-              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200/30 dark:border-slate-900 flex flex-col gap-1.5">
+              <div className="bg-muted dark:bg-slate-950 p-4 rounded-xl border border-border/30 dark:border-slate-900 flex flex-col gap-1.5">
                 <div className="flex items-center gap-1.5 text-slate-400">
                   <svg className="w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   </svg>
                   <span className="text-[8px] font-bold uppercase tracking-wider">Local</span>
                 </div>
-                <p className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">{selectedClass.meetingPoint}</p>
+                <p className="text-xs font-bold text-foreground dark:text-slate-300 truncate">{selectedClass.meetingPoint}</p>
               </div>
             </div>
 
             {/* Notes Section */}
-            <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200/30 dark:border-slate-900">
+            <div className="bg-muted dark:bg-slate-950 p-4 rounded-xl border border-border/30 dark:border-slate-900">
               <span className="text-[8px] text-slate-400 font-bold block uppercase tracking-wider mb-1">Anotações do Instrutor</span>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-semibold">
+              <p className="text-xs text-muted-foreground dark:text-slate-400 leading-relaxed font-semibold">
                 Focar em controle de embreagem e alinhamento na vaga de baliza.
               </p>
             </div>

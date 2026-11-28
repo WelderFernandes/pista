@@ -147,18 +147,18 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="w-full max-w-[500px] bg-slate-50 border border-slate-200 dark:bg-slate-900/40 dark:border-slate-800 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden p-8 md:p-12 relative z-10 transition-all duration-300">
+    <div className="w-full max-w-[500px] bg-muted border border-border dark:bg-slate-900/40 dark:border-slate-800 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden p-8 md:p-12 relative z-10 transition-all duration-300">
       <div className="flex items-center gap-3 mb-6 justify-center">
         <div className="w-8 h-8 rounded-lg bg-linear-to-tr from-orange-600 to-orange-500 flex items-center justify-center font-bold text-base shadow-lg shadow-orange-500/20 text-white">
           V
         </div>
-        <span className="font-bold text-lg text-slate-900 dark:text-white">Volante Certo</span>
+        <span className="font-bold text-lg text-foreground dark:text-white">Volante Certo</span>
       </div>
 
-      <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight text-center">
+      <h2 className="text-2xl font-extrabold text-foreground dark:text-white mb-2 tracking-tight text-center">
         {step === "otp" ? "Verificação OTP" : "Criar Nova Senha"}
       </h2>
-      <p className="text-xs text-slate-550 dark:text-slate-400 mb-6 text-center">
+      <p className="text-xs text-muted-foreground dark:text-slate-400 mb-6 text-center">
         {step === "otp" 
           ? `Digite o código OTP de 6 dígitos enviado para ${email || "seu e-mail"}.`
           : "Crie uma nova senha de acesso forte e segura."
@@ -180,16 +180,16 @@ function ResetPasswordForm() {
       {step === "otp" ? (
         <form onSubmit={handleVerifyOtp} className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-2">
-            <Label className="text-xs text-slate-500">Código de Verificação</Label>
+            <Label className="text-xs text-muted-foreground">Código de Verificação</Label>
             
             <InputOTP maxLength={6} value={otp} onChange={setOtp}>
               <InputOTPGroup className="gap-2">
-                <InputOTPSlot index={0} className="w-12 h-12 rounded-xl text-lg font-bold border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus-within:border-orange-500" />
-                <InputOTPSlot index={1} className="w-12 h-12 rounded-xl text-lg font-bold border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus-within:border-orange-500" />
-                <InputOTPSlot index={2} className="w-12 h-12 rounded-xl text-lg font-bold border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus-within:border-orange-500" />
-                <InputOTPSlot index={3} className="w-12 h-12 rounded-xl text-lg font-bold border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus-within:border-orange-500" />
-                <InputOTPSlot index={4} className="w-12 h-12 rounded-xl text-lg font-bold border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus-within:border-orange-500" />
-                <InputOTPSlot index={5} className="w-12 h-12 rounded-xl text-lg font-bold border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus-within:border-orange-500" />
+                <InputOTPSlot index={0} className="w-12 h-12 rounded-xl text-lg font-bold border border-border dark:border-slate-800 bg-card dark:bg-slate-950 focus-within:border-orange-500" />
+                <InputOTPSlot index={1} className="w-12 h-12 rounded-xl text-lg font-bold border border-border dark:border-slate-800 bg-card dark:bg-slate-950 focus-within:border-orange-500" />
+                <InputOTPSlot index={2} className="w-12 h-12 rounded-xl text-lg font-bold border border-border dark:border-slate-800 bg-card dark:bg-slate-950 focus-within:border-orange-500" />
+                <InputOTPSlot index={3} className="w-12 h-12 rounded-xl text-lg font-bold border border-border dark:border-slate-800 bg-card dark:bg-slate-950 focus-within:border-orange-500" />
+                <InputOTPSlot index={4} className="w-12 h-12 rounded-xl text-lg font-bold border border-border dark:border-slate-800 bg-card dark:bg-slate-950 focus-within:border-orange-500" />
+                <InputOTPSlot index={5} className="w-12 h-12 rounded-xl text-lg font-bold border border-border dark:border-slate-800 bg-card dark:bg-slate-950 focus-within:border-orange-500" />
               </InputOTPGroup>
             </InputOTP>
           </div>
@@ -214,8 +214,8 @@ function ResetPasswordForm() {
                 Reenviar Código OTP
               </button>
             ) : (
-              <span className="text-slate-500">
-                Reenviar código em <strong className="text-slate-800 dark:text-white font-mono">{timer}s</strong>
+              <span className="text-muted-foreground">
+                Reenviar código em <strong className="text-foreground dark:text-white font-mono">{timer}s</strong>
               </span>
             )}
           </div>
@@ -225,7 +225,7 @@ function ResetPasswordForm() {
           <div>
             <Label htmlFor="password">Nova Senha</Label>
             <div className="mt-1">
-              <InputGroup className="rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+              <InputGroup className="rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors border-border dark:border-slate-800 focus-within:border-orange-500">
                 <InputGroupAddon align="inline-start">
                   <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -243,7 +243,7 @@ function ResetPasswordForm() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                    className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1"
                   >
                     {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -255,7 +255,7 @@ function ResetPasswordForm() {
           <div>
             <Label htmlFor="confirmPassword">Confirmar Nova Senha</Label>
             <div className="mt-1">
-              <InputGroup className="rounded-xl border bg-slate-50 dark:bg-slate-950 p-1 h-11 transition-colors border-slate-200 dark:border-slate-800 focus-within:border-orange-500">
+              <InputGroup className="rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 transition-colors border-border dark:border-slate-800 focus-within:border-orange-500">
                 <InputGroupAddon align="inline-start">
                   <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -273,7 +273,7 @@ function ResetPasswordForm() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                    className="text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1"
                   >
                     {showConfirmPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -293,7 +293,7 @@ function ResetPasswordForm() {
       )}
 
       <div className="mt-8 text-center text-xs">
-        <Link href="/login" className="font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white hover:underline">
+        <Link href="/login" className="font-bold text-muted-foreground hover:text-foreground dark:hover:text-white hover:underline">
           Voltar para o Login
         </Link>
       </div>
@@ -303,7 +303,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex items-center justify-center p-4 md:p-12 relative overflow-hidden font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-card text-foreground dark:bg-slate-950 dark:text-slate-100 flex items-center justify-center p-4 md:p-12 relative overflow-hidden font-sans transition-colors duration-300">
       {/* Background radial glow */}
       <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-orange-500/5 dark:bg-orange-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-550/5 dark:bg-blue-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />

@@ -397,7 +397,7 @@ export default function InstructorSetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-955 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden">
+    <div className="min-h-screen bg-muted dark:bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden">
       {/* Background glow effects */}
 
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/5 dark:bg-blue-600/10 blur-[120px] pointer-events-none" />
@@ -411,21 +411,21 @@ export default function InstructorSetupPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg z-10 px-4">
-        <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10 transition-colors duration-300 backdrop-blur-md">
+        <div className="bg-card dark:bg-slate-900/90 border border-border dark:border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10 transition-colors duration-300 backdrop-blur-md">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-2xl font-black uppercase text-foreground dark:text-white tracking-tight">
               Complete seu Perfil
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 font-medium">
+            <p className="text-xs text-muted-foreground dark:text-slate-400 mt-1.5 font-medium">
               Parabéns pela conta! Agora vamos configurar o seu ambiente de aulas práticas.
             </p>
           </div>
 
           {/* Onboarding step indicator */}
           <div className="mb-8">
-            <div className="flex justify-between items-center text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-3">
+            <div className="flex justify-between items-center text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-3">
               <span className="text-blue-600 dark:text-blue-400">Passo {signupStep} de 4</span>
-              <span className="text-slate-700 dark:text-slate-300">
+              <span className="text-foreground dark:text-slate-300">
                 {signupStep === 1
                   ? "Área de Atuação"
                   : signupStep === 2
@@ -443,19 +443,19 @@ export default function InstructorSetupPage() {
             </div> */}
 
             <div className="flex justify-between items-center mt-4 px-2">
-              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 1 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 1 ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
+              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 1 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 1 ? "border-blue-600 bg-blue-600 text-white" : "border-border dark:border-slate-800 text-slate-400"}`}>
                 <Buildings className="w-4 h-4" />
               </div>
               <div className="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800 mx-1" />
-              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 2 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 2 ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
+              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 2 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 2 ? "border-blue-600 bg-blue-600 text-white" : "border-border dark:border-slate-800 text-slate-400"}`}>
                 <Car className="w-4 h-4" />
               </div>
               <div className="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800 mx-1" />
-              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 3 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 3 ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
+              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 3 ? "border-blue-600 bg-blue-600/10 text-blue-600" : signupStep > 3 ? "border-blue-600 bg-blue-600 text-white" : "border-border dark:border-slate-800 text-slate-400"}`}>
                 <Car className="w-4 h-4" />
               </div>
               <div className="h-[2px] flex-1 bg-slate-200 dark:bg-slate-800 mx-1" />
-              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 4 ? "border-blue-600 bg-blue-600/10 text-blue-600" : "border-slate-200 dark:border-slate-800 text-slate-400"}`}>
+              <div className={`flex items-center justify-center w-7 h-7 rounded-xl border transition-all duration-300 ${signupStep === 4 ? "border-blue-600 bg-blue-600/10 text-blue-600" : "border-border dark:border-slate-800 text-slate-400"}`}>
                 <Notebook className="w-4 h-4" />
               </div>
             </div>
@@ -467,7 +467,7 @@ export default function InstructorSetupPage() {
               <div>
                 <Label htmlFor="cep">CEP de Atuação</Label>
                 <div className="mt-1 flex gap-2">
-                  <InputGroup className="flex-1 rounded-xl border bg-slate-50 dark:bg-slate-955 p-1 h-11 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
+                  <InputGroup className="flex-1 rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 border-border dark:border-slate-800 focus-within:border-blue-600">
                     <InputGroupAddon align="inline-start">
                       <MapPin className="w-4 h-4 text-slate-400" />
                     </InputGroupAddon>
@@ -512,7 +512,7 @@ export default function InstructorSetupPage() {
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                     placeholder="Av. Paulista"
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                   />
                   {errors.street && (
                     <p className="text-[10px] text-rose-500 font-bold mt-1 ml-1">
@@ -529,7 +529,7 @@ export default function InstructorSetupPage() {
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
                     placeholder="1000"
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                   />
                   {errors.number && (
                     <p className="text-[10px] text-rose-500 font-bold mt-1 ml-1">
@@ -549,7 +549,7 @@ export default function InstructorSetupPage() {
                     value={neighborhood}
                     onChange={(e) => setNeighborhood(e.target.value)}
                     placeholder="Bela Vista"
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                   />
                   {errors.neighborhood && (
                     <p className="text-[10px] text-rose-500 font-bold mt-1 ml-1">
@@ -565,7 +565,7 @@ export default function InstructorSetupPage() {
                     value={complement}
                     onChange={(e) => setComplement(e.target.value)}
                     placeholder="Apto 42"
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                   />
                 </div>
               </div>
@@ -580,7 +580,7 @@ export default function InstructorSetupPage() {
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="São Paulo"
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                   />
                   {errors.city && (
                     <p className="text-[10px] text-rose-500 font-bold mt-1 ml-1">
@@ -598,7 +598,7 @@ export default function InstructorSetupPage() {
                     value={state}
                     onChange={(e) => setState(e.target.value.toUpperCase())}
                     placeholder="SP"
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                   />
                   {errors.state && (
                     <p className="text-[10px] text-rose-500 font-bold mt-1 ml-1">
@@ -616,7 +616,7 @@ export default function InstructorSetupPage() {
                     required
                     value={neighborhoodsInput}
                     onChange={(e) => setNeighborhoodsInput(e.target.value)}
-                    className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 p-3 text-xs text-slate-900 dark:text-white focus:outline-hidden focus:border-blue-600 h-20 transition-colors"
+                    className="flex w-full rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 p-3 text-xs text-foreground dark:text-white focus:outline-hidden focus:border-blue-600 h-20 transition-colors"
                     placeholder="Ex: Pinheiros, Vila Madalena, Butantã"
                   />
                   {errors.neighborhoodsInput && (
@@ -631,7 +631,7 @@ export default function InstructorSetupPage() {
             {/* STEP 2: CATEGORIES & PRICE */}
             <div className={signupStep === 2 ? "flex flex-col gap-4" : "hidden"}>
               <div>
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-2">Categorias CNH ministradas</span>
+                <span className="text-xs font-bold text-foreground dark:text-slate-300 block mb-2">Categorias CNH ministradas</span>
                 <div className="grid grid-cols-4 gap-2">
                   {["A", "B", "C", "D"].map((cat) => {
                     const isSelected = categoriesSelected.includes(cat);
@@ -642,7 +642,7 @@ export default function InstructorSetupPage() {
                         onClick={() => handleCategoryToggle(cat)}
                         className={`py-3 rounded-xl font-bold text-xs border text-center transition-all ${isSelected
                           ? "bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-500/20"
-                          : "border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-955 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
+                          : "border-border bg-muted dark:border-slate-800 dark:bg-slate-950 text-muted-foreground dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900"
                           }`}
                       >
                         Cat. {cat}
@@ -661,7 +661,7 @@ export default function InstructorSetupPage() {
               <div>
                 <Label htmlFor="classDuration">Duração da Aula (Minutos)</Label>
                 <div className="mt-1">
-                  <InputGroup className="rounded-xl border bg-slate-50 dark:bg-slate-955 p-1 h-11 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
+                  <InputGroup className="rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 border-border dark:border-slate-800 focus-within:border-blue-600">
                     <InputGroupInput
                       type="number"
                       id="classDuration"
@@ -685,16 +685,16 @@ export default function InstructorSetupPage() {
 
               {/* Dynamic Prices per Selected Category */}
               {categoriesSelected.length > 0 && (
-                <div className="flex flex-col gap-3 border-t border-slate-200/40 dark:border-slate-850 pt-3">
+                <div className="flex flex-col gap-3 border-t border-border/40 dark:border-slate-800 pt-3">
                   <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Preço da Hora/Aula por Categoria</span>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {categoriesSelected.map((cat) => (
                       <div key={cat}>
                         <Label htmlFor={`price_${cat}`} className="text-[10px]">Categoria {cat} (R$)</Label>
                         <div className="mt-1">
-                          <InputGroup className="rounded-xl border bg-slate-50 dark:bg-slate-955 p-1 h-11 border-slate-200 dark:border-slate-800 focus-within:border-blue-600">
+                          <InputGroup className="rounded-xl border bg-muted dark:bg-slate-950 p-1 h-11 border-border dark:border-slate-800 focus-within:border-blue-600">
                             <InputGroupAddon align="inline-start">
-                              <span className="text-xs font-bold text-slate-500 pl-1">R$</span>
+                              <span className="text-xs font-bold text-muted-foreground pl-1">R$</span>
                             </InputGroupAddon>
                             <InputGroupInput
                               type="number"
@@ -731,16 +731,16 @@ export default function InstructorSetupPage() {
             {/* STEP 3: FLEET / VEHICLES */}
             <div className={signupStep === 3 ? "flex flex-col gap-4" : "hidden"}>
               <div>
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Seus Veículos de Instrução</span>
+                <span className="text-xs font-bold text-foreground dark:text-slate-300 block mb-1">Seus Veículos de Instrução</span>
                 <p className="text-[10px] text-slate-400 font-medium mb-3">Adicione os carros ou motos que você ou a autoescola utilizam nas aulas práticas.</p>
 
                 {vehiclesToCreate.length > 0 && (
-                  <div className="flex flex-col gap-2 mb-4 bg-slate-50 dark:bg-slate-950 p-3 rounded-2xl border border-slate-100 dark:border-slate-850">
+                  <div className="flex flex-col gap-2 mb-4 bg-muted dark:bg-slate-950 p-3 rounded-2xl border border-border dark:border-slate-800">
                     {vehiclesToCreate.map((v, i) => (
-                      <div key={i} className="flex justify-between items-center bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800 text-xs">
+                      <div key={i} className="flex justify-between items-center bg-card dark:bg-slate-900 p-2.5 rounded-xl border border-border/60 dark:border-slate-800 text-xs">
                         <div>
                           <p className="font-bold text-slate-805 dark:text-white">{v.name} {v.brand ? `(${v.brand})` : ""}</p>
-                          <p className="text-[10px] text-slate-500 font-medium">
+                          <p className="text-[10px] text-muted-foreground font-medium">
                             Categoria: {v.category} • Placa: {v.plate || "N/D"} {v.color ? `• Cor: ${v.color}` : ""} • Câmbio: {v.automatic ? "Automático" : "Manual"}
                           </p>
                         </div>
@@ -756,7 +756,7 @@ export default function InstructorSetupPage() {
                   </div>
                 )}
 
-                <div className="bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 p-4 rounded-2xl flex flex-col gap-3.5">
+                <div className="bg-slate-100/50 dark:bg-slate-900/40 border border-border/80 dark:border-slate-800 p-4 rounded-2xl flex flex-col gap-3.5">
                   <div className="grid grid-cols-2 gap-2.5">
                     {/* Brand Input (Marca) - First Input */}
                     <div className="relative">
@@ -774,7 +774,7 @@ export default function InstructorSetupPage() {
                           setShowBrandSuggestions(true);
                         }}
                         placeholder="Ex: Chevrolet"
-                        className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                        className="w-full mt-1 px-3 py-2 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                       />
                       {showBrandSuggestions && (
                         <>
@@ -782,7 +782,7 @@ export default function InstructorSetupPage() {
                             className="fixed inset-0 z-10"
                             onClick={() => setShowBrandSuggestions(false)}
                           />
-                          <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                          <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                             {dbBrands
                               .filter((b) => {
                                 const matchesType =
@@ -805,7 +805,7 @@ export default function InstructorSetupPage() {
                                       setNewVehCategory("B");
                                     }
                                   }}
-                                  className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 transition-colors cursor-pointer"
+                                  className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 transition-colors cursor-pointer"
                                 >
                                   {b.name}
                                 </button>
@@ -818,7 +818,7 @@ export default function InstructorSetupPage() {
                               const matchesSearch = b.name.toLowerCase().includes(newVehBrand.toLowerCase());
                               return matchesType && matchesSearch;
                             }).length === 0 && (
-                              <div className="px-3 py-2 text-xs text-slate-400 dark:text-slate-550">
+                              <div className="px-3 py-2 text-xs text-slate-400 dark:text-muted-foreground">
                                 Nenhuma marca sugerida
                               </div>
                             )}
@@ -848,7 +848,7 @@ export default function InstructorSetupPage() {
                           setShowNameSuggestions(true);
                         }}
                         placeholder="Ex: Onix 1.0"
-                        className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                        className="w-full mt-1 px-3 py-2 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                       />
                       {showNameSuggestions && (
                         <>
@@ -856,7 +856,7 @@ export default function InstructorSetupPage() {
                             className="fixed inset-0 z-10"
                             onClick={() => setShowNameSuggestions(false)}
                           />
-                          <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                          <div className="absolute left-0 right-0 mt-1 max-h-48 overflow-y-auto bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                             {(() => {
                               const filteredModels = dbModels.filter(m => {
                                 const matchesType =
@@ -869,7 +869,7 @@ export default function InstructorSetupPage() {
 
                               if (filteredModels.length === 0) {
                                 return (
-                                  <div className="px-3 py-2 text-xs text-slate-400 dark:text-slate-550">
+                                  <div className="px-3 py-2 text-xs text-slate-400 dark:text-muted-foreground">
                                     Nenhuma sugestão encontrada
                                   </div>
                                 );
@@ -888,7 +888,7 @@ export default function InstructorSetupPage() {
                                       setNewVehCategory("B");
                                     }
                                   }}
-                                  className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 transition-colors cursor-pointer"
+                                  className="w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 transition-colors cursor-pointer"
                                 >
                                   {m.name}
                                 </button>
@@ -912,7 +912,7 @@ export default function InstructorSetupPage() {
                         <button
                           type="button"
                           onClick={() => setShowCatDropdown(!showCatDropdown)}
-                          className="w-full h-8.5 px-3 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white flex items-center justify-between cursor-pointer"
+                          className="w-full h-8.5 px-3 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white flex items-center justify-between cursor-pointer"
                         >
                           <span>
                             {newVehCategory === "B" && "Cat. B (Carro)"}
@@ -925,7 +925,7 @@ export default function InstructorSetupPage() {
                         {showCatDropdown && (
                           <>
                             <div className="fixed inset-0 z-10" onClick={() => setShowCatDropdown(false)} />
-                            <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
+                            <div className="absolute left-0 right-0 mt-1 bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-xl shadow-lg z-25 py-1">
                               {[
                                 { value: "B", label: "Cat. B (Carro)" },
                                 { value: "A", label: "Cat. A (Moto)" },
@@ -939,7 +939,7 @@ export default function InstructorSetupPage() {
                                     setNewVehCategory(opt.value);
                                     setShowCatDropdown(false);
                                   }}
-                                  className={`w-full text-left px-3 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-250 transition-colors flex items-center justify-between cursor-pointer ${newVehCategory === opt.value ? "bg-slate-50 dark:bg-slate-850 font-bold" : ""
+                                  className={`w-full text-left px-3 py-2 text-xs hover:bg-muted dark:hover:bg-slate-800 text-foreground dark:text-slate-200 transition-colors flex items-center justify-between cursor-pointer ${newVehCategory === opt.value ? "bg-muted dark:bg-slate-800 font-bold" : ""
                                     }`}
                                 >
                                   <span>{opt.label}</span>
@@ -960,7 +960,7 @@ export default function InstructorSetupPage() {
                         value={newVehPlate}
                         onChange={(e) => setNewVehPlate(formatPlate(e.target.value))}
                         placeholder="ABC-1D23"
-                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                       />
                       {errors.vehicle_plate && (
                         <p className="text-[9px] text-rose-500 font-bold mt-1">
@@ -977,7 +977,7 @@ export default function InstructorSetupPage() {
                         value={newVehColor}
                         onChange={(e) => setNewVehColor(e.target.value)}
                         placeholder="Prata"
-                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-hidden focus:border-blue-600 text-slate-900 dark:text-white"
+                        className="w-full mt-1 px-2.5 py-2 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-950 text-xs focus:outline-hidden focus:border-blue-600 text-foreground dark:text-white"
                       />
                       {errors.vehicle_color && (
                         <p className="text-[9px] text-rose-500 font-bold mt-1">
@@ -995,8 +995,8 @@ export default function InstructorSetupPage() {
                         type="button"
                         onClick={() => setNewVehAutomatic(false)}
                         className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${!newVehAutomatic
-                          ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                          : "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                          ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                          : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                           }`}
                       >
                         Manual
@@ -1005,8 +1005,8 @@ export default function InstructorSetupPage() {
                         type="button"
                         onClick={() => setNewVehAutomatic(true)}
                         className={`px-4 py-1.5 rounded-xl border text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${newVehAutomatic
-                          ? "bg-slate-900 border-slate-900 text-white dark:bg-white dark:border-white dark:text-slate-900 shadow-sm"
-                          : "bg-white dark:bg-slate-955 border-slate-200 dark:border-slate-850 text-slate-650 dark:text-slate-400"
+                          ? "bg-slate-900 border-slate-900 text-white dark:bg-card dark:border-white dark:text-foreground shadow-sm"
+                          : "bg-card dark:bg-slate-950 border-border dark:border-slate-800 text-muted-foreground dark:text-slate-400"
                           }`}
                       >
                         Automático
@@ -1017,7 +1017,7 @@ export default function InstructorSetupPage() {
                   <button
                     type="button"
                     onClick={handleAddVehicle}
-                    className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:hover:bg-slate-50 dark:text-slate-900 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer border border-slate-900 dark:border-white transition-all active:scale-[0.98] mt-1.5"
+                    className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-card dark:hover:bg-muted dark:text-foreground rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer border border-slate-900 dark:border-white transition-all active:scale-[0.98] mt-1.5"
                   >
                     <Plus className="w-4 h-4" />
                     Adicionar Veículo à Lista
@@ -1036,7 +1036,7 @@ export default function InstructorSetupPage() {
                     required
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
-                    className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 p-3 text-xs text-slate-900 dark:text-white focus:outline-hidden focus:border-blue-600 h-28 transition-colors leading-relaxed"
+                    className="flex w-full rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 p-3 text-xs text-foreground dark:text-white focus:outline-hidden focus:border-blue-600 h-28 transition-colors leading-relaxed"
                     placeholder="Conte sobre sua experiência, veículo utilizado e metodologia de ensino..."
                   />
                   {errors.bio && (
@@ -1055,7 +1055,7 @@ export default function InstructorSetupPage() {
                     required
                     value={meetingPointsInput}
                     onChange={(e) => setMeetingPointsInput(e.target.value)}
-                    className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-955 p-3 text-xs text-slate-900 dark:text-white focus:outline-hidden focus:border-blue-600 h-20 transition-colors"
+                    className="flex w-full rounded-xl border border-border dark:border-slate-800 bg-muted dark:bg-slate-950 p-3 text-xs text-foreground dark:text-white focus:outline-hidden focus:border-blue-600 h-20 transition-colors"
                     placeholder="Ex: Metrô Consolação, Shopping Boulevard, Praça Central"
                   />
                   {errors.meetingPointsInput && (
@@ -1074,7 +1074,7 @@ export default function InstructorSetupPage() {
                   type="button"
                   onClick={handlePrevStep}
                   disabled={isSubmitting}
-                  className="flex-1 bg-slate-100 border border-slate-200 dark:bg-slate-955 dark:border-slate-850 hover:bg-slate-200 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 font-bold p-3.5 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 h-11 cursor-pointer disabled:opacity-50"
+                  className="flex-1 bg-slate-100 border border-border dark:bg-slate-950 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-900 text-foreground dark:text-slate-300 font-bold p-3.5 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 h-11 cursor-pointer disabled:opacity-50"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Voltar

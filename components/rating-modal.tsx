@@ -5,7 +5,7 @@ import { submitClassActionRating } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Star, CheckCircle, X } from "@phosphor-icons/react";
+import { Star, CheckCircle } from "@phosphor-icons/react";
 import {
   Dialog,
   DialogContent,
@@ -13,17 +13,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 interface RatingModalProps {
   classSessionId: string;
   studentName: string;
   classType: string;
-  onSuccess?: () => void;
+  /** Chamado quando o diálogo é fechado (cancelar, fechar ou Esc). */
+  onClose: () => void;
 }
 
-export function RatingModal({ classSessionId, studentName, classType, onSuccess }: RatingModalProps) {
+export function RatingModal({ classSessionId, studentName, classType, onClose }: RatingModalProps) {
+  const [open, setOpen] = useState(true);
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -32,6 +33,15 @@ export function RatingModal({ classSessionId, studentName, classType, onSuccess 
   const router = useRouter();
 
   const stars = [1, 2, 3, 4, 5];
+
+  const close = () => {
+    setOpen(false);
+    onClose();
+  };
+
+  const handleOpenChange = (next: boolean) => {
+    if (!next) close();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,17 +58,16 @@ export function RatingModal({ classSessionId, studentName, classType, onSuccess 
         comment: comment || undefined,
       });
       setSuccess(true);
-      setSubmitting(false);
-      if (onSuccess) onSuccess();
     } catch (err: any) {
       setError(err.message || "Erro ao enviar avaliação.");
+    } finally {
       setSubmitting(false);
     }
   };
 
   if (success) {
     return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="sm:max-w-md text-center py-6">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black">Obrigado, {studentName}!</DialogTitle>
@@ -71,7 +80,13 @@ export function RatingModal({ classSessionId, studentName, classType, onSuccess 
               <CheckCircle className="w-12 h-12 text-emerald-500 mr-2" />
               <span className="text-lg font-black">Avaliada com {rating} estrelas</span>
             </div>
-            <Button onClick={() => router.refresh()} className="w-full mt-4">
+            <Button
+              onClick={() => {
+                close();
+                router.refresh();
+              }}
+              className="w-full mt-4"
+            >
               Fechar
             </Button>
           </DialogFooter>
@@ -81,10 +96,7 @@ export function RatingModal({ classSessionId, studentName, classType, onSuccess 
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="hidden" />
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Avalie sua aula</DialogTitle>
@@ -111,12 +123,12 @@ export function RatingModal({ classSessionId, studentName, classType, onSuccess 
             ))}
           </div>
           {rating && (
-            <p className="text-sm font-bold text-center text-slate-600 dark:text-slate-300">
+            <p className="text-sm font-bold text-center text-muted-foreground dark:text-slate-300">
               Você avaliou com {rating} estrela{rating > 1 ? "s" : ""}
             </p>
           )}
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground dark:text-slate-400">
               Comentário (opcional)
             </label>
             <textarea
@@ -124,14 +136,14 @@ export function RatingModal({ classSessionId, studentName, classType, onSuccess 
               onChange={(e) => setComment(e.target.value)}
               rows={3}
               placeholder="Deixe seu feedback sobre a aula..."
-              className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
+              className="w-full rounded-lg border border-border dark:border-slate-700 bg-muted dark:bg-slate-900 p-3 text-sm text-foreground dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
             ></textarea>
           </div>
           {error && (
             <p className="text-sm text-rose-500 dark:text-rose-400 font-medium">{error}</p>
           )}
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setSuccess(false)}>
+            <Button type="button" variant="outline" onClick={close}>
               Cancelar
             </Button>
             <Button

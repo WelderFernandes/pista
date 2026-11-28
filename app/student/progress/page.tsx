@@ -25,14 +25,14 @@ export default function StudentProgress() {
     <div className="flex flex-col gap-6 animate-fade-in pb-10">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Meu Progresso Prático</h2>
-        <p className="text-slate-500 text-sm">Acompanhe seu avanço e prepare-se para o exame do Detran.</p>
+        <h2 className="text-2xl font-extrabold tracking-tight text-foreground">Meu Progresso Prático</h2>
+        <p className="text-muted-foreground text-sm">Acompanhe seu avanço e prepare-se para o exame do Detran.</p>
       </div>
 
       {/* Overview Card */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row items-center justify-between gap-4">
+      <section className="bg-card p-6 rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h3 className="text-sm font-bold text-slate-900">Total de Horas Práticas</h3>
+          <h3 className="text-sm font-bold text-foreground">Total de Horas Práticas</h3>
           <p className="text-xs text-slate-400 mt-0.5">Mínimo obrigatório pelo Detran: 20 Aulas</p>
         </div>
         <div className="flex items-baseline gap-1">
@@ -42,8 +42,8 @@ export default function StudentProgress() {
       </section>
 
       {/* Requirements Checklist */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
-        <h3 className="text-sm font-bold text-slate-900 border-b border-slate-50 pb-3 mb-4">Competências Avaliadas</h3>
+      <section className="bg-card p-6 rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+        <h3 className="text-sm font-bold text-foreground border-b border-slate-50 pb-3 mb-4">Competências Avaliadas</h3>
         
         <div className="flex flex-col gap-4">
           {requirements.map((req) => (
@@ -51,7 +51,7 @@ export default function StudentProgress() {
               key={req.id}
               className={`p-4 rounded-xl border transition-all flex items-start gap-3 ${
                 req.status === "concluded"
-                  ? "bg-slate-50/50 border-slate-100"
+                  ? "bg-muted/50 border-border"
                   : "bg-blue-50/10 border-blue-100"
               }`}
             >
@@ -68,10 +68,10 @@ export default function StudentProgress() {
               </div>
 
               <div>
-                <h4 className={`text-xs font-bold ${req.status === "concluded" ? "text-slate-800" : "text-blue-900"}`}>
+                <h4 className={`text-xs font-bold ${req.status === "concluded" ? "text-foreground" : "text-blue-900"}`}>
                   {req.title}
                 </h4>
-                <p className="text-xs text-slate-500 mt-0.5 font-medium leading-relaxed">{req.desc}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 font-medium leading-relaxed">{req.desc}</p>
                 <span className={`inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
                   req.status === "concluded"
                     ? "bg-emerald-50 text-emerald-700 border border-emerald-100"

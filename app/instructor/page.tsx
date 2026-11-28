@@ -76,7 +76,7 @@ export default function InstructorDashboard() {
       {/* Page Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Painel Geral</h2>
+          <h2 className="text-2xl font-black tracking-tight text-foreground dark:text-white">Painel Geral</h2>
           <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Resumo operacional e tarefas do dia</p>
         </div>
         <button
@@ -93,7 +93,7 @@ export default function InstructorDashboard() {
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Faturamento Card (Bento 1) */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] relative overflow-hidden flex flex-col justify-between h-[160px] hover:scale-[1.01] transition-transform duration-200 group">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] relative overflow-hidden flex flex-col justify-between h-[160px] hover:scale-[1.01] transition-transform duration-200 group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-400">
@@ -106,13 +106,13 @@ export default function InstructorDashboard() {
             </span>
           </div>
           <div>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Faturamento</p>
-            <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">{formatCentsToBRL(totalRevenue)}</p>
+            <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-bold uppercase tracking-wider">Faturamento</p>
+            <p className="text-2xl font-black text-foreground dark:text-white mt-0.5">{formatCentsToBRL(totalRevenue)}</p>
           </div>
         </div>
 
         {/* Aulas Realizadas Card (Bento 2) */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] relative overflow-hidden flex flex-col justify-between h-[160px] hover:scale-[1.01] transition-transform duration-200 group">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] relative overflow-hidden flex flex-col justify-between h-[160px] hover:scale-[1.01] transition-transform duration-200 group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
@@ -125,16 +125,16 @@ export default function InstructorDashboard() {
             </span>
           </div>
           <div>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Aulas Concluídas</p>
-            <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">{completedCount}</p>
+            <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-bold uppercase tracking-wider">Aulas Concluídas</p>
+            <p className="text-2xl font-black text-foreground dark:text-white mt-0.5">{completedCount}</p>
           </div>
         </div>
 
         {/* Ações Rápidas Card (Bento 3) */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] flex flex-col justify-between h-[160px] hover:scale-[1.01] transition-transform duration-200">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] flex flex-col justify-between h-[160px] hover:scale-[1.01] transition-transform duration-200">
           <div>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Ações Rápidas</p>
-            <h3 className="text-sm font-bold text-slate-850 dark:text-slate-200 mt-0.5">Gestão Direta</h3>
+            <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-bold uppercase tracking-wider">Ações Rápidas</p>
+            <h3 className="text-sm font-bold text-foreground dark:text-slate-200 mt-0.5">Gestão Direta</h3>
           </div>
           <div className="grid grid-cols-2 gap-2 mt-2">
             <button
@@ -145,7 +145,7 @@ export default function InstructorDashboard() {
             </button>
             <Link
               href="/instructor/students"
-              className="py-2 px-3 bg-slate-100 hover:bg-slate-200/80 active:scale-[0.96] text-slate-700 dark:bg-slate-850 dark:text-slate-250 rounded-xl text-[10px] font-bold text-center transition-all duration-200 border border-slate-200/10 cursor-pointer flex items-center justify-center"
+              className="py-2 px-3 bg-slate-100 hover:bg-slate-200/80 active:scale-[0.96] text-foreground dark:bg-slate-800 dark:text-slate-200 rounded-xl text-[10px] font-bold text-center transition-all duration-200 border border-border/10 cursor-pointer flex items-center justify-center"
             >
               Ver Alunos
             </Link>
@@ -153,15 +153,15 @@ export default function InstructorDashboard() {
         </div>
 
         {/* Próximas Aulas Section (Bento 4 - span-2) */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] md:col-span-2 flex flex-col gap-4">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] md:col-span-2 flex flex-col gap-4">
           <div className="flex justify-between items-center">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-foreground dark:text-white flex items-center gap-1.5">
               <span>Próximas Aulas do Dia</span>
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
             </h3>
             <Link
               href="/instructor/agenda"
-              className="text-[10px] text-blue-650 dark:text-blue-450 font-bold hover:text-blue-700 transition-colors flex items-center gap-1 active:scale-95"
+              className="text-[10px] text-blue-600 dark:text-blue-450 font-bold hover:text-blue-700 transition-colors flex items-center gap-1 active:scale-95"
             >
               Ver agenda completa
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -171,18 +171,18 @@ export default function InstructorDashboard() {
           </div>
 
           {upcomingClasses.length === 0 ? (
-            <div className="text-center py-10 border border-dashed border-slate-200/60 dark:border-slate-800/60 rounded-xl flex flex-col items-center justify-center">
-              <svg className="w-8 h-8 text-slate-300 dark:text-slate-700 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="text-center py-10 border border-dashed border-border/60 dark:border-slate-800/60 rounded-xl flex flex-col items-center justify-center">
+              <svg className="w-8 h-8 text-slate-300 dark:text-foreground mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Sem aulas agendadas pendentes.</p>
+              <p className="text-xs text-slate-400 dark:text-muted-foreground font-medium">Sem aulas agendadas pendentes.</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
               {upcomingClasses.slice(0, 3).map((item) => (
                 <div
                   key={item.id}
-                  className="group relative bg-white dark:bg-slate-950 p-3.5 rounded-xl border border-slate-200/40 dark:border-slate-900/60 hover:border-blue-200/85 dark:hover:border-blue-900/60 hover:scale-[1.005] active:scale-[0.995] transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
+                  className="group relative bg-card dark:bg-slate-950 p-3.5 rounded-xl border border-border/40 dark:border-slate-900/60 hover:border-blue-200/85 dark:hover:border-blue-900/60 hover:scale-[1.005] active:scale-[0.995] transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
                 >
                   <div
                     className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-xl ${
@@ -193,17 +193,17 @@ export default function InstructorDashboard() {
                   <div className="flex items-center gap-3 pl-1.5">
                     <Image
                       alt={item.studentName}
-                      className="w-10 h-10 rounded-full object-cover border border-slate-200/50 dark:border-slate-900"
+                      className="w-10 h-10 rounded-full object-cover border border-border/50 dark:border-slate-900"
                       src={item.studentPhoto}
                       width={40}
                       height={40}
                       unoptimized
                     />
                     <div>
-                      <h4 className="font-bold text-slate-850 dark:text-slate-200 text-xs leading-none">
+                      <h4 className="font-bold text-foreground dark:text-slate-200 text-xs leading-none">
                         {item.studentName}
                       </h4>
-                      <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 flex items-center gap-1 font-medium">
+                      <p className="text-[10px] text-slate-400 dark:text-muted-foreground mt-1.5 flex items-center gap-1 font-medium">
                         <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -219,7 +219,7 @@ export default function InstructorDashboard() {
                       <span
                         className={`inline-flex px-2 py-0.5 rounded-full text-[8px] font-bold mt-1.5 uppercase tracking-wider ${
                           item.status === "Confirmada"
-                            ? "bg-blue-50 text-blue-650 border border-blue-100/55 dark:bg-blue-950/30 dark:text-blue-400"
+                            ? "bg-blue-50 text-blue-600 border border-blue-100/55 dark:bg-blue-950/30 dark:text-blue-400"
                             : "bg-amber-50 text-amber-700 border border-amber-100/55 dark:bg-amber-950/30 dark:text-amber-400"
                         }`}
                       >
@@ -253,20 +253,20 @@ export default function InstructorDashboard() {
         </div>
 
         {/* Alunos Recentes (Bento 5 - span-1) */}
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] flex flex-col justify-between hover:scale-[1.01] transition-transform duration-200">
+        <div className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.015)] flex flex-col justify-between hover:scale-[1.01] transition-transform duration-200">
           <div>
-            <h3 className="text-sm font-bold text-slate-850 dark:text-white mb-4 flex items-center justify-between">
+            <h3 className="text-sm font-bold text-foreground dark:text-white mb-4 flex items-center justify-between">
               <span>Alunos Recentes</span>
-              <Link href="/instructor/students" className="text-[10px] text-blue-650 dark:text-blue-450 font-bold hover:underline active:scale-95">Ver todos</Link>
+              <Link href="/instructor/students" className="text-[10px] text-blue-600 dark:text-blue-450 font-bold hover:underline active:scale-95">Ver todos</Link>
             </h3>
             <div className="flex flex-col gap-3.5">
               {students.slice(0, 3).map((st) => (
                 <div key={st.id} className="flex flex-col gap-1.5">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-bold text-slate-700 dark:text-slate-200 text-[11px]">{st.name}</span>
-                    <span className="text-[9px] font-semibold text-slate-400 dark:text-slate-500">{st.completedClasses}/{st.totalClasses} aulas</span>
+                    <span className="font-bold text-foreground dark:text-slate-200 text-[11px]">{st.name}</span>
+                    <span className="text-[9px] font-semibold text-slate-400 dark:text-muted-foreground">{st.completedClasses}/{st.totalClasses} aulas</span>
                   </div>
-                  <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-850 rounded-full overflow-hidden">
+                  <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500" 
                       style={{ width: `${(st.completedClasses / (st.totalClasses || 1)) * 100}%` }}
@@ -276,7 +276,7 @@ export default function InstructorDashboard() {
               ))}
               {students.length === 0 && (
                 <div className="text-center py-6 flex flex-col items-center justify-center">
-                  <p className="text-[10px] text-slate-400 dark:text-slate-500">Nenhum aluno ativo.</p>
+                  <p className="text-[10px] text-slate-400 dark:text-muted-foreground">Nenhum aluno ativo.</p>
                 </div>
               )}
             </div>
@@ -299,16 +299,16 @@ export default function InstructorDashboard() {
       {/* Add Appointment Modal */}
       {showAddModal && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
             <button
               onClick={() => setShowAddModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
+            <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-border dark:border-slate-800">
               Agendar Nova Aula
             </h3>
 
@@ -320,7 +320,7 @@ export default function InstructorDashboard() {
                     id="selectedStudent"
                     value={selectedStudent}
                     onChange={(e) => setSelectedStudent(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200 cursor-pointer font-medium"
+                    className="w-full rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 p-2.5 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200 cursor-pointer font-medium"
                   >
                     {students.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -338,7 +338,7 @@ export default function InstructorDashboard() {
                     id="classType"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200 cursor-pointer font-medium"
+                    className="w-full rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 p-2.5 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-755 transition-colors duration-200 cursor-pointer font-medium"
                   >
                     <option value="Aula de Baliza">Aula de Baliza</option>
                     <option value="Prática de Direção">Prática de Direção</option>
@@ -390,7 +390,7 @@ export default function InstructorDashboard() {
 
               <Button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 Confirmar Agendamento
               </Button>

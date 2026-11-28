@@ -76,7 +76,7 @@ export default function InstructorStudents() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Lista de Alunos</h2>
+          <h2 className="text-2xl font-black tracking-tight text-foreground dark:text-white">Lista de Alunos</h2>
           <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Gerencie o progresso e dados de contato dos seus alunos</p>
         </div>
         <button
@@ -102,14 +102,14 @@ export default function InstructorStudents() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar aluno por nome..."
-          className="w-full pl-10 pr-4 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-200/40 dark:border-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-600 transition-colors shadow-xs"
+          className="w-full pl-10 pr-4 py-3 bg-card/80 dark:bg-slate-900/80 backdrop-blur-md rounded-xl border border-border/40 dark:border-slate-800/60 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 transition-colors shadow-xs"
         />
       </div>
 
       {/* Students List */}
       <section className="flex flex-col gap-4">
         {filteredStudents.length === 0 ? (
-          <div className="text-center py-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
+          <div className="text-center py-10 bg-card/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)]">
             <p className="text-xs text-slate-400 font-medium">Nenhum aluno encontrado para sua busca.</p>
           </div>
         ) : (
@@ -117,25 +117,25 @@ export default function InstructorStudents() {
             <Link
               key={student.id}
               href={`/instructor/students/${student.id}`}
-              className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-slate-200/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] hover:border-blue-200 dark:hover:border-blue-900 hover:scale-[1.005] active:scale-[0.995] transition-all duration-200 flex items-center justify-between gap-4 group"
+              className="bg-card/80 dark:bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-border/40 dark:border-slate-800/60 shadow-[0_4px_24px_rgba(0,0,0,0.01)] hover:border-blue-200 dark:hover:border-blue-900 hover:scale-[1.005] active:scale-[0.995] transition-all duration-200 flex items-center justify-between gap-4 group"
             >
               <div className="flex items-center gap-3">
                 <img
                   alt={student.name}
-                  className="w-10 h-10 rounded-full object-cover border border-slate-200/50 dark:border-slate-800"
+                  className="w-10 h-10 rounded-full object-cover border border-border/50 dark:border-slate-800"
                   src={student.photoUrl}
                 />
                 <div>
-                  <h4 className="font-bold text-slate-850 dark:text-slate-200 text-xs group-hover:text-blue-600 transition-colors">
+                  <h4 className="font-bold text-foreground dark:text-slate-200 text-xs group-hover:text-blue-600 transition-colors">
                     {student.name}
                   </h4>
-                  <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 font-semibold">{student.category} • {student.phone}</p>
+                  <p className="text-[10px] text-slate-400 dark:text-muted-foreground mt-1 font-semibold">{student.category} • {student.phone}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
                 <div className="text-right hidden sm:block">
-                  <span className="text-[9px] text-slate-400 dark:text-slate-500 block font-bold uppercase tracking-wider">Progresso prático</span>
+                  <span className="text-[9px] text-slate-400 dark:text-muted-foreground block font-bold uppercase tracking-wider">Progresso prático</span>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="w-20 h-1.5 bg-slate-100 dark:bg-slate-855 rounded-full overflow-hidden">
                       <div
@@ -143,12 +143,12 @@ export default function InstructorStudents() {
                         style={{ width: `${student.progress}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-slate-300">{student.progress}%</span>
+                    <span className="text-[10px] font-black text-foreground dark:text-slate-300">{student.progress}%</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[8px] uppercase tracking-wider bg-slate-50 border border-slate-200/40 dark:bg-slate-950/40 dark:border-slate-900 px-2 py-0.5 rounded-full text-slate-500 dark:text-slate-400 font-bold">
+                  <span className="text-[8px] uppercase tracking-wider bg-muted border border-border/40 dark:bg-slate-950/40 dark:border-slate-900 px-2 py-0.5 rounded-full text-muted-foreground dark:text-slate-400 font-bold">
                     {student.completedClasses}/{student.totalClasses} Aulas
                   </span>
                   <svg className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -164,16 +164,16 @@ export default function InstructorStudents() {
       {/* Add Student Modal */}
       {showAddModal && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
             <button
               onClick={() => setShowAddModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
+            <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-border dark:border-slate-800">
               Adicionar Novo Aluno
             </h3>
 
@@ -201,7 +201,7 @@ export default function InstructorStudents() {
                 <div className="mt-1">
                   <select
                     id="studentCategory"
-                    className={`w-full rounded-xl border p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none transition-colors duration-200 cursor-pointer font-medium ${errors.category ? "border-red-500 focus:border-red-500" : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:border-blue-600 dark:focus:border-slate-700"}`}
+                    className={`w-full rounded-xl border p-2.5 text-xs text-foreground dark:text-white focus:outline-none transition-colors duration-200 cursor-pointer font-medium ${errors.category ? "border-red-500 focus:border-red-500" : "border-border dark:border-slate-800 bg-card dark:bg-slate-900 focus:border-blue-600 dark:focus:border-slate-700"}`}
                     {...register("category")}
                   >
                     <option value="B (Carro)">B (Carro)</option>
@@ -274,7 +274,7 @@ export default function InstructorStudents() {
               <Button
                 type="submit"
                 disabled={addStudentMutation.isPending}
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 {addStudentMutation.isPending ? "Cadastrando..." : "Cadastrar Aluno"}
               </Button>

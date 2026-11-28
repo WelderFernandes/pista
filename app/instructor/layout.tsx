@@ -129,7 +129,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
 
   if (isPending) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="flex h-screen w-full items-center justify-center bg-muted dark:bg-slate-950">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
       </div>
     );
@@ -137,7 +137,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
 
   return (
     <div className={cn(
-      "bg-slate-50 dark:bg-slate-955 text-slate-900 dark:text-slate-100",
+      "bg-muted dark:bg-slate-950 text-foreground dark:text-slate-100",
       "min-h-screen pb-[80px] md:pb-0 flex flex-col font-sans transition-all duration-300",
       isCollapsed ? "md:pl-[68px]" : "md:pl-[240px]"
     )}>
@@ -159,7 +159,7 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200/50 dark:border-slate-850 shadow-[0_-4px_16px_rgba(0,0,0,0.03)] z-50 transition-colors duration-300">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-safe px-4 bg-card/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-border/50 dark:border-slate-800 shadow-[0_-4px_16px_rgba(0,0,0,0.03)] z-50 transition-colors duration-300">
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/instructor" && pathname.startsWith(item.href));
           return (

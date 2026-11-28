@@ -64,8 +64,8 @@ export default function StudentAgenda() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Minha Agenda</h2>
-          <p className="text-slate-500 text-sm">Visualize suas aulas marcadas e solicite novos horários.</p>
+          <h2 className="text-2xl font-extrabold tracking-tight text-foreground">Minha Agenda</h2>
+          <p className="text-muted-foreground text-sm">Visualize suas aulas marcadas e solicite novos horários.</p>
         </div>
         <button
           onClick={() => setShowRequestModal(true)}
@@ -79,8 +79,8 @@ export default function StudentAgenda() {
       </div>
 
       {/* Classes list */}
-      <section className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
-        <h3 className="text-sm font-bold text-slate-900 border-b border-slate-50 pb-3">Cronograma de Aulas</h3>
+      <section className="bg-card p-6 rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col gap-4">
+        <h3 className="text-sm font-bold text-foreground border-b border-slate-50 pb-3">Cronograma de Aulas</h3>
 
         {studentClasses.length === 0 ? (
           <p className="text-xs text-slate-400 py-6 text-center">Nenhuma aula agendada ainda.</p>
@@ -89,10 +89,10 @@ export default function StudentAgenda() {
             {studentClasses.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-100 transition-all"
+                className="flex items-center justify-between p-3.5 rounded-xl bg-muted border border-border hover:border-blue-100 transition-all"
               >
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">{item.type}</h4>
+                  <h4 className="text-xs font-bold text-foreground">{item.type}</h4>
                   <p className="text-[10px] text-slate-400 mt-0.5">
                     {new Date(item.date + "T00:00:00").toLocaleDateString("pt-BR", { day: 'numeric', month: 'short' })} • {item.duration}
                   </p>
@@ -127,16 +127,16 @@ export default function StudentAgenda() {
       </section>      {/* Request Modal */}
       {showRequestModal && mounted && createPortal(
         <div className="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
+          <div className="bg-card dark:bg-slate-900 border border-border/50 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-md w-full relative animate-scale-up">
             <button
               onClick={() => setShowRequestModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+              className="absolute top-4 right-4 text-slate-400 hover:text-muted-foreground dark:hover:text-slate-200 cursor-pointer p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-slate-100 dark:border-slate-850">
+            <h3 className="text-sm font-black text-foreground dark:text-white uppercase tracking-wider mb-5 pb-3 border-b border-border dark:border-slate-800">
               Solicitar Agendamento
             </h3>
 
@@ -148,7 +148,7 @@ export default function StudentAgenda() {
                     id="classType"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
+                    className="w-full rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 p-2.5 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
                   >
                     <option value="Aula de Baliza">Aula de Baliza</option>
                     <option value="Prática de Direção">Prática de Direção</option>
@@ -177,7 +177,7 @@ export default function StudentAgenda() {
                       id="classTime"
                       value={classTime}
                       onChange={(e) => setClassTime(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
+                      className="w-full rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 p-2.5 text-xs text-foreground dark:text-white focus:outline-none focus:border-blue-600 dark:focus:border-slate-700 transition-colors duration-200 cursor-pointer font-medium"
                     >
                       <option value="08:00">08:00</option>
                       <option value="09:40">09:40</option>
@@ -207,7 +207,7 @@ export default function StudentAgenda() {
 
               <Button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
+                className="w-full bg-slate-900 hover:bg-slate-800 dark:bg-card dark:hover:bg-slate-100 text-white dark:text-foreground font-bold text-xs h-10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer mt-2 rounded-xl uppercase tracking-wider text-[10px]"
               >
                 Enviar Solicitação
               </Button>
@@ -223,7 +223,7 @@ export default function StudentAgenda() {
           classSessionId={ratingClassId}
           studentName={student?.name || "Instrutor"}
           classType="Sua aula"
-          onSuccess={() => {
+          onClose={() => {
             setShowRatingModal(false);
             setRatingClassId(null);
           }}

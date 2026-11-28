@@ -279,7 +279,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white flex flex-col justify-between relative overflow-x-hidden font-sans transition-colors duration-300">
+    <div className="min-h-screen bg-muted text-foreground dark:bg-slate-950 dark:text-white flex flex-col justify-between relative overflow-x-hidden font-sans transition-colors duration-300">
       
       {/* Dynamic Grid Background with Vibrant Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a12_1px,transparent_1px),linear-gradient(to_bottom,#0f172a12_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b22_1px,transparent_1px),linear-gradient(to_bottom,#1e293b22_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-0" />
@@ -309,7 +309,7 @@ export default function Home() {
               className={`flex-1 py-3 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all duration-300 cursor-pointer ${
                 activeMode === "student"
                   ? "bg-blue-600 text-white shadow-md"
-                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+                  : "text-muted-foreground hover:text-foreground dark:hover:text-slate-200"
               }`}
             >
               🎓 Encontrar Instrutor
@@ -322,7 +322,7 @@ export default function Home() {
               className={`flex-1 py-3 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all duration-300 cursor-pointer ${
                 activeMode === "instructor"
                   ? "bg-rose-500 text-white shadow-md"
-                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-250"
+                  : "text-muted-foreground hover:text-foreground dark:hover:text-slate-200"
               }`}
             >
               🚗 Sou Instrutor (SaaS)
@@ -343,7 +343,7 @@ export default function Home() {
           )}
 
           {/* Headline - Max 2 lines */}
-          <h2 className="text-4xl md:text-7xl font-black tracking-tighter leading-[0.95] text-slate-900 dark:text-white uppercase max-w-3xl animate-fade-in-up">
+          <h2 className="text-4xl md:text-7xl font-black tracking-tighter leading-[0.95] text-foreground dark:text-white uppercase max-w-3xl animate-fade-in-up">
             {activeMode === "student" ? (
               <>
                 Aprenda a dirigir <br />
@@ -358,7 +358,7 @@ export default function Home() {
           </h2>
 
           {/* Subtext - Max 20 words */}
-          <p className="text-slate-600 dark:text-slate-400 mt-6 text-sm md:text-base max-w-xl leading-relaxed animate-fade-in-up delay-100 font-medium">
+          <p className="text-muted-foreground dark:text-slate-400 mt-6 text-sm md:text-base max-w-xl leading-relaxed animate-fade-in-up delay-100 font-medium">
             {activeMode === "student" 
               ? "Conectamos você aos melhores instrutores particulares credenciados. Agende online, selecione o ponto de encontro e aprenda no seu ritmo."
               : "A plataforma completa de gestão de aulas e agendamento autônomo feita sob medida para instrutores particulares de trânsito."
@@ -370,10 +370,10 @@ export default function Home() {
             /* Student Search and Filter Widget */
             <form 
               onSubmit={handleSearch} 
-              className="mt-10 w-full max-w-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 md:p-6 rounded-2xl shadow-xl flex flex-col md:flex-row gap-4 text-left relative z-20 animate-fade-in-up delay-200"
+              className="mt-10 w-full max-w-3xl bg-card dark:bg-slate-900 border border-border dark:border-slate-800 p-4 md:p-6 rounded-2xl shadow-xl flex flex-col md:flex-row gap-4 text-left relative z-20 animate-fade-in-up delay-200"
             >
               <div className="flex-1 flex flex-col gap-1.5">
-                <label htmlFor="search-city" className="text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-450 flex items-center gap-1">
+                <label htmlFor="search-city" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground dark:text-slate-450 flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-blue-500" />
                   Bairro ou Cidade
                 </label>
@@ -383,12 +383,12 @@ export default function Home() {
                   placeholder="Ex: Tucuruvi, São Paulo"
                   value={searchQueryLocal}
                   onChange={(e) => setSearchQueryLocal(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl text-slate-900 dark:text-white placeholder-slate-405"
+                  className="w-full bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl text-foreground dark:text-white placeholder-slate-405"
                 />
               </div>
 
               <div className="flex-1 flex flex-col gap-1.5">
-                <label htmlFor="search-cat" className="text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-450 flex items-center gap-1">
+                <label htmlFor="search-cat" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground dark:text-slate-450 flex items-center gap-1">
                   <Sparkle className="w-3.5 h-3.5 text-rose-500" />
                   Categoria de CNH
                 </label>
@@ -396,7 +396,7 @@ export default function Home() {
                   id="search-cat"
                   value={selectedCategoryLocal}
                   onChange={(e) => setSelectedCategoryLocal(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl text-slate-900 dark:text-white"
+                  className="w-full bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 text-xs py-3 px-3 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl text-foreground dark:text-white"
                 >
                   <option value="TODAS">Todas as Categorias</option>
                   <option value="A">Moto (Categoria A)</option>
@@ -427,7 +427,7 @@ export default function Home() {
               </button>
               <a 
                 href="#planos" 
-                className="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+                className="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-foreground dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-white font-black text-xs uppercase tracking-wider px-8 py-4 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
               >
                 Conhecer Planos
               </a>
@@ -439,35 +439,35 @@ export default function Home() {
         {/* Dashboard Preview - Rendered only in Instructor mode for B2B SaaS */}
         {activeMode === "instructor" && (
           <div className="max-w-5xl w-full mx-auto mt-16 md:mt-24 relative z-20 animate-fade-in-up delay-300 px-2 md:px-0">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3 md:p-6 overflow-hidden relative">
+            <div className="bg-card dark:bg-slate-900 border border-border dark:border-slate-800 rounded-2xl shadow-2xl p-3 md:p-6 overflow-hidden relative">
               <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 via-blue-500 to-rose-500" />
               
               {/* Mock Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 text-left">
+              <div className="flex items-center justify-between pb-4 border-b border-border dark:border-slate-800 text-left">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
                   <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
                   <span className="text-[10px] text-slate-400 font-mono ml-2 uppercase font-bold tracking-wider">PISTA // INSTRUTOR_DASHBOARD</span>
                 </div>
-                <div className="h-5 w-32 bg-slate-100 dark:bg-slate-850 rounded-xl" />
+                <div className="h-5 w-32 bg-slate-100 dark:bg-slate-800 rounded-xl" />
               </div>
 
               {/* Mock Stats */}
               <div className="grid grid-cols-3 gap-2 md:gap-4 my-4 md:my-6 text-left">
-                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl">
+                <div className="p-3 bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 rounded-xl">
                   <span className="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Faturamento Semanal</span>
-                  <span className="text-sm md:text-xl font-black text-slate-900 dark:text-white font-mono">R$ 1.840,00</span>
+                  <span className="text-sm md:text-xl font-black text-foreground dark:text-white font-mono">R$ 1.840,00</span>
                   <span className="text-[9px] text-emerald-500 font-bold flex items-center gap-0.5 mt-0.5"><TrendUp className="w-3 h-3" /> +15.2% vs ontem</span>
                 </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl">
+                <div className="p-3 bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 rounded-xl">
                   <span className="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Aulas Confirmadas</span>
-                  <span className="text-sm md:text-xl font-black text-slate-900 dark:text-white font-mono">24 Aulas</span>
+                  <span className="text-sm md:text-xl font-black text-foreground dark:text-white font-mono">24 Aulas</span>
                   <span className="text-[9px] text-blue-500 font-bold mt-0.5 block">100% de ocupação</span>
                 </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl">
+                <div className="p-3 bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 rounded-xl">
                   <span className="text-[10px] text-slate-400 font-bold uppercase block tracking-wider">Novos Alunos</span>
-                  <span className="text-sm md:text-xl font-black text-slate-900 dark:text-white font-mono">+6 Alunos</span>
+                  <span className="text-sm md:text-xl font-black text-foreground dark:text-white font-mono">+6 Alunos</span>
                   <span className="text-[9px] text-rose-500 font-bold mt-0.5 block">2 aguardando ficha</span>
                 </div>
               </div>
@@ -476,15 +476,15 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
                 
                 {/* Active Agenda */}
-                <div className="md:col-span-2 p-4 border border-slate-200 dark:border-slate-800 rounded-2xl">
-                  <h4 className="text-xs font-black uppercase text-slate-800 dark:text-slate-250 mb-3 tracking-wider flex items-center gap-1.5">
+                <div className="md:col-span-2 p-4 border border-border dark:border-slate-800 rounded-2xl">
+                  <h4 className="text-xs font-black uppercase text-foreground dark:text-slate-200 mb-3 tracking-wider flex items-center gap-1.5">
                     <span className="w-1.5 h-3 bg-blue-600 inline-block" />
                     Agenda de Hoje (Segunda-Feira)
                   </h4>
                   <div className="flex flex-col gap-2">
                     <div className="p-2.5 bg-blue-500/5 border-l-4 border-blue-600 rounded-xl flex items-center justify-between text-xs">
                       <div>
-                        <p className="font-bold text-slate-800 dark:text-slate-200">08:00 - Mariana Souza (Cat. B)</p>
+                        <p className="font-bold text-foreground dark:text-slate-200">08:00 - Mariana Souza (Cat. B)</p>
                         <p className="text-[10px] text-slate-555 dark:text-slate-440">Ponto: Estação Metrô Tucuruvi</p>
                       </div>
                       <span className="px-2 py-0.5 bg-blue-600/10 text-blue-600 dark:text-blue-400 font-bold text-[9px] uppercase tracking-wider rounded-xl">Confirmada</span>
@@ -492,7 +492,7 @@ export default function Home() {
                     
                     <div className="p-2.5 bg-rose-500/5 border-l-4 border-rose-500 rounded-xl flex items-center justify-between text-xs">
                       <div>
-                        <p className="font-bold text-slate-800 dark:text-slate-200">10:00 - Thiago Ramos (Cat. A)</p>
+                        <p className="font-bold text-foreground dark:text-slate-200">10:00 - Thiago Ramos (Cat. A)</p>
                         <p className="text-[10px] text-slate-555 dark:text-slate-440">Ponto: Praça Central de Campinas</p>
                       </div>
                       <span className="px-2 py-0.5 bg-rose-500/10 text-rose-500 dark:text-rose-455 font-bold text-[9px] uppercase tracking-wider rounded-xl">Confirmar WhatsApp?</span>
@@ -500,8 +500,8 @@ export default function Home() {
 
                     <div className="p-2.5 bg-slate-500/5 border-l-4 border-slate-400 rounded-xl flex items-center justify-between text-xs">
                       <div>
-                        <p className="font-bold text-slate-500 dark:text-slate-400">14:00 - Renato Silveira (Cat. D)</p>
-                        <p className="text-[10px] text-slate-555 dark:text-slate-500">Ponto: Centro de Treinamento</p>
+                        <p className="font-bold text-muted-foreground dark:text-slate-400">14:00 - Renato Silveira (Cat. D)</p>
+                        <p className="text-[10px] text-slate-555 dark:text-muted-foreground">Ponto: Centro de Treinamento</p>
                       </div>
                       <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-555 dark:text-slate-400 font-bold text-[9px] uppercase tracking-wider rounded-xl">Finalizada</span>
                     </div>
@@ -509,23 +509,23 @@ export default function Home() {
                 </div>
 
                 {/* Student progress tracker */}
-                <div className="p-4 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col justify-between">
+                <div className="p-4 border border-border dark:border-slate-800 rounded-xl flex flex-col justify-between">
                   <div>
-                    <h4 className="text-xs font-black uppercase text-slate-800 dark:text-slate-250 mb-3 tracking-wider flex items-center gap-1.5">
+                    <h4 className="text-xs font-black uppercase text-foreground dark:text-slate-200 mb-3 tracking-wider flex items-center gap-1.5">
                       <span className="w-1.5 h-3 bg-rose-500 inline-block" />
                       Ficha Digital Ativa
                     </h4>
                     <div className="flex items-center gap-2.5 mb-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-850 flex items-center justify-center font-bold text-xs">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-xs">
                         MS
                       </div>
                       <div>
-                        <p className="font-bold text-xs text-slate-800 dark:text-slate-200">Mariana Souza</p>
+                        <p className="font-bold text-xs text-foreground dark:text-slate-200">Mariana Souza</p>
                         <p className="text-[9px] text-slate-555 dark:text-slate-455 font-medium">Exame previsto: 18/07</p>
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="flex justify-between text-[10px] font-bold text-slate-500">
+                      <div className="flex justify-between text-[10px] font-bold text-muted-foreground">
                         <span>Aulas Concluídas</span>
                         <span>14 de 20 (70%)</span>
                       </div>
@@ -534,7 +534,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="border-t border-slate-100 dark:border-slate-800 pt-3 mt-3">
+                  <div className="border-t border-border dark:border-slate-800 pt-3 mt-3">
                     <span className="text-[9px] text-slate-400 uppercase font-bold block mb-1">Última avaliação de treino</span>
                     <p className="text-[10px] leading-tight text-slate-655 dark:text-slate-400 italic font-medium">&ldquo;Excelente controle de embreagem em aclive. Precisa revisar baliza na próxima aula.&rdquo;</p>
                   </div>
@@ -547,21 +547,21 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 border-t border-b border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-955/60 relative z-10 transition-colors duration-300">
+      <section className="py-16 border-t border-b border-border dark:border-slate-900 bg-card dark:bg-slate-950/60 relative z-10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {(activeMode === "student" ? statsStudent : statsInstructor).map((stat, idx) => (
               <div 
                 key={idx} 
-                className={`bg-slate-50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:-translate-y-1 transition-all duration-300 group ${
+                className={`bg-muted dark:bg-slate-900/30 border border-border dark:border-slate-900 p-6 rounded-2xl flex flex-col gap-2 hover:-translate-y-1 transition-all duration-300 group ${
                   activeMode === "student" ? "hover:border-blue-600/30" : "hover:border-rose-500/30"
                 }`}
               >
                 <span className={`text-3xl md:text-5xl font-black font-mono group-hover:scale-105 transition-transform duration-300 inline-block origin-left ${
                   activeMode === "student" ? "text-blue-600 dark:text-blue-500" : "text-rose-500 dark:text-rose-455"
                 }`}>{stat.value}</span>
-                <h4 className="font-black text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">{stat.label}</h4>
-                <p className="text-xs text-slate-555 dark:text-slate-500 leading-relaxed font-medium">{stat.desc}</p>
+                <h4 className="font-black text-xs uppercase tracking-wider text-foreground dark:text-slate-200">{stat.label}</h4>
+                <p className="text-xs text-slate-555 dark:text-muted-foreground leading-relaxed font-medium">{stat.desc}</p>
               </div>
             ))}
           </div>
@@ -573,7 +573,7 @@ export default function Home() {
         /* How it works for student */
         <section id="como-funciona" className="py-24 px-6 max-w-7xl mx-auto w-full z-10 scroll-mt-20">
           <div className="text-center max-w-xl mx-auto mb-16">
-            <h3 className="text-3xl md:text-5xl font-black uppercase text-slate-900 dark:text-white tracking-tighter">
+            <h3 className="text-3xl md:text-5xl font-black uppercase text-foreground dark:text-white tracking-tighter">
               Como Funciona a Pista?
             </h3>
             <p className="text-slate-555 dark:text-slate-400 mt-4 text-sm font-medium">
@@ -587,12 +587,12 @@ export default function Home() {
             {stepsStudent.map((step, idx) => (
               <div 
                 key={idx} 
-                className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-blue-600/35 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                className="bg-card border border-border dark:bg-slate-900/30 dark:border-slate-800 p-8 rounded-2xl relative z-10 flex flex-col gap-4 group hover:border-blue-600/35 hover:-translate-y-1 transition-all duration-300 shadow-sm"
               >
                 <div className="w-12 h-12 rounded-xl bg-blue-100 border border-blue-200/50 dark:bg-blue-600/10 dark:border-blue-500/20 flex items-center justify-center font-black text-blue-600 dark:text-blue-500 text-lg group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-350">
                   {step.num}
                 </div>
-                <h4 className="font-black text-lg text-slate-900 dark:text-white uppercase leading-tight mt-2">{step.title}</h4>
+                <h4 className="font-black text-lg text-foreground dark:text-white uppercase leading-tight mt-2">{step.title}</h4>
                 <p className="text-xs text-slate-555 dark:text-slate-450 leading-relaxed font-medium">{step.desc}</p>
               </div>
             ))}
@@ -602,10 +602,10 @@ export default function Home() {
         /* SaaS Features for Instructor */
         <section id="funcionalidades" className="py-24 px-6 max-w-7xl mx-auto w-full z-10 scroll-mt-20 animate-fade-in">
           <div className="max-w-2xl mb-16 text-left">
-            <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">
+            <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-foreground dark:text-white">
               TUDO QUE VOCÊ PRECISA PARA GERENCIAR SUA AUTOESCOLA OU AULAS PARTICULARES
             </h3>
-            <p className="text-slate-550 dark:text-slate-400 mt-4 text-sm max-w-xl font-medium leading-relaxed">
+            <p className="text-muted-foreground dark:text-slate-400 mt-4 text-sm max-w-xl font-medium leading-relaxed">
               Elimine as conversas infinitas no WhatsApp e organize seu financeiro com recursos pensados especificamente para a rotina do instrutor de trânsito.
             </p>
           </div>
@@ -633,12 +633,12 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-6 hover:border-rose-500/40 transition-all">
+            <div className="bg-card dark:bg-slate-900 border border-border dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-6 hover:border-rose-500/40 transition-all">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-rose-500/10 dark:bg-rose-500/5 flex items-center justify-center text-rose-500 border border-rose-500/20 mb-6">
                   <WhatsappLogo className="w-6 h-6" />
                 </div>
-                <h4 className="font-black text-lg uppercase tracking-tight text-slate-900 dark:text-white mb-2 leading-tight">Cobrança e Lembretes Automáticos</h4>
+                <h4 className="font-black text-lg uppercase tracking-tight text-foreground dark:text-white mb-2 leading-tight">Cobrança e Lembretes Automáticos</h4>
                 <p className="text-xs text-slate-555 dark:text-slate-450 leading-relaxed font-medium">
                   Reduza as faltas e calotes. O sistema envia notificações automáticas no WhatsApp do aluno 24h antes da aula e disponibiliza o código PIX para acerto.
                 </p>
@@ -646,12 +646,12 @@ export default function Home() {
               <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">Reduza até 85% de faltas</span>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-6 hover:border-blue-600/40 transition-all">
+            <div className="bg-card dark:bg-slate-900 border border-border dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-6 hover:border-blue-600/40 transition-all">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-blue-500/10 dark:bg-blue-500/5 flex items-center justify-center text-blue-500 border border-blue-500/20 mb-6">
                   <Coins className="w-6 h-6" />
                 </div>
-                <h4 className="font-black text-lg uppercase tracking-tight text-slate-900 dark:text-white mb-2 leading-tight">Gestão de Ganhos Sem Complicação</h4>
+                <h4 className="font-black text-lg uppercase tracking-tight text-foreground dark:text-white mb-2 leading-tight">Gestão de Ganhos Sem Complicação</h4>
                 <p className="text-xs text-slate-555 dark:text-slate-450 leading-relaxed font-medium">
                   Saiba exatamente quanto você ganha por semana e quem está te devendo. Controle pacotes fechados, aulas avulsas e seus custos operacionais como combustível.
                 </p>
@@ -659,13 +659,13 @@ export default function Home() {
               <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">Visão financeira em tempo real</span>
             </div>
 
-            <div className="md:col-span-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-8 group">
+            <div className="md:col-span-2 bg-muted dark:bg-slate-900/40 border border-border dark:border-slate-800 p-8 rounded-2xl flex flex-col justify-between gap-8 group">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/5 flex items-center justify-center text-amber-505 border border-amber-500/20 mb-6">
                   <User className="w-6 h-6" />
                 </div>
-                <h4 className="font-black text-xl uppercase tracking-tight text-slate-900 dark:text-white mb-3">Fichas Digitais de Evolução do Aluno</h4>
-                <p className="text-xs text-slate-650 dark:text-slate-400 leading-relaxed font-medium">
+                <h4 className="font-black text-xl uppercase tracking-tight text-foreground dark:text-white mb-3">Fichas Digitais de Evolução do Aluno</h4>
+                <p className="text-xs text-muted-foreground dark:text-slate-400 leading-relaxed font-medium">
                   Substitua as anotações físicas. Registre a evolução do aluno a cada aula prática: avanço nas balizas, controle de aclive, circulação em vias rápidas. Mantenha o aluno motivado exibindo o progresso em percentual (%) direto no painel dele, aumentando a retenção e facilitando a venda de pacotes adicionais.
                 </p>
               </div>
@@ -682,14 +682,14 @@ export default function Home() {
       {/* Section 4: Features (Student) or Pricing plans (Instructor) */}
       {activeMode === "student" ? (
         /* Features for students */
-        <section className="py-24 border-t border-slate-200 dark:border-slate-900 bg-slate-50/20 dark:bg-slate-950/20 relative z-10 transition-colors duration-300">
+        <section className="py-24 border-t border-border dark:border-slate-900 bg-muted/20 dark:bg-slate-950/20 relative z-10 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
             <div className="lg:col-span-1 text-left">
               <span className="text-xs font-black text-blue-600 dark:text-blue-500 uppercase tracking-widest block mb-3">Nossos diferenciais</span>
-              <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tight leading-none text-slate-900 dark:text-white">
+              <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tight leading-none text-foreground dark:text-white">
                 Por que escolher nossa plataforma?
               </h3>
-              <p className="text-slate-550 dark:text-slate-400 mt-4 text-xs leading-relaxed font-medium">
+              <p className="text-muted-foreground dark:text-slate-400 mt-4 text-xs leading-relaxed font-medium">
                 Trabalhamos duro para offer uma excelente experiência de aprendizado, conectando você aos melhores profissionais credenciados.
               </p>
               <div className="mt-8">
@@ -707,13 +707,13 @@ export default function Home() {
               {featuresStudent.map((feat, idx) => (
                 <div 
                   key={idx} 
-                  className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 p-6 rounded-2xl flex flex-col gap-3 hover:border-blue-600/30 hover:-translate-y-1 transition-all duration-300 group"
+                  className="bg-card border border-border dark:bg-slate-900/30 dark:border-slate-800 p-6 rounded-2xl flex flex-col gap-3 hover:border-blue-600/30 hover:-translate-y-1 transition-all duration-300 group"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-955 flex items-center justify-center border border-slate-200 dark:border-slate-850 group-hover:scale-105 group-hover:border-blue-600/30 transition-all">
+                  <div className="w-12 h-12 rounded-xl bg-muted dark:bg-slate-950 flex items-center justify-center border border-border dark:border-slate-800 group-hover:scale-105 group-hover:border-blue-600/30 transition-all">
                     {feat.icon}
                   </div>
-                  <h4 className="font-black text-xs uppercase tracking-wider text-slate-850 dark:text-slate-200 mt-1">{feat.title}</h4>
-                  <p className="text-xs text-slate-550 dark:text-slate-455 leading-relaxed font-medium">{feat.desc}</p>
+                  <h4 className="font-black text-xs uppercase tracking-wider text-foreground dark:text-slate-200 mt-1">{feat.title}</h4>
+                  <p className="text-xs text-muted-foreground dark:text-slate-455 leading-relaxed font-medium">{feat.desc}</p>
                 </div>
               ))}
             </div>
@@ -721,13 +721,13 @@ export default function Home() {
         </section>
       ) : (
         /* Pricing plans for instructors */
-        <section id="planos" className="py-24 border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-955/20 relative z-10 transition-colors duration-300 animate-fade-in">
+        <section id="planos" className="py-24 border-t border-border dark:border-slate-900 bg-card dark:bg-slate-950/20 relative z-10 transition-colors duration-300 animate-fade-in">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-xl mx-auto mb-16">
-              <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-foreground dark:text-white">
                 NOSSOS PLANOS DE ASSINATURA
               </h3>
-              <p className="text-slate-550 dark:text-slate-400 mt-3 text-sm font-medium">
+              <p className="text-muted-foreground dark:text-slate-400 mt-3 text-sm font-medium">
                 Escolha a melhor opção para digitalizar sua agenda. Teste grátis por 7 dias, sem compromisso e sem precisar cadastrar cartão.
               </p>
             </div>
@@ -736,10 +736,10 @@ export default function Home() {
               {plans.map((plan, idx) => (
                 <div 
                   key={idx} 
-                  className={`bg-slate-50 dark:bg-slate-900/30 p-8 rounded-2xl flex flex-col justify-between transition-all duration-300 relative ${
+                  className={`bg-muted dark:bg-slate-900/30 p-8 rounded-2xl flex flex-col justify-between transition-all duration-300 relative ${
                     plan.popular 
                       ? "border border-rose-500 shadow-xl md:-translate-y-2 scale-[1.01]" 
-                      : "border border-slate-200 dark:border-slate-800"
+                      : "border border-border dark:border-slate-800"
                   }`}
                 >
                   {plan.popular && (
@@ -749,22 +749,22 @@ export default function Home() {
                   )}
                   
                   <div>
-                    <h4 className="font-black text-xl uppercase tracking-wider text-slate-900 dark:text-white mb-2">{plan.name}</h4>
-                    <p className="text-xs text-slate-550 dark:text-slate-455 mb-6 font-medium leading-snug">{plan.desc}</p>
+                    <h4 className="font-black text-xl uppercase tracking-wider text-foreground dark:text-white mb-2">{plan.name}</h4>
+                    <p className="text-xs text-muted-foreground dark:text-slate-455 mb-6 font-medium leading-snug">{plan.desc}</p>
                     
                     <div className="flex items-baseline gap-1 my-6">
-                      <span className="text-xs font-bold text-slate-500">R$</span>
-                      <span className="text-4xl md:text-5xl font-black font-mono text-slate-900 dark:text-white tracking-tight">{plan.price}</span>
-                      <span className="text-xs text-slate-550 font-bold">/{plan.period}</span>
+                      <span className="text-xs font-bold text-muted-foreground">R$</span>
+                      <span className="text-4xl md:text-5xl font-black font-mono text-foreground dark:text-white tracking-tight">{plan.price}</span>
+                      <span className="text-xs text-muted-foreground font-bold">/{plan.period}</span>
                     </div>
                     
                     <div className="mb-6 p-2 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-500/10 text-[10px] font-bold text-center tracking-wider uppercase">
                       🎁 Experimente Grátis por 7 Dias
                     </div>
 
-                    <ul className="space-y-3.5 border-t border-slate-200 dark:border-slate-800 pt-6">
+                    <ul className="space-y-3.5 border-t border-border dark:border-slate-800 pt-6">
                       {plan.features.map((feat, fIdx) => (
-                        <li key={fIdx} className="flex items-start gap-2.5 text-xs text-slate-650 dark:text-slate-355">
+                        <li key={fIdx} className="flex items-start gap-2.5 text-xs text-muted-foreground dark:text-slate-355">
                           <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                           <span className="font-medium">{feat}</span>
                         </li>
@@ -778,7 +778,7 @@ export default function Home() {
                       className={`w-full py-4 text-center text-xs font-black uppercase tracking-wider rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
                         plan.popular 
                           ? "bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/20" 
-                          : "bg-slate-900 hover:bg-black text-white dark:bg-slate-850 dark:hover:bg-slate-800 border border-transparent dark:border-slate-800"
+                          : "bg-slate-900 hover:bg-black text-white dark:bg-slate-800 dark:hover:bg-slate-800 border border-transparent dark:border-slate-800"
                       }`}
                     >
                       Começar Teste Grátis
@@ -793,22 +793,22 @@ export default function Home() {
 
       {/* Section 5: Featured Instructors Highlight (Student Mode only) */}
       {activeMode === "student" && (
-        <section className="py-24 border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-955/20 relative z-10 transition-colors duration-300">
+        <section className="py-24 border-t border-border dark:border-slate-900 bg-card dark:bg-slate-950/20 relative z-10 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-6 text-center">
             <div className="max-w-2xl mx-auto mb-16">
-              <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-foreground dark:text-white">
                 Aprenda com quem já aprovou centenas de alunos
               </h3>
-              <p className="text-slate-550 dark:text-slate-400 mt-4 text-sm font-medium">
+              <p className="text-muted-foreground dark:text-slate-400 mt-4 text-sm font-medium">
                 Nossos instrutores parceiros são avaliados de forma transparente. Veja as notas, o valor da hora/aula e o depoimento de outros alunos antes de contratar.
               </p>
             </div>
             
-            <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+            <div className="bg-muted dark:bg-slate-900 border border-border dark:border-slate-800 p-8 rounded-2xl max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-left">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-500 block mb-1">Aulas práticas de Carro, Moto ou Pesados</span>
-                <h4 className="text-xl md:text-2xl font-black uppercase text-slate-900 dark:text-white tracking-tight">ENCONTRE O PROFISSIONAL MAIS PRÓXIMO</h4>
-                <p className="text-xs text-slate-550 dark:text-slate-400 mt-2 max-w-xl font-medium">
+                <h4 className="text-xl md:text-2xl font-black uppercase text-foreground dark:text-white tracking-tight">ENCONTRE O PROFISSIONAL MAIS PRÓXIMO</h4>
+                <p className="text-xs text-muted-foreground dark:text-slate-400 mt-2 max-w-xl font-medium">
                   Selecione seu bairro de ponto de encontro para visualizar instrutores que atendem na sua região. Agende a aula experimental online de forma rápida.
                 </p>
               </div>
@@ -825,12 +825,12 @@ export default function Home() {
       )}
 
       {/* Section 6: Testimonials (Dynamic according to mode) */}
-      <section className="py-24 border-t border-slate-200 dark:border-slate-900 px-6 max-w-7xl mx-auto w-full z-10 transition-colors duration-300">
+      <section className="py-24 border-t border-border dark:border-slate-900 px-6 max-w-7xl mx-auto w-full z-10 transition-colors duration-300">
         <div className="max-w-2xl mb-16 text-left">
-          <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">
+          <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-foreground dark:text-white">
             {activeMode === "student" ? "O que dizem os nossos alunos?" : "QUEM USA A PISTA APROVA E RECOMENDA"}
           </h3>
-          <p className="text-slate-550 dark:text-slate-400 mt-3 text-sm font-medium">
+          <p className="text-muted-foreground dark:text-slate-400 mt-3 text-sm font-medium">
             {activeMode === "student" 
               ? "Depoimentos reais de pessoas que transformaram o medo em confiança nas pistas."
               : "Veja como instrutores de todo o país profissionalizaram o atendimento e otimizaram seus lucros."
@@ -842,7 +842,7 @@ export default function Home() {
           {(activeMode === "student" ? testimonialsStudent : testimonialsInstructor).map((test, idx) => (
             <div 
               key={idx} 
-              className={`bg-white dark:bg-slate-905 border border-slate-200 dark:border-slate-900 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:-translate-y-1 transition-all duration-300 shadow-sm ${
+              className={`bg-card dark:bg-slate-905 border border-border dark:border-slate-900 p-6 rounded-2xl flex flex-col justify-between gap-6 hover:-translate-y-1 transition-all duration-300 shadow-sm ${
                 activeMode === "student" ? "hover:border-blue-600/30" : "hover:border-rose-500/30"
               }`}
             >
@@ -850,7 +850,7 @@ export default function Home() {
                 &ldquo;{test.quote}&rdquo;
               </p>
               
-              <div className="flex items-center gap-3 border-t border-slate-100 dark:border-slate-850 pt-4">
+              <div className="flex items-center gap-3 border-t border-border dark:border-slate-800 pt-4">
                 <Image 
                   alt={test.name}
                   src={test.photo}
@@ -861,7 +861,7 @@ export default function Home() {
                   }`}
                 />
                 <div>
-                  <h4 className="font-black text-xs text-slate-900 dark:text-white">{test.name}</h4>
+                  <h4 className="font-black text-xs text-foreground dark:text-white">{test.name}</h4>
                   <span className={`text-[10px] font-bold block ${
                     activeMode === "student" ? "text-blue-600 dark:text-blue-500" : "text-rose-550"
                   }`}>{test.role}</span>
@@ -873,9 +873,9 @@ export default function Home() {
       </section>
 
       {/* Section 7: FAQ (Dynamic according to mode) */}
-      <section id="faq" className="py-24 border-t border-slate-200 dark:border-slate-900 px-6 max-w-3xl mx-auto w-full z-10 scroll-mt-20 transition-colors duration-300">
+      <section id="faq" className="py-24 border-t border-border dark:border-slate-900 px-6 max-w-3xl mx-auto w-full z-10 scroll-mt-20 transition-colors duration-300">
         <div className="text-center mb-16">
-          <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">
+          <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase text-foreground dark:text-white">
             PERGUNTAS FREQUENTES
           </h3>
           <p className="text-slate-555 dark:text-slate-400 mt-3 text-sm font-medium">
@@ -889,18 +889,18 @@ export default function Home() {
             return (
               <div 
                 key={idx} 
-                className="bg-white border border-slate-200 dark:bg-slate-900/30 dark:border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
+                className="bg-card border border-border dark:bg-slate-900/30 dark:border-slate-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
               >
                 <button
                   onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                  className="w-full px-6 py-4.5 flex items-center justify-between font-black text-xs uppercase tracking-wider text-left text-slate-900 dark:text-white hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer"
+                  className="w-full px-6 py-4.5 flex items-center justify-between font-black text-xs uppercase tracking-wider text-left text-foreground dark:text-white hover:bg-muted/50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer"
                 >
                   <span>{faq.question}</span>
                   <CaretDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-rose-500" : ""}`} />
                 </button>
                 
                 {isOpen && (
-                  <div className="px-6 pb-5 pt-1 border-t border-slate-100 dark:border-slate-855 bg-slate-50/20 dark:bg-slate-955/30 text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  <div className="px-6 pb-5 pt-1 border-t border-border dark:border-slate-855 bg-muted/20 dark:bg-slate-950/30 text-xs text-muted-foreground dark:text-slate-400 leading-relaxed font-medium">
                     {faq.answer}
                   </div>
                 )}
@@ -964,12 +964,12 @@ export default function Home() {
       {/* Lead Capture Modal Component (Instructors) */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 animate-fade-in">
-          <div className="bg-white dark:bg-slate-900 border border-blue-600 rounded-2xl w-full max-w-md p-6 relative shadow-2xl overflow-hidden">
+          <div className="bg-card dark:bg-slate-900 border border-blue-600 rounded-2xl w-full max-w-md p-6 relative shadow-2xl overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 to-rose-500" />
             
             <button 
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              className="absolute top-4 right-4 text-slate-400 hover:text-foreground dark:hover:text-white transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -980,21 +980,21 @@ export default function Home() {
                   <span className="text-[9px] bg-blue-600/10 text-blue-600 dark:text-blue-400 px-2 py-0.5 font-black uppercase tracking-wider rounded-xl border border-blue-500/10">
                     Plano Selecionado: {selectedPlan}
                   </span>
-                  <h4 className="text-lg font-black uppercase tracking-tight text-slate-900 dark:text-white mt-3">
+                  <h4 className="text-lg font-black uppercase tracking-tight text-foreground dark:text-white mt-3">
                     Inicie seu Teste de 7 Dias Grátis
                   </h4>
-                  <p className="text-xs text-slate-550 dark:text-slate-450 leading-relaxed font-medium">
+                  <p className="text-xs text-muted-foreground dark:text-slate-450 leading-relaxed font-medium">
                     Preencha os dados abaixo. Nós criaremos o seu ambiente temporário em segundos. Sem cartão!
                   </p>
                 </div>
 
                 <div className="space-y-3">
                   <div>
-                    <label htmlFor="lead-name" className="block text-[10px] font-black uppercase tracking-wider text-slate-550 dark:text-slate-400 mb-1">
+                    <label htmlFor="lead-name" className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground dark:text-slate-400 mb-1">
                       Nome Completo
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3.5 w-4 h-4 text-slate-455 dark:text-slate-500" />
+                      <User className="absolute left-3 top-3.5 w-4 h-4 text-slate-455 dark:text-muted-foreground" />
                       <input
                         id="lead-name"
                         type="text"
@@ -1002,17 +1002,17 @@ export default function Home() {
                         placeholder="Ex: Carlos Silva"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
+                        className="w-full pl-9 pr-4 py-3 bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 text-xs text-foreground dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="lead-email" className="block text-[10px] font-black uppercase tracking-wider text-slate-550 dark:text-slate-400 mb-1">
+                    <label htmlFor="lead-email" className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground dark:text-slate-400 mb-1">
                       E-mail Profissional
                     </label>
                     <div className="relative">
-                      <EnvelopeSimple className="absolute left-3 top-3.5 w-4 h-4 text-slate-455 dark:text-slate-500" />
+                      <EnvelopeSimple className="absolute left-3 top-3.5 w-4 h-4 text-slate-455 dark:text-muted-foreground" />
                       <input
                         id="lead-email"
                         type="email"
@@ -1020,17 +1020,17 @@ export default function Home() {
                         placeholder="carlos@exemplo.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
+                        className="w-full pl-9 pr-4 py-3 bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 text-xs text-foreground dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="lead-phone" className="block text-[10px] font-black uppercase tracking-wider text-slate-550 dark:text-slate-400 mb-1">
+                    <label htmlFor="lead-phone" className="block text-[10px] font-black uppercase tracking-wider text-muted-foreground dark:text-slate-400 mb-1">
                       WhatsApp (para alertas)
                     </label>
                     <div className="relative">
-                      <WhatsappLogo className="absolute left-3 top-3.5 w-4 h-4 text-slate-455 dark:text-slate-500" />
+                      <WhatsappLogo className="absolute left-3 top-3.5 w-4 h-4 text-slate-455 dark:text-muted-foreground" />
                       <input
                         id="lead-phone"
                         type="tel"
@@ -1038,7 +1038,7 @@ export default function Home() {
                         placeholder="(11) 99999-9999"
                         value={formData.phone}
                         onChange={handlePhoneChange}
-                        className="w-full pl-9 pr-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
+                        className="w-full pl-9 pr-4 py-3 bg-muted dark:bg-slate-950 border border-border dark:border-slate-800 text-xs text-foreground dark:text-white placeholder-slate-400 dark:placeholder-slate-555 focus:border-blue-600 focus:outline-hidden transition-colors rounded-xl"
                       />
                     </div>
                   </div>
@@ -1062,7 +1062,7 @@ export default function Home() {
                       </>
                     )}
                   </button>
-                  <p className="text-[10px] text-center text-slate-400 dark:text-slate-500 mt-3 font-medium">
+                  <p className="text-[10px] text-center text-slate-400 dark:text-muted-foreground mt-3 font-medium">
                     Ao continuar, você concorda com nossos Termos e Política de Privacidade.
                   </p>
                 </div>
@@ -1072,7 +1072,7 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-xl bg-emerald-500/10 border border-emerald-500 flex items-center justify-center text-emerald-500 animate-bounce">
                   <Check className="w-10 h-10" />
                 </div>
-                <h4 className="text-xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
+                <h4 className="text-xl font-black uppercase tracking-tight text-foreground dark:text-white">
                   Acesso Liberado!
                 </h4>
                 <p className="text-xs text-slate-555 dark:text-slate-450 max-w-xs leading-relaxed font-medium">
@@ -1089,7 +1089,7 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="w-full text-center py-8 text-slate-500 dark:text-slate-650 text-[10px] z-10 border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0 transition-colors duration-300">
+      <footer className="w-full text-center py-8 text-muted-foreground dark:text-muted-foreground text-[10px] z-10 border-t border-border dark:border-slate-900 bg-card dark:bg-slate-950 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-4 sm:gap-0 transition-colors duration-300">
         <span className="font-bold uppercase tracking-wider">PISTA S.A. &copy; {new Date().getFullYear()}</span>
         <div className="flex gap-6 font-bold uppercase tracking-wider">
           <Link href="/politica-de-privacidade" className="hover:text-blue-600 dark:hover:text-white transition-colors">Termos de Uso</Link>
